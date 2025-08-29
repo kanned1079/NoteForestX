@@ -10,3 +10,4 @@
 /.idea
 
 /noteforestx_server/config/config.yaml
+/noteforestx_server/db_migrated_sign

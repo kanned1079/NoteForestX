@@ -3,7 +3,6 @@ package config
 type AppConfig struct {
 	DbConfig    DbConfig    `yaml:"db_config" json:"db_config"`
 	RedisConfig RedisConfig `yaml:"redis_config" json:"redis_config"`
-	WxApp       WxApp       `yaml:"wx_app"`
 	Runtime     Runtime     `yaml:"runtime"`
 }
 
@@ -22,11 +21,6 @@ type RedisConfig struct {
 	Username string `yaml:"username" json:"username"`
 	Password string `yaml:"password" json:"password"`
 	Database int    `yaml:"database" json:"database"`
-}
-
-type WxApp struct {
-	AppId     string `yaml:"app_id"`
-	AppSecret string `yaml:"app_secret"`
 }
 
 type Runtime struct {

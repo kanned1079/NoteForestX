@@ -3,7 +3,7 @@ package middlewares
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"stay-server/utils"
+	"noteforestx_server/utils"
 )
 
 func RequireRole(requiredRoles ...string) gin.HandlerFunc {
