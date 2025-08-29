@@ -8,3 +8,5 @@
 /dataSources.local.xml
 
 /.idea
+
+/noteforestx_server/config/config.yaml
