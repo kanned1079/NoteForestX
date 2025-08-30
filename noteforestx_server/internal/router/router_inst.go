@@ -3,7 +3,6 @@ package router
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"noteforestx_server/internal/config"
 	"noteforestx_server/internal/middlewares"
 	"noteforestx_server/utils"
 	"os"
@@ -25,7 +24,7 @@ func NewRouterInstance(id int32, ginMode string) *RouterInstance {
 	}
 }
 
-func (this *RouterInstance) StartApiServices() {
+func (this *RouterInstance) RegisterApiServices() {
 	this.util.Logger.PrintInfo("start api services")
 	this.Router.Use(middlewares.AllowRequestTypeCors())
 
@@ -34,7 +33,10 @@ func (this *RouterInstance) StartApiServices() {
 
 	this.RegisterPublicRoutes(v1)
 
-	if err := this.Router.Run(fmt.Sprintf(":%s", config.ExistingAppConfig.Runtime.ListeningPort)); err != nil {
+}
+
+func (this *RouterInstance) StartAndServe(port string) {
+	if err := this.Router.Run(fmt.Sprintf(":%s", port)); err != nil {
 		this.util.Logger.PrintError("failed to start api services", err)
 		os.Exit(1)
 	}

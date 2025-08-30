@@ -2,33 +2,51 @@ package dao
 
 import (
 	"noteforestx_server/internal/models"
-	"noteforestx_server/utils"
 	"os"
 )
 
 const signFile = "./db_migrated_sign"
 
-func (this *DaoInstance) AutoMigrateTables() {
-	var logger utils.Logger
-	logger.PrintInfo("start auto migrate tables")
+func (this *DaoInstance) createSignFile() {
+	f, err := os.Create(signFile)
+	if err != nil {
+		this.logger.PrintError("create sign file failed: ", err)
+		return
+	}
+	defer func() {
+		if err := f.Close(); err != nil {
+			this.logger.PrintError("close sign file failed: ", err)
+		}
+	}()
+}
+
+func (this *DaoInstance) runMigrate() {
+	this.logger.PrintInfo("running database migrations...")
+	if err := ExistingDbDaoInst.DbDao.AutoMigrate(
+		&models.User{},
+		&models.Document{},
+	); err != nil {
+		this.logger.PrintError("auto migrate tables failed: ", err)
+		return
+	}
+}
+
+func (this *DaoInstance) AutoMigrateTables(force bool) {
+	if force {
+		this.logger.PrintWarn("force mode enabled, ignoring sign file...")
+		this.runMigrate()
+		this.createSignFile()
+		this.logger.PrintSuccess("auto migrate tables success (forced)")
+		return
+	}
+
+	this.logger.PrintInfo("start auto migrate tables")
 	if _, err := os.Stat(signFile); err == nil {
-		logger.PrintSuccess("skip auto migrate tables")
+		this.logger.PrintWarn("skip auto migrate tables, sign file exists (use --force to override)")
 		return
 	}
-	if err := ExistingDbDaoInst.DbDao.AutoMigrate(&models.User{}, &models.Document{}); err != nil {
-		logger.PrintError("auto migrate tables failed: ", err)
-		return
-	}
-	if f, err := os.Create(signFile); err == nil {
-		defer func() {
-			if err := f.Close(); err != nil {
-				logger.PrintError("close sign file failed: ", err)
-				return
-			}
-		}()
-	} else {
-		logger.PrintError("create sign file failed: ", err)
-		return
-	}
-	logger.PrintSuccess("auto migrate tables success")
+
+	this.runMigrate()
+	this.createSignFile()
+	this.logger.PrintSuccess("auto migrate tables success")
 }
