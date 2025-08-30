@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"noteforestx_server/internal/config"
 	"noteforestx_server/internal/dao"
 	"noteforestx_server/internal/router"
@@ -96,7 +95,7 @@ func runServer() {
 	logger.PrintInfo("All done. Starting NoteForestX server...")
 
 	// Init router
-	existingRouterInst := router.NewRouterInstance(1, gin.DebugMode)
+	existingRouterInst := router.NewRouterInstance(1, config.ExistingAppConfig.Runtime.Mode)
 
 	var wg sync.WaitGroup
 	wg.Add(1)

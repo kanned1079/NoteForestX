@@ -1,8 +1,10 @@
 package dao
 
 import (
+	"fmt"
 	"noteforestx_server/internal/models"
 	"os"
+	"time"
 )
 
 const signFile = "./db_migrated_sign"
@@ -21,21 +23,25 @@ func (this *DaoInstance) createSignFile() {
 }
 
 func (this *DaoInstance) runMigrate() {
-	this.logger.PrintInfo("running database migrations...")
 	if err := ExistingDbDaoInst.DbDao.AutoMigrate(
 		&models.User{},
 		&models.Document{},
+		&models.IllustrationTag{},
+		&models.Illustration{},
 	); err != nil {
 		this.logger.PrintError("auto migrate tables failed: ", err)
-		return
+		os.Exit(1)
 	}
+	time.Sleep(time.Second * 2)
 }
 
 func (this *DaoInstance) AutoMigrateTables(force bool) {
+	this.logger.DisplayLoadingAnime("running database migrations...")
 	if force {
 		this.logger.PrintWarn("force mode enabled, ignoring sign file...")
 		this.runMigrate()
 		this.createSignFile()
+		fmt.Println()
 		this.logger.PrintSuccess("auto migrate tables success (forced)")
 		return
 	}
@@ -48,5 +54,6 @@ func (this *DaoInstance) AutoMigrateTables(force bool) {
 
 	this.runMigrate()
 	this.createSignFile()
+	this.logger.StopLoadingAnime()
 	this.logger.PrintSuccess("auto migrate tables success")
 }

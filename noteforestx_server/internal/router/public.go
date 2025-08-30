@@ -2,15 +2,14 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	"net/http"
+	"noteforestx_server/internal/services/public"
 )
 
 func (this *RouterInstance) RegisterPublicRoutes(v1 *gin.RouterGroup) {
-	public := v1.Group("public")
+	publicRouter := v1.Group("/public")
+	var publicService public.PublicService
 
-	public.GET("test", func(ctx *gin.Context) {
-		ctx.JSON(http.StatusOK, gin.H{
-			"message": "hello world",
-		})
-	})
+	publicRouter.POST("/user/login", publicService.UserLogin)
+	publicRouter.POST("/user/register", publicService.UserRegister)
+
 }

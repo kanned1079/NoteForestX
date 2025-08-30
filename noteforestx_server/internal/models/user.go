@@ -3,6 +3,7 @@ package models
 import (
 	"github.com/google/uuid"
 	"gorm.io/gorm"
+	"noteforestx_server/internal/config"
 	"time"
 )
 
@@ -15,7 +16,7 @@ const (
 
 type User struct {
 	Id        uuid.UUID      `json:"id" gorm:"type:char(36);primaryKey"`
-	Username  *string        `json:"username" gorm:"type:varchar(255)"`
+	Username  string         `json:"username" gorm:"type:varchar(255)"`
 	Email     string         `json:"email" gorm:"uniqueIndex;not null"`
 	Role      UserRole       `json:"role" gorm:"type:enum('ADMIN','USER');default:'USER'"`
 	Password  string         `json:"-" gorm:"not null"`
@@ -25,5 +26,5 @@ type User struct {
 }
 
 func (User) TableName() string {
-	return "x_n_user"
+	return config.ExistingAppConfig.DbConfig.TablePrefix + "user"
 }

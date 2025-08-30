@@ -3,6 +3,8 @@ package utils
 import "noteforestx_server/internal/config"
 
 type Logger struct {
+	running  bool
+	stopChan chan struct{}
 }
 
 type Utils struct {

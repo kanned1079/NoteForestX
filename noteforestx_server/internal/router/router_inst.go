@@ -32,6 +32,7 @@ func (this *RouterInstance) RegisterApiServices() {
 	v1 := apiPrefix.Group("v1")
 
 	this.RegisterPublicRoutes(v1)
+	this.RegisterAdminRoutes(v1)
 
 }
 
