@@ -3,6 +3,7 @@ package dao
 import (
 	"github.com/redis/go-redis/v9"
 	"gorm.io/gorm"
+	"noteforestx_server/internal/config"
 	"noteforestx_server/utils"
 )
 
@@ -18,7 +19,11 @@ var ExistingDbDaoInst *DaoInstance
 func NewDbInstance(id int32) *DaoInstance {
 	var daoInst = &DaoInstance{Id: id}
 	daoInst.InitDbConn()
-	daoInst.InitRedisConn()
+	if config.ExistingAppConfig.RedisConfig.Enabled {
+		daoInst.InitRedisConn()
+	} else {
+		daoInst.logger.PrintWarn("redis is disabled, init skipped. you can edit \"config.yaml\" to enable it.")
+	}
 
 	return daoInst
 }

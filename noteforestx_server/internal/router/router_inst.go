@@ -1,7 +1,6 @@
 package router
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"noteforestx_server/internal/middlewares"
 	"noteforestx_server/utils"
@@ -33,11 +32,13 @@ func (this *RouterInstance) RegisterApiServices() {
 
 	this.RegisterPublicRoutes(v1)
 	this.RegisterAdminRoutes(v1)
+	this.RegisterUserRoutes(v1)
+	this.RegisterIllustrationRoutes(v1)
 
 }
 
-func (this *RouterInstance) StartAndServe(port string) {
-	if err := this.Router.Run(fmt.Sprintf(":%s", port)); err != nil {
+func (this *RouterInstance) StartAndServe(addr string) {
+	if err := this.Router.Run(addr); err != nil {
 		this.util.Logger.PrintError("failed to start api services", err)
 		os.Exit(1)
 	}

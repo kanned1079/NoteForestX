@@ -103,7 +103,7 @@ func runServer() {
 	go func() {
 		defer wg.Done()
 		existingRouterInst.RegisterApiServices()
-		existingRouterInst.StartAndServe(config.ExistingAppConfig.Runtime.ListeningPort)
+		existingRouterInst.StartAndServe(config.ExistingAppConfig.Runtime.ListeningAddr)
 	}()
 
 	wg.Wait()

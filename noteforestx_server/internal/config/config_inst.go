@@ -21,6 +21,7 @@ db_config:
   table_prefix: "x_"         # Every data table prefix
 
 redis_config:
+  enabled: false             # Enable redis can access data faster
   host: "127.0.0.1"          # Redis server host, e.g. "127.0.0.1" or "example.com"
   port: 6379                 # Redis server port, default is 6379
   username: ""               # Redis username (usually leave empty)
@@ -34,7 +35,12 @@ runtime:
   enable_register: true           # If set to "false", will not allow new user register
   min_password_len: 6             # Set the min length of user password allowance
   bcrypt_cost: 16                 # the bcrypt hash of the password at the given cost
-  listening_port: "8080"          # Application listening port, e.g. "8080"`
+  listening_addr: ":8081"         # Application listening port, e.g. ":8080" "172.16.12.120:8081"
+
+illustration:
+  save_dir: "./saved"             # The illustration save path, auto create if not existed
+  compressed_small_pixel: 720     # Illustration width pixel (small size)
+  compressed_medium_pixel: 1280   # Illustration width pixel (medium size)`
 }
 
 var ExistingAppConfig AppConfig

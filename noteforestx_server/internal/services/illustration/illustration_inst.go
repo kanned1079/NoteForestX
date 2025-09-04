@@ -1,4 +1,4 @@
-package admin
+package illustration
 
 import (
 	"github.com/redis/go-redis/v9"
@@ -6,7 +6,7 @@ import (
 	"noteforestx_server/utils"
 )
 
-type AdminService struct {
+type IllustrationService struct {
 	utils utils.Utils
 	Db    *gorm.DB
 	Rdb   *redis.Client
