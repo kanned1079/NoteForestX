@@ -1,62 +1,39 @@
-/* ==========================
-   PrimeVue 自訂主題色 #4f7da6
-   ========================== */
+/*!* --------------------------*/
+/*   亮色模式*/
+/*--------------------------- *!*/
+/*:root {*/
+/*    --p-primary-50: #e5eff7;*/
+/*    --p-primary-100: #c6d9eb;*/
+/*    --p-primary-200: #a7c2df;*/
+/*    --p-primary-300: #88add3;*/
+/*    --p-primary-400: #6998c7;*/
+/*    --p-primary-500: #4f7da6; !* 主色 *!*/
+/*    --p-primary-600: #3f657f;*/
+/*    --p-primary-700: #2f4e5f;*/
+/*    --p-primary-800: #1f3640;*/
+/*    --p-primary-900: #0f1b20;*/
 
-/* --------------------------
-   亮色模式
---------------------------- */
-:root {
-    --p-primary-50: #e5eff7;
-    --p-primary-100: #c6d9eb;
-    --p-primary-200: #a7c2df;
-    --p-primary-300: #88add3;
-    --p-primary-400: #6998c7;
-    --p-primary-500: #4f7da6; /* 主色 */
-    --p-primary-600: #3f657f;
-    --p-primary-700: #2f4e5f;
-    --p-primary-800: #1f3640;
-    --p-primary-900: #0f1b20;
-
-    --p-background: #f9fafb;
-    --p-surface: #ffffff;
-    --p-border-color: #e5e7eb;
-}
-
-/* --------------------------
-   暗色模式
---------------------------- */
-:root[data-theme='dark'] {
-    --p-primary-50: #dae5f0;
-    --p-primary-100: #b5c9e1;
-    --p-primary-200: #90acd3;
-    --p-primary-300: #6b8fc4;
-    --p-primary-400: #4672b6;
-    --p-primary-500: #4f7da6; /* 主色 */
-    --p-primary-600: #3e6283;
-    --p-primary-700: #2f465f;
-    --p-primary-800: #1f293b;
-    --p-primary-900: #0f141c;
-
-    --p-background: #121212;
-    --p-surface: #1e1e1e;
-    --p-border-color: #333333;
-}
-
-/* --------------------------
-   覆蓋 TieredMenu 文字顏色
---------------------------- */
-/*html[data-theme='dark'] .p-tieredmenu .p-menuitem-link {*/
-/*    color: var(--p-text-color);*/
+/*    --p-background: #f9fafb;*/
+/*    --p-surface: #ffffff;*/
+/*    --p-border-color: #e5e7eb;*/
 /*}*/
 
-/*html[data-theme='dark'] .p-tieredmenu .p-menuitem-link:hover {*/
-/*    color: var(--p-primary-500); !* hover 用主色 *!*/
-/*}*/
+/*!* --------------------------*/
+/*   暗色模式*/
+/*--------------------------- *!*/
+/*:root[data-theme='dark'] {*/
+/*    --p-primary-50: #dae5f0;*/
+/*    --p-primary-100: #b5c9e1;*/
+/*    --p-primary-200: #90acd3;*/
+/*    --p-primary-300: #6b8fc4;*/
+/*    --p-primary-400: #4672b6;*/
+/*    --p-primary-500: #4f7da6; !* 主色 *!*/
+/*    --p-primary-600: #3e6283;*/
+/*    --p-primary-700: #2f465f;*/
+/*    --p-primary-800: #1f293b;*/
+/*    --p-primary-900: #0f141c;*/
 
-/*html:not([data-theme='dark']) .p-tieredmenu .p-menuitem-link {*/
-/*    color: var(--p-text-color);*/
-/*}*/
-
-/*html:not([data-theme='dark']) .p-tieredmenu .p-menuitem-link:hover {*/
-/*    color: var(--p-primary-500);*/
+/*    --p-background: #121212;*/
+/*    --p-surface: #1e1e1e;*/
+/*    --p-border-color: #333333;*/
 /*}*/
