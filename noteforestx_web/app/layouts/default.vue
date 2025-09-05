@@ -1,16 +1,17 @@
 <script setup lang="ts">
+import AppHeader from "../components/AppHeader.vue";
 
+onMounted(() => {
+  console.log("aaa")
+})
 </script>
 
 <template>
   <div>
-    <h1>default layout</h1>
+    <AppHeader />
 
-
-    <div style="background-color: cyan">
-
-    </div>
-
+    <p>Some default layout content shared across all pages</p>
+    <slot />
   </div>
 </template>
 

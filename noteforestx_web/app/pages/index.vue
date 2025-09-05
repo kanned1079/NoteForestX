@@ -1,16 +1,14 @@
 <script setup lang="ts">
+import {definePageMeta} from "../../.nuxt/imports";
+
 definePageMeta({
-  layout: 'empty',
-  layoutTransition: true
+  layout: 'default',
+  layoutTransition: true,
 })
-import {useI18n} from "vue-i18n";
-const {t} = useI18n()
 </script>
 
 <template>
-  <div>
-    index {{ t('hello') }}
-  </div>
+<div class=""></div>
 </template>
 
 <style scoped>

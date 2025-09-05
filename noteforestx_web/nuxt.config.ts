@@ -1,32 +1,38 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import vuetify, {transformAssetUrls} from 'vite-plugin-vuetify'
+import Aura from '@primeuix/themes/aura';
 
 export default defineNuxtConfig({
-    build: {
-        transpile: ['vuetify'],
-    },
     compatibilityDate: '2025-07-15',
     devtools: {enabled: true},
     modules: [
-        (_options, nuxt) => {
-            nuxt.hooks.hook('vite:extendConfig', (config) => {
-                // @ts-expect-error
-                config.plugins.push(vuetify({autoImport: true}))
-            })
-        },
+        '@primevue/nuxt-module',
         '@nuxt/icon',
         '@pinia/nuxt',
         'pinia-plugin-persistedstate/nuxt',
-        '@nuxtjs/tailwindcss',
         '@nuxtjs/i18n',
+        '@nuxtjs/tailwindcss'
+
     ],
-    vite: {
-        vue: {
-            template: {
-                transformAssetUrls,
-            },
-        },
+    primevue: {
+        options: {
+            theme: {
+                preset: Aura,
+                darkModeSelector: 'system',
+                cssLayer: false
+            }
+        }
     },
+    css: [
+        '~/assets/css/main.css',
+        '~/assets/css/theme.css',
+        'primeicons/primeicons.css'
+    ],
+    // postcss: {
+    //     plugins: {
+    //         tailwindcss: {},
+    //         autoprefixer: {},
+    //     }
+    // },
     i18n: {
         locales: [
             {code: 'en', language: 'en-US', file: 'en.json'},
@@ -35,5 +41,4 @@ export default defineNuxtConfig({
         strategy: 'prefix',
         defaultLocale: "en"
     },
-    css: ['~/assets/css/tailwind.css']
 })

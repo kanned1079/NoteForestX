@@ -3,7 +3,7 @@
 </script>
 
 <template>
-a
+  about
 </template>
 
 <style scoped>
