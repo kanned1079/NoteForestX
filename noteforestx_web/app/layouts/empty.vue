@@ -2,6 +2,7 @@
 import useThemeStore from "~/store/themeStore";
 import CommonHeaderLeft from "~/components/CommonHeaderLeft.vue";
 import CommonHeaderRight from "~/components/CommonHeaderRight.vue";
+import CommonAside from "~/components/CommonAside.vue";
 const themeStore = useThemeStore()
 const { t } = useI18n()
 </script>
@@ -27,7 +28,7 @@ const { t } = useI18n()
           v-show="themeStore.isMenuDisplay"
           class="w-72 bg-white dark:bg-gray-800 shadow-md p-4 fixed inset-y-0 left-0 z-40 md:static md:block"
       >
-        aside
+        <CommonAside />
       </aside>
 
       <!-- 主内容区 -->

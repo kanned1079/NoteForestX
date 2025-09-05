@@ -35,6 +35,7 @@ const colorSchemeClick = () => {
 }
 
 const langClick = (langCode: LangCode) => {
+  themeStore.showMessage(`setlang ${langCode}`, "info")
   setLocale(langCode)
   themeStore.lang = langCode
 }

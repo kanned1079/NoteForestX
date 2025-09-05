@@ -21,7 +21,7 @@ const useThemeStore = defineStore("themeStore", () => {
         messageBody.value.text = text
         messageBody.value.type = type
         messageBody.value.show = true
-        messageBody.value.timeout = timeout | 1600
+        messageBody.value.timeout = timeout ? timeout : 1600
         setTimeout(() => messageBody.value.show = false, messageBody.value.timeout)
     }
 
