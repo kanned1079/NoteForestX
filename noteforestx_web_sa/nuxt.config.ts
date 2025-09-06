@@ -29,7 +29,7 @@ export default defineNuxtConfig({
     },
     i18n: {
         locales: [
-            {code: 'en', language: 'en-US', file: 'en.json'},
+            {code: 'us', language: 'en-US', file: 'us.json'},
             {code: 'cn', language: 'zh-CN', file: 'cn.json'}
         ],
         strategy: 'prefix',
