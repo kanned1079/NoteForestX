@@ -14,22 +14,51 @@ func (this *RouterInstance) RegisterAdminRoutes(v1 *gin.RouterGroup) {
 		Rdb: dao.ExistingDbDaoInst.RdbDao,
 	}
 
-	adminRouter.GET("/document", adminService.GetDocumentList)
-	adminRouter.GET("document/:id", adminService.GetDocumentById)
-	adminRouter.PUT("document/:id", adminService.UpdateDocumentById)
-	adminRouter.POST("document", adminService.AddNewDocument)
-	adminRouter.DELETE("document/:id", adminService.RemoveDocumentById)
+	//adminRouter.GET("/document", adminService.GetDocumentList)
+	//adminRouter.GET("document/:id", adminService.GetDocumentById)
+	//adminRouter.PUT("document/:id", adminService.UpdateDocumentById)
+	//adminRouter.POST("document", adminService.AddNewDocument)
+	//adminRouter.DELETE("document/:id", adminService.RemoveDocumentById)
 
-	adminRouter.GET("/illustration", adminService.GetIllustrationList)
+	//adminRouter.GET("/illustration", adminService.GetIllustrationList)
 	adminRouter.GET("illustration/:id", adminService.GetIllustrationById)
 	adminRouter.PUT("illustration/:id", adminService.UpdateIllustrationById)
 	adminRouter.POST("illustration", adminService.AddNewIllustration)
 	adminRouter.DELETE("illustration/:id", adminService.RemoveIllustrationById)
+
+	/*
+		{
+		            "id": "190d874d-2744-4cef-ae68-2dbf1628e7e2",
+		            "name": "オリジナル10000users入り",
+		        },
+		        {
+		            "id": "e5b09780-771f-4112-bec9-528255091da9",
+		            "name": "夏服",
+		        },
+		        {
+		            "id": "c149c73e-771a-443e-9f70-ea6045cc07a6",
+		            "name": "カメラ女子",
+		        },
+		        {
+		            "id": "57d70b5a-83bd-46b0-b913-9bfd642e46ce",
+		            "name": "花と女の子",
+		        },
+		        {
+		            "id": "cc9f849c-4170-4be1-9518-beb4492613a0",
+		            "name": "女の子",
+		        }
+	*/
 
 	adminRouter.GET("/illustration_tag", adminService.GetIllustrationTagList)
 	adminRouter.GET("illustration_tag/:id", adminService.GetIllustrationTagById)
 	adminRouter.PUT("illustration_tag/:id", adminService.UpdateIllustrationTagById)
 	adminRouter.POST("illustration_tag", adminService.AddNewIllustrationTag)
 	adminRouter.DELETE("illustration_tag/:id", adminService.RemoveIllustrationTagById)
+
+	// sample c76f9e88-d35a-445e-8832-cf4bca4b633d
+	adminRouter.GET("illustration_author", adminService.GetIllustrationAuthorList)
+	adminRouter.POST("illustration_author", adminService.AddNewIllustrationAuthor)
+	adminRouter.PUT("illustration_author/:id", adminService.UpdateIllustrationAuthorById)
+	adminRouter.DELETE("illustration_author/:id", adminService.RemoveIllustrationAuthorById)
 
 }

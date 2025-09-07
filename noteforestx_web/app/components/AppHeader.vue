@@ -211,7 +211,7 @@ onMounted(() => {
 <!--            <div class="flex justify-start items-center flex-row space-x-1.5 pt-1.5 pb-1.5 pl-1.5 mb-1.25">-->
 <!--              <span class="drop-shadow-sm" :class="`fi fi-${item.code} rounded-sm`"></span>-->
 <!--              <span class="text-sm">{{ item.label }}</span>-->
-<!--            </div>-->
+<!--            </div>--
 <!--            <div>-->
 <!--              <i v-if="item.code==='hk'" class="pi pi-check font-bold text-xs text-cyan-800 mr-3"></i>-->
 <!--            </div>-->

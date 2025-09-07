@@ -3,12 +3,12 @@ package admin
 import (
 	"bytes"
 	"context"
-	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/disintegration/imaging"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"gorm.io/datatypes"
+	"gorm.io/gorm"
 	"image"
 	"io"
 	"mime/multipart"
@@ -70,6 +70,47 @@ func (this *AdminService) isIllustrationExisted(illustrationId string) bool {
 		return true
 	}
 	return count > 0
+}
+
+func (this *AdminService) isAuthorExisted(authorId string) bool {
+	uid, err := uuid.Parse(authorId)
+	if err != nil {
+		// 无效 UUID 视为不存在
+		return false
+	}
+	var count int64
+	err = this.Db.Model(&models.IllustrationAuthor{}).
+		Where("id = ?", uid).
+		Count(&count).Error
+	if err != nil {
+		return false
+	}
+	return count > 0
+}
+
+func (this *AdminService) isTagsExisted(tags []string) bool {
+	if len(tags) == 0 {
+		return true
+	}
+	// Convert to UUID slice
+	var uuids []uuid.UUID
+	for _, t := range tags {
+		uid, err := uuid.Parse(t)
+		if err != nil {
+			return false
+		}
+		uuids = append(uuids, uid)
+	}
+
+	var count int64
+	err := this.Db.Model(&models.IllustrationTag{}).
+		Where("id IN ?", uuids).
+		Count(&count).Error
+	if err != nil {
+		return false
+	}
+
+	return count == int64(len(uuids))
 }
 
 func (this *AdminService) saveAndCompressFile(file *multipart.FileHeader) (map[string]string, error) {
@@ -158,6 +199,7 @@ func ctxSaveUploadedFile(file *multipart.FileHeader, dst string) error {
 	return nil
 }
 
+// AddNewIllustration POST:admin/illustration
 func (this *AdminService) AddNewIllustration(ctx *gin.Context) {
 	// 1. 绑定表单数据到 DTO
 	var dto dto.AddNewIllustrationRequestDto
@@ -184,48 +226,186 @@ func (this *AdminService) AddNewIllustration(ctx *gin.Context) {
 		return
 	}
 
-	// 4. 保存文件
+	// 4. 校验作者是否存在
+	if !this.isAuthorExisted(dto.AuthorId) {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "author does not exist"})
+		return
+	}
+
+	// 5. 校验 tags 是否存在
+	if !this.isTagsExisted(dto.TagsId) {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "one or more tags do not exist"})
+		return
+	}
+
+	// 6. 保存文件并压缩
 	_, err = this.saveAndCompressFile(file)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	// 5. 转换 tags 为 JSON
-	tagsJSON, err := json.Marshal(dto.TagsId)
-	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "failed to encode tags"})
-		return
-	}
-
-	// 6. 插入数据库
+	// 7. 构建 Illustration 实体
+	authorUUID, _ := uuid.Parse(dto.AuthorId)
 	illustration := models.Illustration{
-		Id:            uuid.New(),
-		PixivId:       pixivId,
-		TagsId:        datatypes.JSON(tagsJSON),
-		FilePath:      file.Filename,
-		Name:          dto.Name,
-		Author:        dto.Author,
-		PixivAuthorId: dto.PixivAuthorId,
-		PixivLink:     dto.PixivLink,
+		Id:      uuid.New(),
+		PixivId: pixivId,
+		//FilePath: paths["original"],
+		FilePath: file.Filename, // 直接保存文件名即可 因为有图片压缩就不需要有前面的清晰度前缀
+		Name:     dto.Name,
+		AuthorId: authorUUID,
+		Link:     dto.Link,
 	}
 
+	// 8. 查询标签并绑定
+	if len(dto.TagsId) > 0 {
+		var tags []models.IllustrationTag
+		var uuids []uuid.UUID
+		for _, t := range dto.TagsId {
+			if uid, err := uuid.Parse(t); err == nil {
+				uuids = append(uuids, uid)
+			}
+		}
+		if len(uuids) > 0 {
+			if err := this.Db.Where("id IN ?", uuids).Find(&tags).Error; err != nil {
+				ctx.JSON(http.StatusInternalServerError, gin.H{"error": "failed to query tags"})
+				return
+			}
+			illustration.Tags = tags
+		}
+	}
+
+	// 9. 保存数据库
 	if err := this.Db.Create(&illustration).Error; err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "failed to save illustration"})
 		return
 	}
 
-	// 7. 返回成功
+	// 10. 返回成功
 	ctx.JSON(http.StatusOK, gin.H{
 		"message": "illustration uploaded successfully",
 		"data":    illustration,
 	})
 }
 
+// UpdateIllustrationById PUT:admin/illustration/:id
 func (this *AdminService) UpdateIllustrationById(ctx *gin.Context) {
+	// 1. 获取插画ID
+	uid, err := this.utils.GetAndParseParamUuid("id", ctx)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid id"})
+		return
+	}
 
+	// 2. 绑定请求体
+	var dto dto.UpdateIllustrationByIdRequestDto
+	if err := ctx.ShouldBind(&dto); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// 3. 开启事务
+	tx := this.Db.Begin()
+	if tx.Error != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "failed to start transaction"})
+		return
+	}
+
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+			ctx.JSON(http.StatusInternalServerError, gin.H{"message": "panic occurred"})
+		}
+	}()
+
+	// 4. 查询现有插画
+	var illustration models.Illustration
+	if err := tx.Preload("Tags").First(&illustration, "id = ?", uid).Error; err != nil {
+		tx.Rollback()
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			ctx.JSON(http.StatusNotFound, gin.H{"message": "illustration not found"})
+		} else {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		}
+		return
+	}
+
+	// 5. 校验作者是否存在
+	if !this.isAuthorExisted(dto.AuthorId) {
+		tx.Rollback()
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "author does not exist"})
+		return
+	}
+
+	// 6. 校验标签是否存在
+	if !this.isTagsExisted(dto.TagsId) {
+		tx.Rollback()
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "one or more tags do not exist"})
+		return
+	}
+
+	// 7. 更新基本字段
+	authorUUID, _ := uuid.Parse(dto.AuthorId)
+	updateData := map[string]interface{}{
+		"name":      dto.Name,
+		"author_id": authorUUID,
+		"link":      dto.Link,
+	}
+
+	if err := tx.Model(&illustration).Updates(updateData).Error; err != nil {
+		tx.Rollback()
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "failed to update illustration"})
+		return
+	}
+
+	// 8. 更新标签关系
+	if dto.TagsId != nil {
+		// 查询标签
+		var tags []models.IllustrationTag
+		var uuids []uuid.UUID
+		for _, t := range dto.TagsId {
+			if uid, err := uuid.Parse(t); err == nil {
+				uuids = append(uuids, uid)
+			}
+		}
+		if len(uuids) > 0 {
+			if err := tx.Where("id IN ?", uuids).Find(&tags).Error; err != nil {
+				tx.Rollback()
+				ctx.JSON(http.StatusInternalServerError, gin.H{"message": "failed to query tags"})
+				return
+			}
+		}
+
+		// 替换标签关系
+		if err := tx.Model(&illustration).Association("Tags").Replace(tags); err != nil {
+			tx.Rollback()
+			ctx.JSON(http.StatusInternalServerError, gin.H{"message": "failed to update tags"})
+			return
+		}
+	}
+
+	// 9. 提交事务
+	if err := tx.Commit().Error; err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "failed to commit transaction"})
+		return
+	}
+
+	// 10. 返回结果
+	ctx.JSON(http.StatusOK, gin.H{
+		"message":      "illustration updated successfully",
+		"illustration": illustration,
+	})
 }
 
+/*
+	type GetIllustrationListRequestDto struct {
+		Page          int    `form:"page" json:"page"`
+		Size          int    `form:"size" json:"size"`
+		SearchAs      string `form:"search_as" json:"search_as"`           // "author"作者 | "tag"标签名 | "name"插画名 默认使用tag
+		SearchContent string `form:"search_content" json:"search_content"` // 搜寻的内容 留空全部
+		Sort          string `form:"sort" json:"sort"`                     // "ASC" | "DESC" 默认按照created_at降序
+	}
+*/
 func (this *AdminService) GetIllustrationList(ctx *gin.Context) {
 
 }

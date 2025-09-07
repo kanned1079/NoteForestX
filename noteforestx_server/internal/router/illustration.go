@@ -7,12 +7,13 @@ import (
 )
 
 func (this *RouterInstance) RegisterIllustrationRoutes(v1 *gin.RouterGroup) {
-	IllustrationRouter := v1.Group("/illustration")
+	illustrationRouter := v1.Group("/illustration")
 	illustrationService := &illustration.IllustrationService{
 		Db:  dao.ExistingDbDaoInst.DbDao,
 		Rdb: dao.ExistingDbDaoInst.RdbDao,
 	}
 
-	IllustrationRouter.GET("/file/:file_name", illustrationService.FetchIllustration)
+	illustrationRouter.GET("/", illustrationService.GetIllustrationList)
+	illustrationRouter.GET("/file/:file_name", illustrationService.FetchIllustrationByFilename)
 
 }

@@ -23,6 +23,18 @@ func (this *AdminService) isIllustrationTagNameExists(name string) (bool, error)
 	return count > 0, nil
 }
 
+func (this *AdminService) isIllustrationTagUsed(tagId uuid.UUID) (bool, error) {
+	var count int64
+	err := this.Db.Model(&models.IllustrationTagMapping{}).
+		Where("tag_id = ?", tagId).
+		Count(&count).Error
+	if err != nil {
+		// 查询错误也返回 true，防止误删除
+		return true, err
+	}
+	return count > 0, nil
+}
+
 // AddNewIllustrationTag response a tag data
 func (this *AdminService) AddNewIllustrationTag(ctx *gin.Context) {
 	var req dto.AddNewIllustrationTagRequestDto
@@ -180,6 +192,16 @@ func (this *AdminService) RemoveIllustrationTagById(ctx *gin.Context) {
 	uid, err := uuid.Parse(id)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid id"})
+		return
+	}
+
+	used, err := this.isIllustrationTagUsed(uid)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		return
+	}
+	if used {
+		ctx.JSON(http.StatusConflict, gin.H{"message": "this tag is in use by one or more illustrations"})
 		return
 	}
 

@@ -79,7 +79,7 @@ const illustrationTopMenu = [
         <IllustrationItem
             name="Sample title"
             :author="`author 1`"
-            :img_url="`https://ikanned.com:2444/d/upload/NXC/134529242_p0.png`"
+            :img_url="`http://localhost:8081/api/v1/illustration/file/133376054_p0.png?size=small`"
             v-for="n in 12" :key="n" ></IllustrationItem>
       </div>
     </div>
