@@ -1,0 +1,19 @@
+{
+  "layout": {
+    "homePage": "Home Page",
+    "knowledgeLib": "Knowledge Library",
+    "illustrationLib": "Illustration Collection",
+    "aboutMe": "About Me",
+    "myAccount": "My Account",
+    "logout": "Logout",
+    "statistic": "Statistical Data",
+    "knowledgeMgr": "Article Management",
+    "illustrationMgr": "Illustration Management",
+    "sponsor": "Sponsor"
+  },
+  "appMenu": {
+    "general": "General",
+    "profile": "User Portal",
+    "admin": "Admin Portal"
+  }
+}

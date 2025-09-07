@@ -1,13 +1,14 @@
 import {defineStore} from "pinia";
+import {ref} from "vue"
 import type {User} from "~/types/user";
 import {useI18n} from "vue-i18n";
 import router from "#app/plugins/router";
 
 const useUserStore = defineStore('userStore', () => {
-    const isAuthed = ref<boolean>(false)
+    const isAuthed = ref<boolean>(true)
     const user = ref<User>({
-        id: '',
-        email: '',
+        id: '10',
+        email: 'kanna@ikanned.com',
         username: null,
         role: 'USER'
     })
@@ -19,6 +20,7 @@ const useUserStore = defineStore('userStore', () => {
             id: '',
             email: '',
             username: '',
+            role: "USER"
         } as User)
         const token = useCookie('token')
         token.value = null // 或 ''
@@ -30,11 +32,14 @@ const useUserStore = defineStore('userStore', () => {
         await useRouter().replace({path: '/'})
     }
 
+    const languageInUsing = ref<string>('')
+
     return {
         user,
         isAuthed,
         clearUserData,
         logout,
+        languageInUsing
     }
 }, {
     persist: true

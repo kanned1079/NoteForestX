@@ -1,0 +1,24 @@
+{
+  "layout": {
+    "homePage": "首页",
+    "knowledgeLib": "知识库",
+    "illustrationLib": "插画收集",
+    "aboutMe": "关于我",
+    "myAccount": "我的账户",
+    "logout": "登出",
+    "statistic": "统计数据",
+    "knowledgeMgr": "文章管理",
+    "illustrationMgr": "插画管理",
+    "sponsor": "赞助",
+    "changLang": "修改语言"
+  },
+  "appMenu": {
+    "general": "一般",
+    "profile": "用户门户",
+    "admin": "管理门户",
+    "lang": "语言",
+    "userRole": "用户",
+    "adminRole": "管理员",
+    "noLoginRole": "点击以登录"
+  }
+}
