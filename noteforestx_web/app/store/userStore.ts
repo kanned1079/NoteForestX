@@ -5,10 +5,10 @@ import {useI18n} from "vue-i18n";
 import router from "#app/plugins/router";
 
 const useUserStore = defineStore('userStore', () => {
-    const isAuthed = ref<boolean>(true)
+    const isAuthed = ref<boolean>(false)
     const user = ref<User>({
-        id: '10',
-        email: 'kanna@ikanned.com',
+        id: '',
+        email: '',
         username: null,
         role: 'USER'
     })

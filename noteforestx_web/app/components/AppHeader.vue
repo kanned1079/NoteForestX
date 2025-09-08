@@ -95,7 +95,8 @@ const buildMenu = () => {
         {
           label: 'layout.logout',
           icon: 'pi pi-sign-out',
-          shortcut: '⌥+Q'
+          shortcut: '⌥+Q',
+          command: () => userStore.logout()
         }
       ]
     })

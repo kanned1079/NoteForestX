@@ -1,17 +1,32 @@
 package middlewares
 
 import (
-	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"time"
 )
 
+//func AllowRequestTypeCors() gin.HandlerFunc {
+//	return cors.New(cors.Config{
+//		AllowOrigins:     []string{"*"},
+//		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
+//		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+//		AllowCredentials: true, // 注意必须为 false
+//		MaxAge:           12 * time.Hour,
+//	})
+//}
+
 func AllowRequestTypeCors() gin.HandlerFunc {
-	return cors.New(cors.Config{
-		AllowOrigins:     []string{"*"},
-		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
-		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
-		AllowCredentials: false, // 注意必须为 false
-		MaxAge:           12 * time.Hour,
-	})
+	return func(c *gin.Context) {
+		origin := c.GetHeader("Origin")
+		c.Header("Access-Control-Allow-Origin", origin) // 动态允许请求来源
+		c.Header("Access-Control-Allow-Credentials", "true")
+		c.Header("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE,OPTIONS")
+		c.Header("Access-Control-Allow-Headers", "Origin, Content-Type, Authorization")
+
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
+
+		c.Next()
+	}
 }

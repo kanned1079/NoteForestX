@@ -9,7 +9,7 @@ const props = defineProps<{
 <template>
   <div class="flex flex-col mb-5">
     <!-- 上半部分：正方形 + 背景 + 圆角 -->
-    <div class="aspect-square w-full rounded-md overflow-hidden bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+    <div class="aspect-square w-full rounded-md overflow-hidden bg-gray-100 dark:bg-[#222222] flex items-center justify-center">
       <img
           :src="img_url"
           alt="illustration"

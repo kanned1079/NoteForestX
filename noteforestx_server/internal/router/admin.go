@@ -21,7 +21,6 @@ func (this *RouterInstance) RegisterAdminRoutes(v1 *gin.RouterGroup) {
 	//adminRouter.DELETE("document/:id", adminService.RemoveDocumentById)
 
 	//adminRouter.GET("/illustration", adminService.GetIllustrationList)
-	adminRouter.GET("illustration/:id", adminService.GetIllustrationById)
 	adminRouter.PUT("illustration/:id", adminService.UpdateIllustrationById)
 	adminRouter.POST("illustration", adminService.AddNewIllustration)
 	adminRouter.DELETE("illustration/:id", adminService.RemoveIllustrationById)

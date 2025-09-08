@@ -104,4 +104,9 @@ export default defineNuxtConfig({
         strategy: 'prefix',
         defaultLocale: "zh_cn"
     },
+    runtimeConfig: {
+        public: {
+            apiBase: process.env.API_BASE_URL || "http://localhost:8081/api/v1",
+        }
+    }
 })

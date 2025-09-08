@@ -255,6 +255,7 @@ func (this *AdminService) AddNewIllustration(ctx *gin.Context) {
 		Name:     dto.Name,
 		AuthorId: authorUUID,
 		Link:     dto.Link,
+		Limited:  dto.Limited,
 	}
 
 	// 8. 查询标签并绑定
@@ -350,6 +351,7 @@ func (this *AdminService) UpdateIllustrationById(ctx *gin.Context) {
 		"name":      dto.Name,
 		"author_id": authorUUID,
 		"link":      dto.Link,
+		"limited":   dto.Limited,
 	}
 
 	if err := tx.Model(&illustration).Updates(updateData).Error; err != nil {
@@ -397,6 +399,134 @@ func (this *AdminService) UpdateIllustrationById(ctx *gin.Context) {
 	})
 }
 
+// 删除三种清晰度的文件
+func (this *AdminService) deleteIllustrationFiles(fileName string) error {
+	baseDir := config.ExistingAppConfig.Illustration.SaveDir
+	paths := []string{
+		filepath.Join(baseDir, "original", fileName),
+		filepath.Join(baseDir, "medium", fileName),
+		filepath.Join(baseDir, "small", fileName),
+	}
+
+	for _, p := range paths {
+		if err := os.Remove(p); err != nil {
+			// 如果文件不存在，不算错误
+			if !os.IsNotExist(err) {
+				return fmt.Errorf("failed to delete file %s: %w", p, err)
+			}
+		}
+	}
+	return nil
+}
+
+// 移动原图到 trash，并删除 medium/small
+func (this *AdminService) moveOriginalToTrash(fileName string) error {
+	baseDir := config.ExistingAppConfig.Illustration.SaveDir
+	srcPath := filepath.Join(baseDir, "original", fileName)
+	trashDir := filepath.Join(baseDir, "trash")
+	dstPath := filepath.Join(trashDir, fileName)
+
+	// 确保 trash 目录存在
+	if err := os.MkdirAll(trashDir, 0755); err != nil {
+		return fmt.Errorf("failed to create trash dir: %w", err)
+	}
+
+	// 移动原图
+	if err := os.Rename(srcPath, dstPath); err != nil {
+		if !os.IsNotExist(err) {
+			return fmt.Errorf("failed to move original file to trash: %w", err)
+		}
+	}
+
+	// 删除 medium 和 small
+	for _, sub := range []string{"medium", "small"} {
+		p := filepath.Join(baseDir, sub, fileName)
+		if err := os.Remove(p); err != nil {
+			if !os.IsNotExist(err) {
+				return fmt.Errorf("failed to delete %s file: %w", sub, err)
+			}
+		}
+	}
+
+	return nil
+}
+
+// RemoveIllustrationById DELETE:admin/illustration/:id?remove_file=false
+func (this *AdminService) RemoveIllustrationById(ctx *gin.Context) {
+	id, err := this.utils.GetAndParseParamUuid("id", ctx)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid id"})
+		return
+	}
+
+	paraData := struct {
+		RemoveFile bool `form:"remove_file" json:"remove_file"` // 默认为 false，true 时删除所有文件
+	}{}
+	if err := ctx.ShouldBindQuery(&paraData); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid param"})
+		return
+	}
+
+	// 查询插画
+	var illustration models.Illustration
+	if err := this.Db.Preload("Tags").First(&illustration, "id = ?", id).Error; err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"message": "illustration not found"})
+		return
+	}
+
+	// 启动事务
+	tx := this.Db.Begin()
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
+
+	// 先清理标签关系
+	if err := tx.Model(&illustration).Association("Tags").Clear(); err != nil {
+		tx.Rollback()
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "failed to clear tags relation"})
+		return
+	}
+
+	if paraData.RemoveFile {
+		// 删除三种清晰度的文件
+		baseDir := config.ExistingAppConfig.Illustration.SaveDir
+		paths := []string{
+			filepath.Join(baseDir, "original", illustration.FilePath),
+			filepath.Join(baseDir, "medium", illustration.FilePath),
+			filepath.Join(baseDir, "small", illustration.FilePath),
+		}
+		for _, p := range paths {
+			_ = os.Remove(p) // 忽略错误（比如文件不存在）
+		}
+	} else {
+		// 移动原图到 trash 并删除 medium/small
+		if err := this.moveOriginalToTrash(illustration.FilePath); err != nil {
+			tx.Rollback()
+			ctx.JSON(http.StatusInternalServerError, gin.H{"message": "failed to move original file to trash"})
+			return
+		}
+		baseDir := config.ExistingAppConfig.Illustration.SaveDir
+		_ = os.Remove(filepath.Join(baseDir, "medium", illustration.FilePath))
+		_ = os.Remove(filepath.Join(baseDir, "small", illustration.FilePath))
+	}
+
+	// 删除插画记录
+	if err := tx.Delete(&illustration).Error; err != nil {
+		tx.Rollback()
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "failed to delete illustration"})
+		return
+	}
+
+	if err := tx.Commit().Error; err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "failed to commit transaction"})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"message": "deleted successfully"})
+}
+
 /*
 	type GetIllustrationListRequestDto struct {
 		Page          int    `form:"page" json:"page"`
@@ -406,14 +536,11 @@ func (this *AdminService) UpdateIllustrationById(ctx *gin.Context) {
 		Sort          string `form:"sort" json:"sort"`                     // "ASC" | "DESC" 默认按照created_at降序
 	}
 */
-func (this *AdminService) GetIllustrationList(ctx *gin.Context) {
 
-}
+//func (this *AdminService) GetIllustrationList(ctx *gin.Context) {
+//
+//}
 
-func (this *AdminService) GetIllustrationById(ctx *gin.Context) {
-
-}
-
-func (this *AdminService) RemoveIllustrationById(ctx *gin.Context) {
-
-}
+//func (this *AdminService) GetIllustrationById(ctx *gin.Context) {
+//
+//}
