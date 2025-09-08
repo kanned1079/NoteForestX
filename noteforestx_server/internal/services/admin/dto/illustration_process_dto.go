@@ -1,22 +1,24 @@
 package dto
 
 type AddNewIllustrationRequestDto struct {
-	Name     string   `form:"name" binding:"required" json:"name"`           // 插画名称
-	AuthorId string   `form:"author_id" binding:"required" json:"author_id"` // 作者对应的uuid
-	TagsId   []string `form:"tags_id[]" json:"tags_id"`                      // 对应的Tag的id 可以选择多个
-	Link     string   `form:"link" binding:"required" json:"link"`           // 原pixiv地址
-	Limited  bool     `form:"limited" json:"limited"`                        // 是否限制型
+	Name        string   `form:"name" binding:"required" json:"name"`           // 插画名称
+	AuthorId    string   `form:"author_id" binding:"required" json:"author_id"` // 作者对应的uuid
+	TagsId      []string `form:"tags_id[]" json:"tags_id"`                      // 对应的Tag的id 可以选择多个
+	Link        string   `form:"link" binding:"required" json:"link"`           // 原pixiv地址
+	Description string   `form:"description" json:"description"`
+	Limited     bool     `form:"limited" json:"limited"` // 是否限制型
 }
 
 type AddNewIllustrationResponseDto struct {
 }
 
 type UpdateIllustrationByIdRequestDto struct {
-	Name     string   `form:"name" binding:"required" json:"name"`           // 插画名称
-	AuthorId string   `form:"author_id" binding:"required" json:"author_id"` // 作者对应的uuid
-	TagsId   []string `form:"tags_id[]" json:"tags_id"`                      // 对应的Tag的id 可以选择多个
-	Link     string   `form:"link" binding:"required" json:"link"`           // 原pixiv地址
-	Limited  bool     `form:"limited" binding:"required" json:"limited"`
+	Name        string   `form:"name" binding:"required" json:"name"`           // 插画名称
+	AuthorId    string   `form:"author_id" binding:"required" json:"author_id"` // 作者对应的uuid
+	TagsId      []string `form:"tags_id[]" json:"tags_id"`                      // 对应的Tag的id 可以选择多个
+	Link        string   `form:"link" binding:"required" json:"link"`           // 原pixiv地址
+	Description string   `form:"description" json:"description"`
+	Limited     bool     `form:"limited" binding:"required" json:"limited"`
 }
 
 //type GetIllustrationListRequestDto struct {

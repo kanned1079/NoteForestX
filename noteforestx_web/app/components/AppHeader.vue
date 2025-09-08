@@ -5,11 +5,14 @@ import {useI18n} from "vue-i18n";
 import {Icon} from '@vicons/utils'
 import {useRouter} from 'vue-router';
 import {TicketSharp} from "@vicons/ionicons5"
-import useUserStore from "@/store/userStore";
+import useUserStore from "../store/userStore";
+import useThemeStore from "../store/themeStore";
+
 
 const {t, setLocale} = useI18n()
 const router = useRouter();
 const userStore = useUserStore()
+const themeStore = useThemeStore()
 
 const showLoginModal = ref<boolean>(false)
 const onClickProfileButton = () => {
@@ -135,9 +138,13 @@ const getUserName = computed(() => {
       : "sample@domain.com"
 })
 
+const onSearchBtnClicked = () => themeStore.searchDialog.show = true
+
 onMounted(() => {
   console.log(userStore)
 })
+
+
 
 </script>
 
@@ -191,34 +198,37 @@ onMounted(() => {
       </Menu>
 
     </div>
-    <div class="mr-3">
-<!--      <Button size="small" variant="link" type="button" @click="" aria-haspopup="true">-->
-<!--        {{ t('layout.knowledgeLib') }}-->
-<!--      </Button>-->
-<!--      <Button size="small" variant="link" type="button" @click="" aria-haspopup="true">-->
-<!--        {{ t('layout.illustrationLib') }}-->
-<!--      </Button>-->
-<!--      <Button size="small" variant="link" type="button" @click="" aria-haspopup="true">-->
-<!--        {{ t('layout.aboutMe') }}-->
-<!--      </Button>-->
-<!--      <Button size="small" variant="link" type="button" @click="onClickSetLocale" aria-haspopup="true"-->
-<!--              aria-controls="lang_menu">-->
-<!--        <i class="pi pi-language"></i>-->
-<!--        语言切换-->
-<!--      </Button>-->
-<!--      <TieredMenu size="small" appendTo="body" ref="langMenuRef" :model="items" popup class="mt-2 w-auto">-->
-<!--        <template #item="{ item }">-->
-<!--          <div class="flex flex-row items-center justify-between">-->
-<!--            <div class="flex justify-start items-center flex-row space-x-1.5 pt-1.5 pb-1.5 pl-1.5 mb-1.25">-->
-<!--              <span class="drop-shadow-sm" :class="`fi fi-${item.code} rounded-sm`"></span>-->
-<!--              <span class="text-sm">{{ item.label }}</span>-->
-<!--            </div>--
-<!--            <div>-->
-<!--              <i v-if="item.code==='hk'" class="pi pi-check font-bold text-xs text-cyan-800 mr-3"></i>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </template>-->
-<!--      </TieredMenu>-->
+
+    <div class="mr-3 flex flex-row gap-3" v-if="themeStore.showHeaderSearchBtn">
+      <Button
+          class="h-8 px-3 flex items-center gap-2"
+          icon="pi pi-search"
+          severity="primary"
+          outlined
+          size="small"
+          :label="`Search`"
+          @click="onSearchBtnClicked"
+      >
+        <template #default>
+    <span class="flex items-center gap-1">
+      <i class="pi pi-search text-xs"></i>
+      <span>搜寻</span>
+      <span
+          class="px-2 py-0.5 text-xs font-light "
+      >
+        ⌘+K
+      </span>
+
+    </span>
+        </template>
+      </Button>
+      <Button
+          class="h-8 px-3"
+          icon="pi pi-refresh"
+          severity="secondary"
+          size="small"
+          outlined
+      />
     </div>
   </div>
 

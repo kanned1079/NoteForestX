@@ -251,11 +251,12 @@ func (this *AdminService) AddNewIllustration(ctx *gin.Context) {
 		Id:      uuid.New(),
 		PixivId: pixivId,
 		//FilePath: paths["original"],
-		FilePath: file.Filename, // 直接保存文件名即可 因为有图片压缩就不需要有前面的清晰度前缀
-		Name:     dto.Name,
-		AuthorId: authorUUID,
-		Link:     dto.Link,
-		Limited:  dto.Limited,
+		FilePath:    file.Filename, // 直接保存文件名即可 因为有图片压缩就不需要有前面的清晰度前缀
+		Name:        dto.Name,
+		AuthorId:    authorUUID,
+		Link:        dto.Link,
+		Description: dto.Description,
+		Limited:     dto.Limited,
 	}
 
 	// 8. 查询标签并绑定
@@ -348,10 +349,11 @@ func (this *AdminService) UpdateIllustrationById(ctx *gin.Context) {
 	// 7. 更新基本字段
 	authorUUID, _ := uuid.Parse(dto.AuthorId)
 	updateData := map[string]interface{}{
-		"name":      dto.Name,
-		"author_id": authorUUID,
-		"link":      dto.Link,
-		"limited":   dto.Limited,
+		"name":        dto.Name,
+		"author_id":   authorUUID,
+		"link":        dto.Link,
+		"limited":     dto.Limited,
+		"description": dto.Description,
 	}
 
 	if err := tx.Model(&illustration).Updates(updateData).Error; err != nil {

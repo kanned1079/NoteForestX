@@ -27,7 +27,7 @@ type GetIllustrationListRequestDto struct {
 func (this *IllustrationService) GetIllustrationList(ctx *gin.Context) {
 	var paraReq dto.GetIllustrationListRequestDto
 	if err := ctx.ShouldBindQuery(&paraReq); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"message": "参数错误: " + err.Error()})
+		ctx.JSON(http.StatusBadRequest, gin.H{"message": "paras err: " + err.Error()})
 		return
 	}
 
@@ -49,6 +49,11 @@ func (this *IllustrationService) GetIllustrationList(ctx *gin.Context) {
 	// 给主表加别名 "i"
 	db := this.Db.Model(&models.Illustration{}).Table(models.Illustration{}.TableName() + " AS i").
 		Preload("Author").Preload("Tags")
+
+	// 如果 ShowLimited 为 false，则排除 limited = true 的记录
+	if !paraReq.ShowLimited {
+		db = db.Where("i.limited = ?", false)
+	}
 
 	// 搜索处理
 	if paraReq.SearchContent != "" {

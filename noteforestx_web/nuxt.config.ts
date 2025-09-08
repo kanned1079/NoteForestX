@@ -1,4 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import { fileURLToPath, URL } from 'node:url'
 import Aura from '@primeuix/themes/aura';
 // import {MyPreset} from "./app/plugins/MyPresetTheme";
 import { definePreset } from '@primeuix/themes'
@@ -103,6 +104,12 @@ export default defineNuxtConfig({
         ],
         strategy: 'prefix',
         defaultLocale: "zh_cn"
+    },
+    resolve: {
+        alias: {
+            '~': fileURLToPath(new URL('./app', import.meta.url)), // ~ 指向 src
+            // '@': fileURLToPath(new URL('./src', import.meta.url)), // @ 也可以一起
+        }
     },
     runtimeConfig: {
         public: {

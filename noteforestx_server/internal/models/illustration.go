@@ -9,18 +9,19 @@ import (
 
 // 插画表
 type Illustration struct {
-	Id        uuid.UUID          `json:"id" gorm:"type:char(36);primaryKey"`
-	PixivId   string             `json:"pixiv_id" gorm:"size:100"` // PixivId 全局唯一
-	FilePath  string             `json:"file_path"`
-	Name      string             `json:"name"`      // 插画名
-	AuthorId  uuid.UUID          `json:"author_id"` // 外键
-	Author    IllustrationAuthor `json:"author" gorm:"foreignKey:AuthorId;references:Id"`
-	Link      string             `json:"link"` // 插画原链接
-	Tags      []IllustrationTag  `json:"tags" gorm:"many2many:illustration_tag_mapping;"`
-	Limited   bool               `json:"limited"`
-	CreatedAt *time.Time         `json:"created_at"`
-	UpdatedAt *time.Time         `json:"updated_at"`
-	DeletedAt gorm.DeletedAt     `json:"deleted_at"`
+	Id          uuid.UUID          `json:"id" gorm:"type:char(36);primaryKey"`
+	PixivId     string             `json:"pixiv_id" gorm:"size:100"` // PixivId 全局唯一
+	FilePath    string             `json:"file_path"`
+	Name        string             `json:"name"`      // 插画名
+	AuthorId    uuid.UUID          `json:"author_id"` // 外键
+	Author      IllustrationAuthor `json:"author" gorm:"foreignKey:AuthorId;references:Id"`
+	Link        string             `json:"link"` // 插画原链接
+	Description string             `json:"description" gorm:"type:text"`
+	Tags        []IllustrationTag  `json:"tags" gorm:"many2many:illustration_tag_mapping;"`
+	Limited     bool               `json:"limited"`
+	CreatedAt   *time.Time         `json:"created_at"`
+	UpdatedAt   *time.Time         `json:"updated_at"`
+	DeletedAt   gorm.DeletedAt     `json:"deleted_at"`
 }
 
 // 插画作者表

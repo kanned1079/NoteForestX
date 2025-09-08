@@ -20,5 +20,8 @@
     "userRole": "用户",
     "adminRole": "管理员",
     "noLoginRole": "点击以登录"
+  },
+  "universal": {
+    "showSize": "显示数量"
   }
 }
