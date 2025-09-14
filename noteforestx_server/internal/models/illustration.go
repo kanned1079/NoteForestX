@@ -17,7 +17,7 @@ type Illustration struct {
 	Author      IllustrationAuthor `json:"author" gorm:"foreignKey:AuthorId;references:Id"`
 	Link        string             `json:"link"` // 插画原链接
 	Description string             `json:"description" gorm:"type:text"`
-	Tags        []IllustrationTag  `json:"tags" gorm:"many2many:illustration_tag_mapping;"`
+	Tags        []IllustrationTag  `json:"tags" gorm:"many2many:x_illustration_tag_mapping;"`
 	Limited     bool               `json:"limited"`
 	CreatedAt   *time.Time         `json:"created_at"`
 	UpdatedAt   *time.Time         `json:"updated_at"`

@@ -27,9 +27,9 @@ func (this *DaoInstance) runMigrate() {
 		&models.User{},
 		&models.Document{},
 		&models.IllustrationTag{},
-		&models.IllustrationTagMapping{},
 		&models.IllustrationAuthor{},
 		&models.Illustration{},
+		&models.IllustrationTagMapping{}, // 放在最后
 	); err != nil {
 		this.logger.PrintError("auto migrate tables failed: ", err)
 		os.Exit(1)
