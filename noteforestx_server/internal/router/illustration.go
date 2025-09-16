@@ -13,9 +13,7 @@ func (this *RouterInstance) RegisterIllustrationRoutes(v1 *gin.RouterGroup) {
 		Rdb: dao.ExistingDbDaoInst.RdbDao,
 	}
 
-	illustrationRouter.GET("/", illustrationService.GetIllustrationList)
-	illustrationRouter.GET("/:id", illustrationService.FetchIllustrationByIllId)
+	illustrationRouter.GET("", illustrationService.GetIllustrationList)
 	illustrationRouter.GET("/file/:file_name", illustrationService.FetchIllustrationByFilename)
 
-	illustrationRouter.GET("/author/:author_id", illustrationService.FetchIllustrationsByAuthorId)
 }
