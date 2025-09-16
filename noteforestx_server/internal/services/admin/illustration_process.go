@@ -113,45 +113,52 @@ func (this *AdminService) isTagsExisted(tags []string) bool {
 	return count == int64(len(uuids))
 }
 
-func (this *AdminService) saveAndCompressFile(file *multipart.FileHeader) (map[string]string, error) {
+// 支持自定義新文件名
+func (this *AdminService) saveAndCompressFile(file *multipart.FileHeader, newFileName string) (fileName string, w, h int, err error) {
 	// 保存的路径
 	baseDir := config.ExistingAppConfig.Illustration.SaveDir
 	paths := map[string]string{
-		"original": filepath.Join(baseDir, "original", file.Filename),
-		"medium":   filepath.Join(baseDir, "medium", file.Filename),
-		"small":    filepath.Join(baseDir, "small", file.Filename),
+		"original": filepath.Join(baseDir, "original", newFileName),
+		"medium":   filepath.Join(baseDir, "medium", newFileName),
+		"small":    filepath.Join(baseDir, "small", newFileName),
 	}
 
 	// 创建目录
 	for _, p := range paths {
-		if err := os.MkdirAll(filepath.Dir(p), 0755); err != nil {
-			return nil, fmt.Errorf("failed to create dir: %w", err)
+		if err = os.MkdirAll(filepath.Dir(p), 0755); err != nil {
+			err = fmt.Errorf("failed to create dir: %w", err)
+			return
 		}
 	}
 
-	// 保存原图（直接保存，不解码）
-	if err := ctxSaveUploadedFile(file, paths["original"]); err != nil {
-		return nil, err
+	// 保存原图
+	if err = ctxSaveUploadedFile(file, paths["original"]); err != nil {
+		return
 	}
 
-	// 打开原图进行压缩
-	srcFile, err := file.Open()
-	if err != nil {
-		os.Remove(paths["original"])
-		return nil, fmt.Errorf("failed to open uploaded file: %w", err)
+	// 打开原图进行解码
+	srcFile, openErr := file.Open()
+	if openErr != nil {
+		_ = os.Remove(paths["original"])
+		err = fmt.Errorf("failed to open uploaded file: %w", openErr)
+		return
 	}
 	defer srcFile.Close()
 
-	img, _, err := image.Decode(srcFile)
-	if err != nil {
-		os.Remove(paths["original"])
-		return nil, fmt.Errorf("failed to decode image: %w", err)
+	img, _, decodeErr := image.Decode(srcFile)
+	if decodeErr != nil {
+		_ = os.Remove(paths["original"])
+		err = fmt.Errorf("failed to decode image: %w", decodeErr)
+		return
 	}
+
+	// 保存原始宽高
+	w = img.Bounds().Dx()
+	h = img.Bounds().Dy()
 
 	// 事务式保存压缩图
 	savedFiles := []string{paths["original"]}
 	defer func() {
-		// 如果最终出错，删除已保存文件
 		if err != nil {
 			for _, f := range savedFiles {
 				_ = os.Remove(f)
@@ -159,26 +166,28 @@ func (this *AdminService) saveAndCompressFile(file *multipart.FileHeader) (map[s
 		}
 	}()
 
-	// save medium
+	// 保存 medium
 	medium := imaging.Resize(img, config.ExistingAppConfig.Illustration.CompressedMediumPixel, 0, imaging.Lanczos)
-	if err := imaging.Save(medium, paths["medium"], imaging.JPEGQuality(85)); err != nil {
-		return nil, fmt.Errorf("failed to save medium: %w", err)
+	if saveErr := imaging.Save(medium, paths["medium"], imaging.JPEGQuality(85)); saveErr != nil {
+		err = fmt.Errorf("failed to save medium: %w", saveErr)
+		return
 	}
 	savedFiles = append(savedFiles, paths["medium"])
 
-	// save small
+	// 保存 small
 	small := imaging.Resize(img, config.ExistingAppConfig.Illustration.CompressedSmallPixel, 0, imaging.Lanczos)
-	if err := imaging.Save(small, paths["small"], imaging.JPEGQuality(80)); err != nil {
-		return nil, fmt.Errorf("failed to save small: %w", err)
+	if saveErr := imaging.Save(small, paths["small"], imaging.JPEGQuality(80)); saveErr != nil {
+		err = fmt.Errorf("failed to save small: %w", saveErr)
+		return
 	}
 	savedFiles = append(savedFiles, paths["small"])
 
-	paths["fileName"] = file.Filename
-
-	return paths, nil
+	// 返回文件名（這裏用 newFileName 而不是原始的 file.Filename）
+	fileName = newFileName
+	return
 }
 
-// 兼容 ctx.SaveUploadedFile 的逻辑，不依赖 ctx
+// ctx.SaveUploadedFile 的簡化版，不依賴 ctx
 func ctxSaveUploadedFile(file *multipart.FileHeader, dst string) error {
 	src, err := file.Open()
 	if err != nil {
@@ -192,14 +201,113 @@ func ctxSaveUploadedFile(file *multipart.FileHeader, dst string) error {
 	}
 	defer out.Close()
 
-	_, err = io.Copy(out, src)
-	if err != nil {
+	if _, err = io.Copy(out, src); err != nil {
 		return fmt.Errorf("failed to copy file: %w", err)
 	}
 	return nil
 }
 
 // AddNewIllustration POST:admin/illustration
+//func (this *AdminService) AddNewIllustration(ctx *gin.Context) {
+//	// 1. 绑定表单数据到 DTO
+//	var dto dto.AddNewIllustrationRequestDto
+//	if err := ctx.ShouldBind(&dto); err != nil {
+//		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+//		return
+//	}
+//
+//	// 2. 获取上传的文件
+//	file, err := ctx.FormFile("file")
+//	if err != nil {
+//		ctx.JSON(http.StatusBadRequest, gin.H{"error": "file is required"})
+//		return
+//	}
+//
+//	// 3. 生成 PixivId (用文件名去掉后缀)
+//	ext := filepath.Ext(file.Filename)
+//	pixivId := strings.TrimSuffix(file.Filename, ext)
+//
+//	if this.isIllustrationExisted(pixivId) {
+//		ctx.JSON(http.StatusConflict, gin.H{
+//			"message": "this illustration has existed. pixiv_id: " + pixivId,
+//		})
+//		return
+//	}
+//
+//	// 4. 校验作者是否存在
+//	if !this.isAuthorExisted(dto.AuthorId) {
+//		ctx.JSON(http.StatusBadRequest, gin.H{"error": "author does not exist"})
+//		return
+//	}
+//
+//	// 5. 校验 tags 是否存在
+//	if !this.isTagsExisted(dto.TagsId) {
+//		ctx.JSON(http.StatusBadRequest, gin.H{"error": "one or more tags do not exist"})
+//		return
+//	}
+//
+//	illustrationUuid := uuid.New() // 图片文件的uuid
+//
+//	// 6. 保存文件并压缩
+//	// 补全重新设置文件的文件名 在已知文件的前面加上前面的uuid_
+//	// 比如说有这样一张插画 134997716_p0.jpg 那么这个文件的名需要变成 uuid_134997716_p0.jpg
+//	// 其中文件名中的p0就是这一张插画属于这一个插画集中的第几张 p0即表示是第一张 那么其对应在IllustrationImage表中的Order也就是0
+//	// 你还是需要修改这个接口方法获取文件的部分代码，来支持允许传多个插画文件
+//	// 134997716 也就是这个插画集的id 它是一个string 并且长度不一定 我想让它作为index作为数据库中的唯一属性 来代替Id          uuid.UUID           `json:"id" gorm:"type:char(36);primaryKey"`
+//	// 另外我看你在新的IllustrationImage表中有图片文件的宽高 那么还需要你写一个方法来获取这个宽高
+//	_, err = this.saveAndCompressFile(file) // 保存一个文件到磁盘
+//	if err != nil {
+//		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+//		return
+//	}
+//
+//	// 7. 构建 Illustration 实体
+//	// todo 你需要按照上面的描述来重新修改这个部分 这里的Id将会变为插画集的id 他是一个string
+//	authorUUID, _ := uuid.Parse(dto.AuthorId)
+//	illustration := models.Illustration{
+//		Id:      illustrationUuid,
+//		PixivId: pixivId,
+//		//FilePath: paths["original"],
+//		FilePath:    file.Filename, // 直接保存文件名即可 因为有图片压缩就不需要有前面的清晰度前缀
+//		Name:        dto.Name,
+//		AuthorId:    authorUUID,
+//		Link:        dto.Link,
+//		Description: dto.Description,
+//		Limited:     dto.Limited,
+//	}
+//
+//	// 8. 查询标签并绑定
+//	if len(dto.TagsId) > 0 {
+//		var tags []models.IllustrationTag
+//		var uuids []uuid.UUID
+//		for _, t := range dto.TagsId {
+//			if uid, err := uuid.Parse(t); err == nil {
+//				uuids = append(uuids, uid)
+//			}
+//		}
+//		if len(uuids) > 0 {
+//			if err := this.Db.Where("id IN ?", uuids).Find(&tags).Error; err != nil {
+//				ctx.JSON(http.StatusInternalServerError, gin.H{"error": "failed to query tags"})
+//				return
+//			}
+//			illustration.Tags = tags
+//		}
+//	}
+//
+//	// 9. 保存数据库
+//	if err := this.Db.Create(&illustration).Error; err != nil {
+//		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "failed to save illustration"})
+//		return
+//	}
+//
+//	// 10. 返回成功
+//	ctx.JSON(http.StatusOK, gin.H{
+//		"message": "illustration uploaded successfully",
+//		"data":    illustration,
+//	})
+//}
+
+// AddNewIllustration POST: admin/illustration
 func (this *AdminService) AddNewIllustration(ctx *gin.Context) {
 	// 1. 绑定表单数据到 DTO
 	var dto dto.AddNewIllustrationRequestDto
@@ -208,17 +316,21 @@ func (this *AdminService) AddNewIllustration(ctx *gin.Context) {
 		return
 	}
 
-	// 2. 获取上传的文件
-	file, err := ctx.FormFile("file")
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "file is required"})
+	// 2. 获取上传的多个文件
+	form, _ := ctx.MultipartForm()
+	files := form.File["files"] // 这里前端字段名用 "files" 上传多个文件
+	if len(files) == 0 {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "files are required"})
 		return
 	}
 
-	// 3. 生成 PixivId (用文件名去掉后缀)
-	ext := filepath.Ext(file.Filename)
-	pixivId := strings.TrimSuffix(file.Filename, ext)
-
+	// 3. pixivId 或插画集 ID 用作 Illustration 主键
+	// 从第一个文件名提取 pixivId
+	ext := filepath.Ext(files[0].Filename)
+	base := strings.TrimSuffix(files[0].Filename, ext)
+	// 例如 134997716_p0.jpg -> 134997716
+	pixivId := strings.Split(base, "_")[0]
+	//pixivId := dto.PixivId
 	if this.isIllustrationExisted(pixivId) {
 		ctx.JSON(http.StatusConflict, gin.H{
 			"message": "this illustration has existed. pixiv_id: " + pixivId,
@@ -238,28 +350,22 @@ func (this *AdminService) AddNewIllustration(ctx *gin.Context) {
 		return
 	}
 
-	// 6. 保存文件并压缩
-	_, err = this.saveAndCompressFile(file)
-	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-
-	// 7. 构建 Illustration 实体
 	authorUUID, _ := uuid.Parse(dto.AuthorId)
+
+	// 6. 构建 Illustration 实体
 	illustration := models.Illustration{
-		Id:      uuid.New(),
-		PixivId: pixivId,
-		//FilePath: paths["original"],
-		FilePath:    file.Filename, // 直接保存文件名即可 因为有图片压缩就不需要有前面的清晰度前缀
+		//Id:          uuid.New(), // 这里数据库还是可以用 UUID 生成，也可以替换成 pixivId 字符串
+		Id:          pixivId,
+		PixivId:     pixivId,
 		Name:        dto.Name,
 		AuthorId:    authorUUID,
 		Link:        dto.Link,
 		Description: dto.Description,
 		Limited:     dto.Limited,
+		Source:      dto.Source, // 假设 DTO 里有来源字段
 	}
 
-	// 8. 查询标签并绑定
+	// 7. 查询标签并绑定
 	if len(dto.TagsId) > 0 {
 		var tags []models.IllustrationTag
 		var uuids []uuid.UUID
@@ -277,17 +383,71 @@ func (this *AdminService) AddNewIllustration(ctx *gin.Context) {
 		}
 	}
 
-	// 9. 保存数据库
+	// 8. 保存 Illustration
 	if err := this.Db.Create(&illustration).Error; err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "failed to save illustration"})
 		return
 	}
 
-	// 10. 返回成功
+	// 9. 保存每张图片到磁盘，并生成 IllustrationImage
+	var images []models.IllustrationImage
+	for idx, file := range files {
+		// 生成新的文件名 uuid_filename
+		//fileUUID := uuid.New().String()
+		//ext := filepath.Ext(file.Filename)
+		//base := strings.TrimSuffix(file.Filename, ext)
+		//newFileName := fmt.Sprintf("%s_%s%s", fileUUID, base, ext)
+		fileUUID := uuid.New()
+		ext := filepath.Ext(file.Filename)
+		base := strings.TrimSuffix(file.Filename, ext)
+		newFileName := fmt.Sprintf("%s_%s%s", fileUUID.String(), base, ext)
+
+		// 保存并压缩文件
+		_, width, height, err := this.saveAndCompressFile(file, newFileName)
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		//images = append(images, models.IllustrationImage{
+		//	Id:             uuid.New(),
+		//	IllustrationId: illustration.Id, // ✅ 用插画集ID，不是文件名
+		//	FilePath:       filePath,
+		//	Order:          idx,
+		//	Width:          width,
+		//	Height:         height,
+		//	CreatedAt:      timePtr(time.Now()),
+		//	UpdatedAt:      timePtr(time.Now()),
+		//})
+		images = append(images, models.IllustrationImage{
+			Id:             fileUUID, // ✅ 这里直接用 fileUUID
+			IllustrationId: illustration.Id,
+			FilePath:       newFileName, // 或 filePath
+			Order:          idx,
+			Width:          width,
+			Height:         height,
+			CreatedAt:      timePtr(time.Now()),
+			UpdatedAt:      timePtr(time.Now()),
+		})
+	}
+
+	if len(images) > 0 {
+		if err := this.Db.Create(&images).Error; err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "failed to save illustration images"})
+			return
+		}
+	}
+
 	ctx.JSON(http.StatusOK, gin.H{
 		"message": "illustration uploaded successfully",
 		"data":    illustration,
+		"images":  images,
 	})
+}
+
+// 获取指针辅助函数
+func timePtr(t time.Time) *time.Time {
+	return &t
 }
 
 // UpdateIllustrationById PUT:admin/illustration/:id
@@ -454,9 +614,84 @@ func (this *AdminService) moveOriginalToTrash(fileName string) error {
 }
 
 // RemoveIllustrationById DELETE:admin/illustration/:id?remove_file=false
+//func (this *AdminService) RemoveIllustrationById(ctx *gin.Context) {
+//	id, err := this.utils.GetAndParseParamUuid("id", ctx)
+//	if err != nil {
+//		ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid id"})
+//		return
+//	}
+//
+//	paraData := struct {
+//		RemoveFile bool `form:"remove_file" json:"remove_file"` // 默认为 false，true 时删除所有文件
+//	}{}
+//	if err := ctx.ShouldBindQuery(&paraData); err != nil {
+//		ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid param"})
+//		return
+//	}
+//
+//	// 查询插画
+//	var illustration models.Illustration
+//	if err := this.Db.Preload("Tags").First(&illustration, "id = ?", id).Error; err != nil {
+//		ctx.JSON(http.StatusNotFound, gin.H{"message": "illustration not found"})
+//		return
+//	}
+//
+//	// 启动事务
+//	tx := this.Db.Begin()
+//	defer func() {
+//		if r := recover(); r != nil {
+//			tx.Rollback()
+//		}
+//	}()
+//
+//	// 先清理标签关系
+//	if err := tx.Model(&illustration).Association("Tags").Clear(); err != nil {
+//		tx.Rollback()
+//		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "failed to clear tags relation"})
+//		return
+//	}
+//
+//	if paraData.RemoveFile {
+//		// 删除三种清晰度的文件
+//		baseDir := config.ExistingAppConfig.Illustration.SaveDir
+//		paths := []string{
+//			filepath.Join(baseDir, "original", illustration.FilePath),
+//			filepath.Join(baseDir, "medium", illustration.FilePath),
+//			filepath.Join(baseDir, "small", illustration.FilePath),
+//		}
+//		for _, p := range paths {
+//			_ = os.Remove(p) // 忽略错误（比如文件不存在）
+//		}
+//	} else {
+//		// 移动原图到 trash 并删除 medium/small
+//		if err := this.moveOriginalToTrash(illustration.FilePath); err != nil {
+//			tx.Rollback()
+//			ctx.JSON(http.StatusInternalServerError, gin.H{"message": "failed to move original file to trash"})
+//			return
+//		}
+//		baseDir := config.ExistingAppConfig.Illustration.SaveDir
+//		_ = os.Remove(filepath.Join(baseDir, "medium", illustration.FilePath))
+//		_ = os.Remove(filepath.Join(baseDir, "small", illustration.FilePath))
+//	}
+//
+//	// 删除插画记录
+//	if err := tx.Delete(&illustration).Error; err != nil {
+//		tx.Rollback()
+//		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "failed to delete illustration"})
+//		return
+//	}
+//
+//	if err := tx.Commit().Error; err != nil {
+//		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "failed to commit transaction"})
+//		return
+//	}
+//
+//	ctx.JSON(http.StatusOK, gin.H{"message": "deleted successfully"})
+//}
+
 func (this *AdminService) RemoveIllustrationById(ctx *gin.Context) {
-	id, err := this.utils.GetAndParseParamUuid("id", ctx)
-	if err != nil {
+	id := ctx.Param("id") // Illustration.Id 是 string，不再是 uuid
+	if id == "" {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid id"})
 		return
 	}
@@ -469,9 +704,9 @@ func (this *AdminService) RemoveIllustrationById(ctx *gin.Context) {
 		return
 	}
 
-	// 查询插画
+	// 查询插画并预加载 tags 和 images
 	var illustration models.Illustration
-	if err := this.Db.Preload("Tags").First(&illustration, "id = ?", id).Error; err != nil {
+	if err := this.Db.Preload("Tags").Preload("Images").First(&illustration, "id = ?", id).Error; err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"message": "illustration not found"})
 		return
 	}
@@ -484,37 +719,40 @@ func (this *AdminService) RemoveIllustrationById(ctx *gin.Context) {
 		}
 	}()
 
-	// 先清理标签关系
+	// 清理标签关系
 	if err := tx.Model(&illustration).Association("Tags").Clear(); err != nil {
 		tx.Rollback()
 		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "failed to clear tags relation"})
 		return
 	}
 
-	if paraData.RemoveFile {
-		// 删除三种清晰度的文件
-		baseDir := config.ExistingAppConfig.Illustration.SaveDir
-		paths := []string{
-			filepath.Join(baseDir, "original", illustration.FilePath),
-			filepath.Join(baseDir, "medium", illustration.FilePath),
-			filepath.Join(baseDir, "small", illustration.FilePath),
+	baseDir := config.ExistingAppConfig.Illustration.SaveDir
+
+	// 删除图片文件
+	for _, img := range illustration.Images {
+		if paraData.RemoveFile {
+			// 删除三种清晰度文件
+			paths := []string{
+				filepath.Join(baseDir, "original", img.FilePath),
+				filepath.Join(baseDir, "medium", img.FilePath),
+				filepath.Join(baseDir, "small", img.FilePath),
+			}
+			for _, p := range paths {
+				_ = os.Remove(p)
+			}
+		} else {
+			// 移动原图到 trash，并删除 medium/small
+			if err := this.moveOriginalToTrash(img.FilePath); err != nil {
+				tx.Rollback()
+				ctx.JSON(http.StatusInternalServerError, gin.H{"message": "failed to move original file to trash"})
+				return
+			}
+			_ = os.Remove(filepath.Join(baseDir, "medium", img.FilePath))
+			_ = os.Remove(filepath.Join(baseDir, "small", img.FilePath))
 		}
-		for _, p := range paths {
-			_ = os.Remove(p) // 忽略错误（比如文件不存在）
-		}
-	} else {
-		// 移动原图到 trash 并删除 medium/small
-		if err := this.moveOriginalToTrash(illustration.FilePath); err != nil {
-			tx.Rollback()
-			ctx.JSON(http.StatusInternalServerError, gin.H{"message": "failed to move original file to trash"})
-			return
-		}
-		baseDir := config.ExistingAppConfig.Illustration.SaveDir
-		_ = os.Remove(filepath.Join(baseDir, "medium", illustration.FilePath))
-		_ = os.Remove(filepath.Join(baseDir, "small", illustration.FilePath))
 	}
 
-	// 删除插画记录
+	// 删除插画（会级联删除 images，因为有外键 references:Id）
 	if err := tx.Delete(&illustration).Error; err != nil {
 		tx.Rollback()
 		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "failed to delete illustration"})

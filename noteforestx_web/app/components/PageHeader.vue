@@ -7,7 +7,6 @@ const props = defineProps<{
 
 <template>
 <div class="mb-4 mt-4">
-<!--  <Button class="mb-2 pl-0" size="small" type="button" label="返回" icon="pi pi-angle-left" variant="link"/>-->
   <div class="font-base text-2xl mb-1">{{ props.title }}</div>
   <div class="opacity-70">{{ props.subtitle }}</div>
 </div>

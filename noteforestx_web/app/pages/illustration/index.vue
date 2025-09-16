@@ -5,13 +5,14 @@ import {useI18n} from "vue-i18n";
 import PageHeader from "~/components/PageHeader.vue";
 import IllustrationItemPreview from "../../components/IllustrationItemPreview.vue";
 import useThemeStore from "../../store/themeStore";
-import {IllustrationItem} from "../../types/illustration";
-import { Icon } from '@vicons/utils'
+import type {IllustrationItem} from "~/types/illustration";
+import {Icon} from '@vicons/utils'
 import {
   ReturnDownBackOutline,
   ArrowUpOutline,
   ArrowDownOutline
 } from "@vicons/ionicons5"
+import SearchIllustrationInput from "~/components/SearchIllustrationInput.vue";
 
 const {t} = useI18n()
 const themeStore = useThemeStore()
@@ -70,19 +71,54 @@ const searchHistory = ref([
     content: "キミの考えは、すべてまるっとお見通しだ！",
     type: "illustration"
   },
-  {
-    content: "女の子",
-    type: "tag"
-  },
-  {
-    content: "あらめ＠お仕事募集中",
-    type: "author"
-  },
-  {
-    content: "七原しえ",
-    type: "author"
-  }
+
 ])
+
+const searchHint = [
+  {
+    command: '/tag',
+    hint: '按照tag进行搜索 (可以空格分开多个)',
+  },
+  {
+    command: '/user',
+    hint: '按照画师名进行搜索',
+  },
+  {
+    command: '/name',
+    hint: '直接按照插画名进行搜索',
+  },
+  {
+    command: '/id',
+    hint: '直接搜索文件或插画Id',
+  },
+  {
+    command: '/limited',
+    hint: '显示Limited标记类型插画 (可接在前面的命令后)',
+  },
+]
+
+const setTagType = (command: string): string => {
+  return command==='/limited'?"info":"secondary"
+}
+
+const keyDownHandler = (e: KeyboardEvent) => {
+  const openSearchDialogByShortCut = () => themeStore.searchDialog.show = true
+  // macOS: Meta + K
+  if (e.metaKey && e.key.toLowerCase() === "k") {
+    e.preventDefault()
+    openSearchDialogByShortCut()
+  }
+
+  // Windows/Linux: Ctrl + K
+  if (e.ctrlKey && e.key.toLowerCase() === "k") {
+    e.preventDefault()
+    openSearchDialogByShortCut()
+  }
+}
+
+onBeforeUnmount(() => {
+  window.removeEventListener("keydown", keyDownHandler)
+})
 
 onUnmounted(() => {
   themeStore.showHeaderSearchBtn = false
@@ -90,6 +126,7 @@ onUnmounted(() => {
 
 onMounted(() => {
   themeStore.showHeaderSearchBtn = true
+  window.addEventListener("keydown", keyDownHandler)
 })
 
 </script>
@@ -140,60 +177,87 @@ onMounted(() => {
       v-model:visible="themeStore.searchDialog.show"
       :show-header="false"
       modal
+      :closable="true"
+      :dismissable-mask="true"
       :content-class="'p-0'"
-  :mask-class="'backdrop-blur-sm bg-black/50'"
-  class="w-full sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-1/3 mx-2 sm:mx-auto"
+      :mask-class="'backdrop-blur-sm bg-black/50'"
+      class="w-full sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-1/3 mx-2 sm:mx-auto"
   >
-  <div class="flex flex-col p-4">
-    <!-- 你的内容 -->
-    <IconField>
-      <InputIcon class="pi pi-search" />
-      <InputText class="w-full" size="large" v-model="searchIll.content" placeholder="Search for something..." />
-    </IconField>
 
-    <div class="mt-2 mb-2 flex flex-row justify-between items-center">
-      <span class="font-medium">最近搜索</span>
-      <Button class="h-8 text-xs font-light" size="small" link label="清除搜索历史"></Button>
+    <div class="flex flex-col p-4">
+      <SearchIllustrationInput/>
+      <div class="mt-2 mb-2 flex flex-row justify-between items-center">
+        <span class="font-medium">最近搜索</span>
+        <Button class="h-8 text-xs font-light" size="small" link label="清除搜索历史"></Button>
+      </div>
+
+      <div v-for="i in searchHistory"
+           class="flex items-center justify-between gap-3 p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 mb-2">
+        <!-- 左侧图标 -->
+        <div class="flex-shrink-0">
+          <i class="pi pi-history text-lg text-gray-500"></i>
+        </div>
+
+        <!-- 中间文字，上下排列 -->
+        <div class="flex flex-col flex-1">
+          <span class="font-medium text-gray-900 dark:text-gray-100">{{ i.content }}</span>
+          <span class="text-sm text-gray-500 dark:text-gray-400">{{ i.type }}</span>
+        </div>
+
+        <!-- 右侧关闭按钮 -->
+        <div class="flex-shrink-0 cursor-pointer">
+          <i class="pi pi-times text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"></i>
+        </div>
+      </div>
+
+
     </div>
 
-    <div v-for="i in searchHistory" class="flex items-center justify-between gap-3 p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 mb-2">
-      <!-- 左侧图标 -->
-      <div class="flex-shrink-0">
-        <i class="pi pi-history text-lg text-gray-500"></i>
-      </div>
+    <Divider class="mt-0 mb-0" />
 
-      <!-- 中间文字，上下排列 -->
-      <div class="flex flex-col flex-1">
-        <span class="font-medium text-gray-900 dark:text-gray-100">{{ i.content }}</span>
-        <span class="text-sm text-gray-500 dark:text-gray-400">{{ i.type }}</span>
-      </div>
+    <div class="ml-2 mr-2 mt-2 text-xs flex flex-row items-center gap-2">
+      <div class="flex flex-col justify-start">
+<!--        <span class="font-bold text-sm">支持的查询命令</span>-->
+        <span
+            v-for="i in searchHint"
+            :key="i.command"
+            class="mt-2 mb-1 flex items-center gap-2 text-xs"
+        >
+          <Tag
+              class="h-5 font-mono font-normal shrink-0 w-20 justify-start text-xs"
+              :value="i.command"
+              :severity="setTagType(i.command)"
+          />
+          <span class="flex-1">{{ i.hint }}</span>
+        </span>
+        <span class="text-xs mt-2 opacity-70">* 默认使用tag进行搜索。如在搜索框中键入一下的命令作为前缀，将启用搜索模式，搜索框前的图标将会变为搜索的类型图标，命令后续键入关键词后即可搜索，仅在使用tag搜索时允许多个关键词。</span>
 
-      <!-- 右侧关闭按钮 -->
-      <div class="flex-shrink-0 cursor-pointer">
-        <i class="pi pi-times text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"></i>
       </div>
     </div>
 
+    <Divider class="mt-2"/>
 
-
-
-  </div>
-    <Divider class="mt-2" />
     <div class="ml-2 mr-2 mb-3 text-xs flex flex-row items-center gap-2 opacity-80">
       <Tag severity="secondary">
         <template #icon>
-          <Icon><ReturnDownBackOutline /></Icon>
+          <Icon>
+            <ReturnDownBackOutline/>
+          </Icon>
         </template>
       </Tag>
       <span>to select</span>
       <Tag class="ml-2" severity="secondary">
         <template #icon>
-          <Icon><ArrowUpOutline /></Icon>
+          <Icon>
+            <ArrowUpOutline/>
+          </Icon>
         </template>
       </Tag>
       <Tag severity="secondary">
         <template #icon>
-          <Icon><ArrowDownOutline /></Icon>
+          <Icon>
+            <ArrowDownOutline/>
+          </Icon>
         </template>
       </Tag>
       <span>to navigate</span>
