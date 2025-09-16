@@ -7,6 +7,7 @@ type AddNewIllustrationRequestDto struct {
 	Link        string   `form:"link" binding:"required" json:"link"`           // 原pixiv地址
 	Description string   `form:"description" json:"description"`
 	Limited     bool     `form:"limited" json:"limited"` // 是否限制型
+	Source      string   `form:"source" json:"source"`
 }
 
 type AddNewIllustrationResponseDto struct {
