@@ -26,7 +26,6 @@ type IllustrationImage struct {
 }
 
 // Illustration 插畫表 (插畫集)
-// Illustration 插畫表 (插畫集)
 type Illustration struct {
 	Id          string              `json:"id" gorm:"size:100;primaryKey"`
 	PixivId     string              `json:"pixiv_id" gorm:"size:100;uniqueIndex"`

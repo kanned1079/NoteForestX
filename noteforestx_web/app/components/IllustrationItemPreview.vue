@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import {IllustrationItem} from "../types/illustration";
+import {Illustration} from "../types/illustration";
 const config = useRuntimeConfig()
 const props = defineProps<{
-  illustration: IllustrationItem
+  illustration: Illustration
 }>()
 
 const onClickIllItem = (id: string) => {
@@ -17,6 +17,10 @@ const openNewTab = (url: string) => {
 原創 コミティア 藤の花 ボブカット 浴衣 オリジナル30000users入り 花と女の子
 *
 * */
+
+onMounted(() => {
+  console.log(props.illustration)
+})
 
 </script>
 
@@ -33,7 +37,7 @@ const openNewTab = (url: string) => {
         @click="onClickIllItem(props.illustration.id)"
     >
       <img
-          :src="`${config.public.apiBase}/illustration/file/${props.illustration.file_path}?size=small`"
+          :src="`${config.public.apiBase}/illustration/file/${props.illustration.images[0].file_path}?size=small`"
           alt="illustration"
           class="w-full h-full object-contain"
           loading="lazy"

@@ -5,7 +5,7 @@ import {useI18n} from "vue-i18n";
 import PageHeader from "~/components/PageHeader.vue";
 import IllustrationItemPreview from "../../components/IllustrationItemPreview.vue";
 import useThemeStore from "../../store/themeStore";
-import type {IllustrationItem} from "~/types/illustration";
+import type {Illustration} from "../../types/illustration";
 import {Icon} from '@vicons/utils'
 import {
   ReturnDownBackOutline,
@@ -16,7 +16,7 @@ import SearchIllustrationInput from "~/components/SearchIllustrationInput.vue";
 
 const {t} = useI18n()
 const themeStore = useThemeStore()
-const illustrationList = ref<IllustrationItem[]>([])
+const illustrationList = ref<Illustration[]>([])
 
 const page = ref<number>(1)
 const size = ref<number>(15)
@@ -24,25 +24,33 @@ const total = ref<number>(0)
 const showLimited = ref<boolean>(true)
 
 const fetchIllustrationList = async () => {
-  illustrationList.value = []
-  const data = await $fetch<{
-    page: number
-    size: number
-    total: number
-    list: IllustrationItem[]
-  }>(`http://localhost:8081/api/v1/illustration`, {
-    method: "GET",
-    params: {
-      page: page.value,
-      size: size.value,
-      show_limited: showLimited.value
+  try{
+    illustrationList.value = []
+    const data = await $fetch<{
+      page: number
+      size: number
+      total: number
+      list: Illustration[]
+    }>(`/api/v1/illustration`, {
+      method: "GET",
+      params: {
+        page: page.value,
+        size: size.value,
+        show_limited: showLimited.value
+      }
+    })
+    if (data) {
+      total.value = data.total
+      data.list.forEach((item: Illustration) => illustrationList.value.push(item))
+
+      for (let i = 0; i < illustrationList.value[0].tags.length; i++ ){
+        console.log(`${illustrationList.value[0].tags[i].id} ${illustrationList.value[0].tags[i].name}`)
+      }
     }
 
-  })
-  console.log(data.total)
-  total.value = data.total
-  data.list.forEach((item: IllustrationItem) => illustrationList.value.push(item))
-
+  } catch (err: any) {
+    console.log("err: ",err)
+  }
 }
 
 fetchIllustrationList()
@@ -66,11 +74,19 @@ const searchIll = ref<{
   search_as: ''
 })
 
-const searchHistory = ref([
+const searchHistory = ref<{ content: string, type: string }[]>([
   {
     content: "キミの考えは、すべてまるっとお見通しだ！",
     type: "illustration"
   },
+  {
+    content: "着物 母の日",
+    type: "tag"
+  },
+  {
+    content: "",
+    type: "author"
+  }
 
 ])
 
@@ -98,7 +114,7 @@ const searchHint = [
 ]
 
 const setTagType = (command: string): string => {
-  return command==='/limited'?"info":"secondary"
+  return command === '/limited' ? "info" : "secondary"
 }
 
 const keyDownHandler = (e: KeyboardEvent) => {
@@ -213,15 +229,16 @@ onMounted(() => {
 
     </div>
 
-    <Divider class="mt-0 mb-0" />
+    <Divider v-if="false" class="mt-0 mb-0"/>
 
-    <div class="ml-2 mr-2 mt-2 text-xs flex flex-row items-center gap-2">
+    <div class="m-3 text-xs flex flex-row items-center gap-2" v-if="false">
       <div class="flex flex-col justify-start">
-<!--        <span class="font-bold text-sm">支持的查询命令</span>-->
+        <!--        <span class="font-bold text-sm">支持的查询命令</span>-->
         <span
             v-for="i in searchHint"
             :key="i.command"
             class="mt-2 mb-1 flex items-center gap-2 text-xs"
+            v-if="false"
         >
           <Tag
               class="h-5 font-mono font-normal shrink-0 w-20 justify-start text-xs"
@@ -230,38 +247,60 @@ onMounted(() => {
           />
           <span class="flex-1">{{ i.hint }}</span>
         </span>
-        <span class="text-xs mt-2 opacity-70">* 默认使用tag进行搜索。如在搜索框中键入一下的命令作为前缀，将启用搜索模式，搜索框前的图标将会变为搜索的类型图标，命令后续键入关键词后即可搜索，仅在使用tag搜索时允许多个关键词。</span>
+        <span class="text-xs mt-2 opacity-70">* 默认使用tag进行搜索。键入的命令作为前缀，将启用搜索模式，搜索框前的图标将会变为搜索的类型图标，命令后续键入关键词后即可搜索，仅在使用tag搜索时允许多个关键词。</span>
 
+        <div class="w-full">
+          <!--          <Button variant="link" size="small" class="p-0 underline text-sm">-->
+          <!--            查看搜索規則-->
+          <!--            <template #icon>-->
+          <!--              <i class="pi pi-chevron-right"></i>-->
+          <!--            </template>-->
+          <!--          </Button>-->
+
+        </div>
       </div>
     </div>
 
     <Divider class="mt-2"/>
 
-    <div class="ml-2 mr-2 mb-3 text-xs flex flex-row items-center gap-2 opacity-80">
-      <Tag severity="secondary">
-        <template #icon>
-          <Icon>
-            <ReturnDownBackOutline/>
-          </Icon>
-        </template>
-      </Tag>
-      <span>to select</span>
-      <Tag class="ml-2" severity="secondary">
-        <template #icon>
-          <Icon>
-            <ArrowUpOutline/>
-          </Icon>
-        </template>
-      </Tag>
-      <Tag severity="secondary">
-        <template #icon>
-          <Icon>
-            <ArrowDownOutline/>
-          </Icon>
-        </template>
-      </Tag>
-      <span>to navigate</span>
+    <div class="ml-2 mr-2 mb-3 flex flex-row justify-between">
+      <div class="text-xs flex flex-row items-center gap-2 opacity-80">
+        <Tag severity="secondary">
+          <template #icon>
+            <Icon>
+              <ReturnDownBackOutline/>
+            </Icon>
+          </template>
+        </Tag>
+        <span>to select</span>
+        <Tag class="ml-2" severity="secondary">
+          <template #icon>
+            <Icon>
+              <ArrowUpOutline/>
+            </Icon>
+          </template>
+        </Tag>
+        <Tag severity="secondary">
+          <template #icon>
+            <Icon>
+              <ArrowDownOutline/>
+            </Icon>
+          </template>
+        </Tag>
+        <span>to navigate</span>
+      </div>
+
+      <div>
+        <Button variant="link" label="查看搜索規則" iconPos="right" class="text-sm p-0">
+          <template #icon>
+            <i class="pi pi-info-circle text-sm"></i>
+          </template>
+        </Button>
+      </div>
+
     </div>
+
+
   </Dialog>
 
 </template>

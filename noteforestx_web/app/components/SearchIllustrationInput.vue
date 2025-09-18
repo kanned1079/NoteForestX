@@ -7,6 +7,7 @@
         v-model="searchIll.content"
         placeholder="Search for something..."
         @input="handleInput"
+        autofocus
     />
   </IconField>
 </template>
