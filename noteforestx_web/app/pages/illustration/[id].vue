@@ -1,24 +1,31 @@
 <script setup lang="ts">
+// definePageMeta({
+//   layout: 'default',
+//   layoutTransition: true,
+// })
+
 import {ref, onMounted} from "vue"
 import {useRoute} from "vue-router";
 import type {Illustration} from "../../types/illustration";
 import dayjs from "dayjs"
 
 const route = useRoute()
+const illustId = route.params.id as string
+
 const config = useRuntimeConfig()
-const illustrationUuid = route.params.id as string
+
 const illustration = ref<Illustration | null>(null)
 
-const fetchIllustrationList = async () => {
-  try{
-    const data = await $fetch<Illustration>(`/api/v1/illustration/${illustrationUuid}`, {
-      method: "GET",
+const fetchIllustrationById = async () => {
+  try {
+    const data = await $fetch<Illustration>(`/api/illustration/${illustId}`, {
+      method: 'GET',
     })
     if (data) {
       illustration.value = data
     }
   } catch (err: any) {
-    console.error("err: ",err)
+    console.error('err: ', err)
   }
 }
 
@@ -33,14 +40,17 @@ onBeforeMount(() => {
 })
 
 onMounted(() => {
-  fetchIllustrationList()
+
+  fetchIllustrationById()
+
+  // console.log(route.path)
 })
 </script>
 
 <template>
   <div class="mb-20 mt-10">
     <!-- 大布局 -->
-    <div class="grid grid-cols-1 lg:grid-cols-8 gap-8" v-if="illustration">
+    <div class="grid grid-cols-1 lg:grid-cols-8 gap-8">
       <!-- 左侧插画 (2/3) -->
 
 
@@ -51,7 +61,7 @@ onMounted(() => {
           <img
               v-for="i in illustration?.images"
               :key="i.id"
-              :src="`${config.public.apiBase}/illustration/file/${i.file_path}?size=medium`"
+              :src="`${config.public.apiBase}/api/v1/illustration/file/${i.file_path}?size=medium`"
               alt="illustration"
               class="rounded-md mb-4 drop-shadow-md  object-contain"
               loading="lazy"
@@ -85,7 +95,7 @@ onMounted(() => {
               link
               class="w-auto p-0 mt-2"
               size="small"
-              @click="openLink(illustration?.link)"
+              @click="openLink(illustration?.link as string)"
           >
             转到原链接地址
           </Button>
@@ -102,7 +112,7 @@ onMounted(() => {
               link
               class="w-auto p-0 mt-2"
               size="small"
-              @click="openLink(illustration?.author.link)"
+              @click="openLink(illustration?.author.link as string)"
           >
             转到作者主页
           </Button>
@@ -110,10 +120,10 @@ onMounted(() => {
           <!-- 其他作品 -->
           <div class="text-md font-bold mt-4 hover:underline">该作者的其他作品</div>
           <div class="grid grid-cols-2 gap-3 mt-4">
-<!--            <IllustrationItemPreview-->
-<!--                v-for="i in 4"-->
-<!--                :key="i"-->
-<!--            />-->
+            <IllustrationItemPreview
+                v-for="i in 4"
+                :key="i"
+            />
           </div>
         </div>
       </div>

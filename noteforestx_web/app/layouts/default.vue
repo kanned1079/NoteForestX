@@ -32,26 +32,28 @@ const closeBanner = () => {
 </script>
 
 <template>
-  <transition name="fade-slide">
-    <div
-        v-if="showBanner"
-        class="bg-kanna-400 h-8 text-white text-sm flex items-center justify-between px-4"
-    >
-      <span class="flex-1 text-center">Hi! Welcome to kanna's NoteForest 👋</span>
-      <Button
-          @click="closeBanner"
-          class="ml-2 text-white hover:text-gray-200 focus:outline-none"
-          size="small"
-          variant="link"
-      >
-        ✕
-      </Button>
-    </div>
-  </transition>
+  <div>
+<!--    <transition name="fade-slide">-->
+<!--      <div-->
+<!--          v-if="showBanner"-->
+<!--          class="bg-kanna-400 h-8 text-white text-sm flex items-center justify-between px-4"-->
+<!--      >-->
+<!--        <span class="flex-1 text-center">Hi! Welcome to kanna's NoteForest 👋</span>-->
+<!--        <Button-->
+<!--            @click="closeBanner"-->
+<!--            class="ml-2 text-white hover:text-gray-200 focus:outline-none"-->
+<!--            size="small"-->
+<!--            variant="link"-->
+<!--        >-->
+<!--          ✕-->
+<!--        </Button>-->
+<!--      </div>-->
+<!--    </transition>-->
 
-  <AppHeader />
-  <div class="mx-auto w-full max-w-[1680px] px-4 sm:px-6 md:px-8 lg:px-12">
-    <slot />
+    <AppHeader />
+    <div class="mx-auto w-full max-w-[1680px] px-4 sm:px-6 md:px-8 lg:px-12">
+      <slot />
+    </div>
   </div>
 </template>
 

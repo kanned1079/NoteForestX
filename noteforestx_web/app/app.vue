@@ -3,13 +3,13 @@
 
 <template>
   <NuxtLayout>
-    <Transition
-        name="fade"
-        mode="out-in"
-        appear
-    >
+<!--    <Transition-->
+<!--        name="fade"-->
+<!--        mode="out-in"-->
+<!--        appear-->
+<!--    >-->
       <NuxtPage />
-    </Transition>
+<!--    </Transition>-->
   </NuxtLayout>
 </template>
 

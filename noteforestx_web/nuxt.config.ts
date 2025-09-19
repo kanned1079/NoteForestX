@@ -105,25 +105,25 @@ export default defineNuxtConfig({
         strategy: 'prefix',
         defaultLocale: "zh_cn"
     },
-    resolve: {
-        alias: {
-            '~': fileURLToPath(new URL('./app', import.meta.url)), // ~ 指向 src
-            // '@': fileURLToPath(new URL('./src', import.meta.url)), // @ 也可以一起
-        }
-    },
-    runtimeConfig: {
-        public: {
-            apiBase: process.env.API_BASE_URL || "http://localhost:8081",
-        }
-    },
-    nitro: {
-        devProxy: {
-            "/api/": {
-                target: "http://localhost:8081/api/",
-                changeOrigin: true,
+    // resolve: {
+    //     alias: {
+    //         '~': fileURLToPath(new URL('./app', import.meta.url)), // ~ 指向 src
+    //         // '@': fileURLToPath(new URL('./src', import.meta.url)), // @ 也可以一起
+    //     }
+    // },
+        runtimeConfig: {
+            public: {
+                apiBase: process.env.API_BASE_URL || "http://127.0.0.1:8081",
             }
-        }
-    },
+        },
+    // nitro: {
+    //     devProxy: {
+    //         "/api/": {
+    //             target: "http://localhost:8081/api/",
+    //             changeOrigin: true,
+    //         }
+    //     }
+    // },
     // devServer: {
     //     proxy: {
     //         '/api': 'http://localhost:8081'

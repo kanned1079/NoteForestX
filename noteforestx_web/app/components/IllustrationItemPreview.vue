@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {useI18n} from "vue-i18n";
-import {Illustration} from "../types/illustration";
+import type {Illustration} from "../types/illustration";
 const {locale} = useI18n()
 const config = useRuntimeConfig()
 const props = defineProps<{
@@ -8,7 +8,9 @@ const props = defineProps<{
 }>()
 
 const onClickIllItem = (id: string) => {
-  navigateTo(`/illustration/${id}`)
+  navigateTo({
+    path: `/${locale.value}/illustration/${id}`
+  })
 }
 
 

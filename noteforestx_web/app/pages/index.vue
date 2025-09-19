@@ -1,8 +1,8 @@
 <script setup lang="ts">
-definePageMeta({
-  layout: 'default',
-  layoutTransition: true,
-})
+// definePageMeta({
+//   layout: 'default',
+//   layoutTransition: true,
+// })
 </script>
 
 <template>
