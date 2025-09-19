@@ -1,13 +1,16 @@
 <script setup lang="ts">
+import {useI18n} from "vue-i18n";
 import {Illustration} from "../types/illustration";
+const {locale} = useI18n()
 const config = useRuntimeConfig()
 const props = defineProps<{
   illustration: Illustration
 }>()
 
 const onClickIllItem = (id: string) => {
-  navigateTo({path: `/illustration/${id}`})
+  navigateTo(`/illustration/${id}`)
 }
+
 
 const openNewTab = (url: string) => {
   window.open(url, '_blank', 'noopener noreferrer');
@@ -34,10 +37,10 @@ onMounted(() => {
          transition-shadow duration-200
          drop-shadow-sm
          hover:shadow-xl"
-        @click="onClickIllItem(props.illustration.id)"
+        @click="onClickIllItem(props.illustration?.id)"
     >
       <img
-          :src="`${config.public.apiBase}/illustration/file/${props.illustration.images[0].file_path}?size=small`"
+          :src="`${config.public.apiBase}/illustration/file/${props.illustration?.images[0].file_path}?size=small`"
           alt="illustration"
           class="w-full h-full object-contain"
           loading="lazy"
@@ -47,15 +50,15 @@ onMounted(() => {
     <div class="mt-2 px-1">
       <div
           class="font-medium text-lg truncate hover:underline"
-          @click="openNewTab(props.illustration.link)"
+          @click="openNewTab(props.illustration?.link)"
       >
-        {{ props.illustration.name || 'Untitled Illustration' }}
+        {{ props.illustration?.name || 'Untitled Illustration' }}
       </div>
       <div
           class="text-sm text-gray-600 dark:text-gray-300 truncate hover:underline"
-          @click="openNewTab(props.illustration.author.link)"
+          @click="openNewTab(props.illustration?.author.link)"
       >
-        {{ props.illustration.author.name || 'Unknown Author' }}
+        {{ props.illustration?.author.name || 'Unknown Author' }}
       </div>
     </div>
   </div>

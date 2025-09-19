@@ -2,7 +2,7 @@
 import {ref} from "vue"
 import {useI18n} from "vue-i18n";
 
-import PageHeader from "~/components/PageHeader.vue";
+import PageHeader from "../../components/PageHeader.vue";
 import IllustrationItemPreview from "../../components/IllustrationItemPreview.vue";
 import useThemeStore from "../../store/themeStore";
 import type {Illustration} from "../../types/illustration";
@@ -13,6 +13,7 @@ import {
   ArrowDownOutline
 } from "@vicons/ionicons5"
 import SearchIllustrationInput from "~/components/SearchIllustrationInput.vue";
+const config = useRuntimeConfig()
 
 const {t} = useI18n()
 const themeStore = useThemeStore()
@@ -26,13 +27,26 @@ const showLimited = ref<boolean>(true)
 const fetchIllustrationList = async () => {
   try{
     illustrationList.value = []
+    // const data = await $fetch<{
+    //   page: number
+    //   size: number
+    //   total: number
+    //   list: Illustration[]
+    // }>(`http://localhost:8081/api/v1/illustration`, {
+    //   method: "GET",
+    //   params: {
+    //     page: page.value,
+    //     size: size.value,
+    //     show_limited: showLimited.value
+    //   }
+    // })
     const data = await $fetch<{
       page: number
       size: number
       total: number
       list: Illustration[]
-    }>(`/api/v1/illustration`, {
-      method: "GET",
+    }>('/api/illustration', {
+      method: 'GET',
       params: {
         page: page.value,
         size: size.value,
@@ -42,12 +56,10 @@ const fetchIllustrationList = async () => {
     if (data) {
       total.value = data.total
       data.list.forEach((item: Illustration) => illustrationList.value.push(item))
-
       for (let i = 0; i < illustrationList.value[0].tags.length; i++ ){
         console.log(`${illustrationList.value[0].tags[i].id} ${illustrationList.value[0].tags[i].name}`)
       }
     }
-
   } catch (err: any) {
     console.log("err: ",err)
   }

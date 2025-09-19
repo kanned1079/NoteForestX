@@ -18,19 +18,16 @@ func AllowRequestTypeCors() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		origin := c.GetHeader("Origin")
 		if origin == "" {
-			origin = "http://localhost:3000" // 瀏覽器端前端地址
+			origin = "http://localhost:3000"
 		}
-
 		c.Header("Access-Control-Allow-Origin", origin)
 		c.Header("Access-Control-Allow-Credentials", "true")
 		c.Header("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE,OPTIONS")
-		c.Header("Access-Control-Allow-Headers", "Origin, Content-Type, Authorization, Accept, X-Requested-With")
-
+		c.Header("Access-Control-Allow-Headers", "Origin, Content-Type, Authorization, Accept")
 		if c.Request.Method == "OPTIONS" {
 			c.AbortWithStatus(204)
 			return
 		}
-
 		c.Next()
 	}
 }

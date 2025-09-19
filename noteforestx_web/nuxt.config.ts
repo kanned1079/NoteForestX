@@ -113,7 +113,7 @@ export default defineNuxtConfig({
     },
     runtimeConfig: {
         public: {
-            apiBase: process.env.API_BASE_URL || "http://localhost:8081/api/v1",
+            apiBase: process.env.API_BASE_URL || "http://localhost:8081",
         }
     },
     nitro: {
@@ -123,5 +123,10 @@ export default defineNuxtConfig({
                 changeOrigin: true,
             }
         }
-    }
+    },
+    // devServer: {
+    //     proxy: {
+    //         '/api': 'http://localhost:8081'
+    //     }
+    // }
 })
