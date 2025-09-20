@@ -1,8 +1,9 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import { fileURLToPath, URL } from 'node:url'
+import {fileURLToPath, URL} from 'node:url'
 import Aura from '@primeuix/themes/aura';
+// import ToastService from 'primevue/toastservice';
 // import {MyPreset} from "./app/plugins/MyPresetTheme";
-import { definePreset } from '@primeuix/themes'
+import {definePreset} from '@primeuix/themes'
 
 const MyPreset = definePreset(Aura, {
     semantic: {
@@ -73,8 +74,8 @@ export default defineNuxtConfig({
         '@primevue/nuxt-module',
         '@nuxt/icon',
         '@nuxtjs/i18n',
-        '@nuxtjs/tailwindcss'
-
+        '@nuxtjs/tailwindcss',
+        '@primevue/nuxt-module'
     ],
     primevue: {
         options: {
@@ -92,15 +93,15 @@ export default defineNuxtConfig({
     ],
     i18n: {
         locales: [
-            { code: 'en_us', language: 'en-US', file: 'en_US.json' },
-            { code: 'zh_cn', language: 'zh-CN', file: 'zh_CN.json' },
-            { code: 'zh_hk', language: 'zh-HK', file: 'zh_HK.json' },
-            { code: 'ja_jp', language: 'ja-JP', file: 'ja_JP.json' },
-            { code: 'es_es', language: 'es-ES', file: 'es_ES.json' },
-            { code: 'fr_fr', language: 'fr-FR', file: 'fr_FR.json' },
-            { code: 'fi_fi', language: 'fi-FI', file: 'fi_FI.json' },
-            { code: 'de_de', language: 'de-DE', file: 'de_DE.json' },
-            { code: 'nl_nl', language: 'nl-NL', file: 'nl_NL.json' }
+            {code: 'en_us', language: 'en-US', file: 'en_US.json'},
+            {code: 'zh_cn', language: 'zh-CN', file: 'zh_CN.json'},
+            {code: 'zh_hk', language: 'zh-HK', file: 'zh_HK.json'},
+            {code: 'ja_jp', language: 'ja-JP', file: 'ja_JP.json'},
+            {code: 'es_es', language: 'es-ES', file: 'es_ES.json'},
+            {code: 'fr_fr', language: 'fr-FR', file: 'fr_FR.json'},
+            {code: 'fi_fi', language: 'fi-FI', file: 'fi_FI.json'},
+            {code: 'de_de', language: 'de-DE', file: 'de_DE.json'},
+            {code: 'nl_nl', language: 'nl-NL', file: 'nl_NL.json'}
         ],
         strategy: 'prefix',
         defaultLocale: "zh_cn"
@@ -111,11 +112,11 @@ export default defineNuxtConfig({
     //         // '@': fileURLToPath(new URL('./src', import.meta.url)), // @ 也可以一起
     //     }
     // },
-        runtimeConfig: {
-            public: {
-                apiBase: process.env.API_BASE_URL || "http://127.0.0.1:8081",
-            }
-        },
+    runtimeConfig: {
+        public: {
+            apiBase: process.env.API_BASE_URL || "http://127.0.0.1:8081",
+        }
+    },
     // nitro: {
     //     devProxy: {
     //         "/api/": {

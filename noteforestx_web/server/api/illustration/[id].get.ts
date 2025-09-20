@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
     const illustId = params.id as string
 
     // 构建 Golang API URL
-    const url = new URL(`${config.public.apiBase}/api/v1/illustration/${illustId}`)
+    const url = new URL(`${config.public.apiBase}/api/v1/illustration/${illustId}?size=medium`)
     Object.entries(query).forEach(([key, value]) => {
         if (value !== undefined) url.searchParams.set(key, value as string)
     })

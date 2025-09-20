@@ -1,79 +1,72 @@
 <script setup lang="ts">
-// definePageMeta({
-//   layout: 'default',
-//   layoutTransition: true,
-// })
+import { ref, onMounted } from "vue";
+import { useRoute } from "vue-router";
+import type { Illustration } from "../../types/illustration";
+import dayjs from "dayjs";
+import {useAsyncData} from "nuxt/app";
 
-import {ref, onMounted} from "vue"
-import {useRoute} from "vue-router";
-import type {Illustration} from "../../types/illustration";
-import dayjs from "dayjs"
+const route = useRoute();
+const illustId = route.params.id as string;
 
-const route = useRoute()
-const illustId = route.params.id as string
+const config = useRuntimeConfig();
 
-const config = useRuntimeConfig()
-
-const illustration = ref<Illustration | null>(null)
+const illustration = ref<Illustration | null>(null);
 
 const fetchIllustrationById = async () => {
   try {
     const data = await $fetch<Illustration>(`/api/illustration/${illustId}`, {
-      method: 'GET',
-    })
+    //   const data = await useFetch<Illustration>(`/api/illustration/${illustId}`, {
+      method: "GET",
+    });
     if (data) {
-      illustration.value = data
+      illustration.value = data;
     }
   } catch (err: any) {
-    console.error('err: ', err)
+    console.error("err: ", err);
   }
-}
+};
 
-const openLink = (url: string) => {
+const openLink = (url: string | undefined) => {
   if (url) {
-    window.open(url, '_blank', 'noopener noreferrer');
+    window.open(url, "_blank", "noopener noreferrer");
   }
+};
+
+
+
+if (process.client) {
 }
 
-onBeforeMount(() => {
-
-})
+fetchIllustrationById()
 
 onMounted(() => {
 
-  fetchIllustrationById()
-
-  // console.log(route.path)
-})
+});
 </script>
 
 <template>
   <div class="mb-20 mt-10">
     <!-- 大布局 -->
-    <div class="grid grid-cols-1 lg:grid-cols-8 gap-8">
-      <!-- 左侧插画 (2/3) -->
-
-
-      <div class="lg:col-span-1">
-      </div>
-      <div class="lg:col-span-3">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 px-4 lg:px-20">
+      <!-- 左侧插画 -->
+      <div class="md:col-span-6">
         <div class="flex flex-col">
           <img
               v-for="i in illustration?.images"
               :key="i.id"
               :src="`${config.public.apiBase}/api/v1/illustration/file/${i.file_path}?size=medium`"
               alt="illustration"
-              class="rounded-md mb-4 drop-shadow-md  object-contain"
+              class="rounded-md mb-4 drop-shadow-md object-contain"
               loading="lazy"
           />
         </div>
       </div>
 
-      <!-- 右侧信息 (1/3) -->
-      <div class="lg:col-span-3">
+      <!-- 右侧信息 -->
+      <div class="md:col-span-6">
         <!-- 插画信息 -->
         <div>
-          <Tag :severity="illustration?.limited?'warn':'primary'" :value="illustration?.limited?'限制型':'非限制型'"></Tag>
+          <Tag :severity="illustration?.limited?'warn':'primary'" :value="illustration?.limited?'Limited (NSFW)':'Unlimited (SFW)'"></Tag>
           <div class="text-2xl font-bold mt-2">{{ illustration?.name || "NO NAME" }}</div>
           <div class="font-light opacity-70 mt-2">{{ illustration?.description || "NO DESCRIPTION" }}</div>
           <div class="flex flex-row flex-wrap gap-2 mt-2">
@@ -104,7 +97,6 @@ onMounted(() => {
         <!-- 作者信息 -->
         <div class="mt-6 border-t pt-4">
           <div class="text-2xl font-bold hover:underline">{{ illustration?.author.name }}</div>
-<!--          <div class="text-sm font-light mt-2 hover:underline">{{ illustration?.author.id }}</div>-->
           <div class="text-sm font-light opacity-60 mt-2">
             创建于 {{ dayjs(illustration?.author.created_at).format("YYYY/MM/DD HH:mm") }}
           </div>
@@ -130,6 +122,3 @@ onMounted(() => {
     </div>
   </div>
 </template>
-
-<style >
-</style>
