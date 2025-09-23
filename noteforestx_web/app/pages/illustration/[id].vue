@@ -32,10 +32,16 @@ const openLink = (url: string | undefined) => {
   }
 };
 
+const downloadImageClick = (path: string) => {
+  const url = `${config.public.apiBase}/api/v1/illustration/file/${path}?size=original`;
 
-
-if (process.client) {
-}
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = path; // 文件名，可以自定义，例如 `${path}.jpg`
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
 
 fetchIllustrationById()
 
@@ -49,16 +55,60 @@ onMounted(() => {
     <!-- 大布局 -->
     <div class="grid grid-cols-1 md:grid-cols-12 gap-8 px-4 lg:px-20">
       <!-- 左侧插画 -->
+<!--      <div class="md:col-span-6">-->
+<!--        <div class="flex flex-col">-->
+<!--          <img-->
+<!--              v-for="i in illustration?.images"-->
+<!--              :key="i.id"-->
+<!--              :src="`${config.public.apiBase}/api/v1/illustration/file/${i.file_path}?size=medium`"-->
+<!--              alt="illustration"-->
+<!--              class="rounded-md mb-4 drop-shadow-md object-contain"-->
+<!--              loading="lazy"-->
+<!--          />-->
+<!--        </div>-->
+<!--      </div>-->
+      <!-- 左侧插画 -->
+      <!-- 左侧插画 -->
       <div class="md:col-span-6">
         <div class="flex flex-col">
-          <img
-              v-for="i in illustration?.images"
+          <div
+              v-for="(i, index) in illustration?.images"
               :key="i.id"
-              :src="`${config.public.apiBase}/api/v1/illustration/file/${i.file_path}?size=medium`"
-              alt="illustration"
-              class="rounded-md mb-4 drop-shadow-md object-contain"
-              loading="lazy"
-          />
+              class="relative group rounded-md mb-4 drop-shadow-md overflow-hidden"
+          >
+            <!-- 图片 -->
+            <img
+                :src="`${config.public.apiBase}/api/v1/illustration/file/${i.file_path}?size=medium`"
+                alt="illustration"
+                class="w-full h-full object-contain"
+                loading="lazy"
+            />
+
+            <!-- 悬浮遮罩 -->
+            <div
+                class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end"
+            >
+              <!-- 左下角信息 -->
+              <div class="p-3 text-white text-sm space-y-1">
+                <div class="text-sm font-thin">
+                  {{ i.width }} x {{ i.height }}px
+                </div>
+<!--                <div class="text-sm font-thin">-->
+<!--                  {{ dayjs(i?.created_at).format("YYYY/MM/DD HH:mm") }}-->
+<!--                </div>-->
+                <div class="text-sm font-light">
+                  {{ i.id }}
+                </div>
+
+                <Button
+                  variant="link"
+                  class="p-0 underline"
+                  @click.prevent="downloadImageClick(i.file_path)"
+                >Get Original</Button>
+
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 

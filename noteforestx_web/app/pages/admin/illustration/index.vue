@@ -36,6 +36,10 @@ const fetchIllustList = async () => {
       },
     })
     illustrationList.value = data.list
+    for(let i=0; i< 11; i++) {
+      illustrationList.value.push(illustrationList.value[0])
+      total.value += 1
+    }
     total.value = data.total
   } catch (err: any) {
     console.error(err)
@@ -89,70 +93,22 @@ onMounted(() => {
   <div class="mt-4">
     <PageHeader title="插画管理" subtitle="如标题一样这里是管理插画的地方" />
 
+    <IllustrationItemPreviewMgr
+
+        :illustration="illustrationList[0]"
+    ></IllustrationItemPreviewMgr>
+
+
+    <div class="m-6"></div>
+
     <!-- 卡片网格 -->
-    <div v-if="!loading" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-4">
-      <Card
+    <div v-if="!loading" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-2  mt-">
+      <IllustrationItemPreviewMgr
           v-for="illust in illustrationList"
           :key="illust.id"
-          class="shadow-md rounded-xl overflow-hidden"
-      >
-        <!-- 图片 -->
-        <template #header>
-          <img
-              v-if="illust.images && illust.images.length > 0"
-              :src="`${imagePrefix}/illustration/file/${illust.images[0].file_path}?size=medium`"
-              class="w-full h-48 object-cover"
-          />
-        </template>
-
-        <!-- 内容 -->
-        <template #title>
-          <div class="flex justify-between items-center">
-            <span class="font-semibold">{{ illust.name }}</span>
-            <Tag
-                :value="illust.limited ? '限制型' : '非限制型'"
-                :severity="illust.limited ? 'warn' : 'success'"
-            />
-          </div>
-        </template>
-
-        <template #content>
-          <p class="text-sm text-gray-600 mb-2">
-            作者：<span class="font-medium">{{ illust.author?.name }}</span>
-          </p>
-          <div class="flex flex-wrap gap-1">
-            <Tag
-                v-for="tag in illust.tags"
-                :key="tag.id"
-                :value="tag.name"
-                severity="secondary"
-                class="text-xs"
-            />
-          </div>
-        </template>
-
-        <!-- 操作按钮 -->
-        <template #footer>
-          <div class="flex justify-end gap-2">
-            <Button
-                icon="pi pi-pencil"
-                text
-                rounded
-                severity="info"
-                @click="$router.push(`/admin/illustration/edit/${illust.id}`)"
-            />
-            <Button
-                icon="pi pi-trash"
-                text
-                rounded
-                severity="danger"
-                @click="deleteIllust(illust.id)"
-            />
-          </div>
-        </template>
-      </Card>
+        :illustration="illust"
+      ></IllustrationItemPreviewMgr>
     </div>
-
     <!-- 加载中 -->
     <div v-else class="text-center py-10 text-gray-500">
       <i class="pi pi-spin pi-spinner text-2xl"></i>
