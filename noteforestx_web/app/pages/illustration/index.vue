@@ -90,7 +90,7 @@ const searchHistory = ref<{ content: string, type: string }[]>([
     type: "tag"
   },
   {
-    content: "",
+    content: "和かない",
     type: "author"
   }
 
@@ -149,6 +149,8 @@ onUnmounted(() => {
 onMounted(() => {
   themeStore.showHeaderSearchBtn = true
   window.addEventListener("keydown", keyDownHandler)
+
+  themeStore.searchDialog.show = true
 })
 
 </script>
@@ -208,6 +210,9 @@ onMounted(() => {
 
     <div class="flex flex-col p-4">
       <SearchIllustrationInput/>
+<!--      <div class="mt-2 font-light text-sm">-->
+<!--        使用Enter键以搜索-->
+<!--      </div>-->
       <div class="mt-2 mb-2 flex flex-row justify-between items-center">
         <span class="font-medium">最近搜索</span>
         <Button class="h-8 text-xs font-light" size="small" link label="清除搜索历史"></Button>
