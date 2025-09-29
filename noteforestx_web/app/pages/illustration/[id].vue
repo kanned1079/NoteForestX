@@ -54,21 +54,6 @@ onMounted(() => {
   <div class="mb-20 mt-10">
     <!-- 大布局 -->
     <div class="grid grid-cols-1 md:grid-cols-12 gap-8 px-4 lg:px-20">
-      <!-- 左侧插画 -->
-<!--      <div class="md:col-span-6">-->
-<!--        <div class="flex flex-col">-->
-<!--          <img-->
-<!--              v-for="i in illustration?.images"-->
-<!--              :key="i.id"-->
-<!--              :src="`${config.public.apiBase}/api/v1/illustration/file/${i.file_path}?size=medium`"-->
-<!--              alt="illustration"-->
-<!--              class="rounded-md mb-4 drop-shadow-md object-contain"-->
-<!--              loading="lazy"-->
-<!--          />-->
-<!--        </div>-->
-<!--      </div>-->
-      <!-- 左侧插画 -->
-      <!-- 左侧插画 -->
       <div class="md:col-span-6">
         <div class="flex flex-col">
           <div
@@ -93,9 +78,6 @@ onMounted(() => {
                 <div class="text-sm font-thin">
                   {{ i.width }} x {{ i.height }}px
                 </div>
-<!--                <div class="text-sm font-thin">-->
-<!--                  {{ dayjs(i?.created_at).format("YYYY/MM/DD HH:mm") }}-->
-<!--                </div>-->
                 <div class="text-sm font-light">
                   {{ i.id }}
                 </div>
