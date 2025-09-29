@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/*:root {*/
+/*    --body-bg-light: #f9fafc;*/
+/*    --body-bg-dark: #1f1f1f;*/
+/*}*/
+
+/*body {*/
+/*    background-color: var(--body-bg-light);*/
+/*    color: #111827;*/
+/*}*/
+
+/*.dark body {*/
+/*    background-color: var(--body-bg-dark);*/
+/*    color: #f9fafc;*/
+/*}*/

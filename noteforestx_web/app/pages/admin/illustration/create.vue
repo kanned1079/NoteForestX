@@ -90,6 +90,11 @@ type fetchTagsResponseDto = {
 
 const tagsResponse = ref<fetchTagsResponseDto>()
 
+const showTagsSelection = ref<boolean>(false)
+const tagSearch = ref<string>("")
+const tagsSelected = ref<IllustrationTag[]>([])
+
+
 const fetchIllustrationTags = async () => {
   try {
     const data = await $fetch<fetchTagsResponseDto>(`/api/admin/illustration_tag`, {
@@ -97,27 +102,31 @@ const fetchIllustrationTags = async () => {
       query: {
         page: 1,
         size: 100,
+        search: tagSearch.value
       }
     });
     if (data) {
-      // illustration.value = data;
       tagsResponse.value = data
-      for (let i = 0; i < 5; i++) {
-        tagsResponse.value.list.push(tagsResponse.value.list[1])
-      }
     }
   } catch (err: any) {
     console.error("err: ", err);
   }
 };
 
-const showTagsSelection = ref<boolean>(false)
-const tagSearch = ref<string>("")
-const tagsSelected = ref<IllustrationTag[]>([])
-const onPressTagSearch = () => {
+const onPressTagSearch = async () => {
   console.log("tag search")
   console.log(tagSearch.value)
+  await fetchIllustrationTags()
 }
+
+const delTag = (uuid: string) => {
+  // 从 newIllustration.tags_id 里移除
+  newIllustration.value.tags_id = newIllustration.value.tags_id.filter(id => id !== uuid)
+
+  // 从已选 tagsSelected 里移除
+  tagsSelected.value = tagsSelected.value.filter(tag => tag.id !== uuid)
+}
+
 const addTag = (tag: IllustrationTag) => {
   // 如果已经在 newIllustration.tags_id 中，就不重复添加
   if (newIllustration.value.tags_id.includes(tag.id as string)) {
@@ -192,10 +201,10 @@ onMounted(() => {
           >
             <!-- 自定義上傳區 -->
             <template #header="{ chooseCallback }">
-              <Card @click="chooseCallback" class="rounded-lg shadow-none">
+              <Card @click="chooseCallback" class="shadow-none">
                 <template #content>
                   <div
-                      class="w-full aspect-[3/1] rounded-lg flex flex-col justify-center items-center cursor-pointer"
+                      class="w-full aspect-[3/1] flex flex-col justify-center items-center cursor-pointer"
                   >
                     <p class="opacity-80 text-center pointer-events-none">
                       {{ t('admin.illustration.imageUploadedTitle') }}
@@ -210,6 +219,25 @@ onMounted(() => {
           </FileUpload>
 
 
+
+<!--          <Skeleton width="100%" height="150px" class="rounded-lg">-->
+
+
+<!--          </Skeleton>-->
+
+          <Card v-if="uploadedFiles.length===0" class="rounded-lg mt-4 border-1 shadow-none">
+
+            <template #content>
+              <div
+                  class="w-full h-64 rounded-lg flex flex-col justify-center items-center cursor-pointer"
+              >
+
+                还没有上传图片
+                </div>
+              </template>
+          </Card>
+
+
         </div>
 
         <!-- 右侧：表单 -->
@@ -222,7 +250,8 @@ onMounted(() => {
             <label for="name">Illustration name</label>
             <IconField>
               <InputIcon class="pi pi-images"></InputIcon>
-              <InputText autofocus variant="outlined" size="small" id="name" placeholder="夏夜に咲く星" v-model="newIllustration.name" class="w-full"/>
+              <InputText autofocus variant="outlined" size="small" id="name" placeholder="夏夜に咲く星"
+                         v-model="newIllustration.name" class="w-full"/>
             </IconField>
           </div>
 
@@ -235,14 +264,16 @@ onMounted(() => {
             <label for="link">Original link</label>
             <IconField>
               <InputIcon class="pi pi-link"></InputIcon>
-              <InputText size="small" id="link" v-model="newIllustration.link" placeholder="https://www.pixiv.net/artworks/000000000"
+              <InputText size="small" id="link" v-model="newIllustration.link"
+                         placeholder="https://www.pixiv.net/artworks/000000000"
                          class="w-full"/>
             </IconField>
           </div>
 
           <div class="flex flex-col gap-2">
             <label for="description">Description</label>
-            <Textarea  size="small" id="description" placeholder="ひさかたの あめゆくつきを あみにさし わがおほきみは きぬがさにせり。"
+            <Textarea size="small" id="description"
+                      placeholder="ひさかたの あめゆくつきを あみにさし わがおほきみは きぬがさにせり。"
                       v-model="newIllustration.description" rows="4" class="w-full"/>
           </div>
 
@@ -251,9 +282,10 @@ onMounted(() => {
               <label for="source">Original</label>
             <Button link size="small" class="p-0 underline" @click="newIllustration.source='Pixiv'">Pixiv</Button>
             <Button link size="small" class="p-0 underline" @click="newIllustration.source='X'">X</Button>
-            <Button link size="small" class="p-0 underline" @click="newIllustration.source='Instagram'">Instagram</Button>
+            <Button link size="small" class="p-0 underline"
+                    @click="newIllustration.source='Instagram'">Instagram</Button>
             </span>
-            <InputText  size="small" id="source" placeholder="Pixiv" v-model="newIllustration.source" class="w-full"/>
+            <InputText size="small" id="source" placeholder="Pixiv" v-model="newIllustration.source" class="w-full"/>
           </div>
 
           <div class="flex flex-col gap-2">
@@ -267,7 +299,8 @@ onMounted(() => {
           <div class="flex flex-col gap-2">
             <span class="space-x-2">
               <label for="tag">Tags</label>
-            <Button link size="small" class="p-0 underline" @click="showTagsSelection=!showTagsSelection">選擇標籤</Button>
+            <Button link size="small" class="p-0 underline"
+                    @click="showTagsSelection=!showTagsSelection">選擇標籤</Button>
             </span>
             <div class="flex flex-wrap gap-2">
               <Tag
@@ -278,7 +311,10 @@ onMounted(() => {
                   size="small"
                   class="text-xs font-normal hover:underline"
                   :value="i.name"
+                  @click="delTag(i.id)"
               ></Tag>
+              <Tag size="small" class="text-sm font-normal" v-if="tagsSelected.length===0" icon="pi pi-info-circle" severity="warn" value="你还没有选择标签"></Tag>
+
 
             </div>
 
@@ -289,12 +325,13 @@ onMounted(() => {
                   <InputIcon class="pi pi-search"></InputIcon>
                   <InputText size="small" id="link" v-model="tagSearch" placeholder="女の子"
                              class="w-full"
-                  @keyup.enter="onPressTagSearch"
+                             @keyup.enter="onPressTagSearch"
                   />
                   <InputIcon class="pi pi-hashtag"></InputIcon>
                 </IconField>
               </template>
               <div class="pt-2">
+                <p class="text-sm font-semibold pb-1">最近添加的标签</p>
                 <div class="flex flex-wrap gap-2">
                   <Tag
                       v-for="i in tagsResponse?.list"
@@ -351,5 +388,6 @@ onMounted(() => {
 
 .p-panel {
   border: 0;
+  background-color: rgba(0, 0, 0, 0) !important;
 }
 </style>

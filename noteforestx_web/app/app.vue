@@ -3,6 +3,7 @@
 </script>
 
 <template>
+
   <NuxtLayout>
 <!--    <Transition-->
 <!--        name="fade"-->
@@ -29,4 +30,10 @@
 .fade-leave-to {
   opacity: 0;
 }
+
+
+body {
+  //background-color: #9ca3af;
+}
+
 </style>
