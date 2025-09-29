@@ -112,6 +112,21 @@ const fetchIllustrationTags = async () => {
 };
 
 const showTagsSelection = ref<boolean>(false)
+const tagSearch = ref<string>("")
+const tagsSelected = ref<IllustrationTag[]>([])
+const onPressTagSearch = () => {
+  console.log("tag search")
+  console.log(tagSearch.value)
+}
+const addTag = (tag: IllustrationTag) => {
+  // 如果已经在 newIllustration.tags_id 中，就不重复添加
+  if (newIllustration.value.tags_id.includes(tag.id as string)) {
+    return
+  }
+  // 添加到已选 tag 列表
+  newIllustration.value.tags_id.push(tag.id as string)
+  tagsSelected.value.push(tag)
+}
 
 fetchIllustrationTags()
 
@@ -252,50 +267,52 @@ onMounted(() => {
           <div class="flex flex-col gap-2">
             <span class="space-x-2">
               <label for="tag">Tags</label>
-            <Button link size="small" class="p-0 underline" @click="showTagsSelection=true">選擇標籤</Button>
+            <Button link size="small" class="p-0 underline" @click="showTagsSelection=!showTagsSelection">選擇標籤</Button>
             </span>
             <div class="flex flex-wrap gap-2">
               <Tag
-                  v-for="i in tagsResponse?.list"
+                  v-for="i in tagsSelected"
                   :key="i.id"
                   icon="pi pi-hashtag"
+                  severity="success"
                   size="small"
                   class="text-xs font-normal hover:underline"
                   :value="i.name"
               ></Tag>
+
             </div>
-
-<!--            <Transition-->
-<!--                enter-active-class="transition-all duration-300 ease-out"-->
-<!--                leave-active-class="transition-all duration-300 ease-in"-->
-<!--                enter-from-class="max-h-0 opacity-0 overflow-hidden"-->
-<!--                enter-to-class="max-h-96 opacity-100 overflow-hidden"-->
-<!--                leave-from-class="max-h-96 opacity-100 overflow-hidden"-->
-<!--                leave-to-class="max-h-0 opacity-0 overflow-hidden"-->
-<!--            >-->
-<!--              <div v-if="showTagsSelection" class="mt-2 p-4 border rounded-md">-->
-<!--                <Button link size="small" class="p-0 underline" @click="showTagsSelection=false">Close</Button>-->
-
-<!--                標籤搜索等功能-->
-<!--              </div>-->
-<!--            </Transition>-->
 
             <Panel header="標籤選擇" :collapsed="!showTagsSelection">
 
               <template #header>
-                <p class="text-sm pl-2.5">Select</p>
+                <IconField class="w-full border-0">
+                  <InputIcon class="pi pi-search"></InputIcon>
+                  <InputText size="small" id="link" v-model="tagSearch" placeholder="女の子"
+                             class="w-full"
+                  @keyup.enter="onPressTagSearch"
+                  />
+                  <InputIcon class="pi pi-hashtag"></InputIcon>
+                </IconField>
               </template>
-              <p class="m-0">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-              </p>
+              <div class="pt-2">
+                <div class="flex flex-wrap gap-2">
+                  <Tag
+                      v-for="i in tagsResponse?.list"
+                      :key="i.id"
+                      icon="pi pi-hashtag"
+                      size="small"
+                      class="text-xs font-normal hover:underline"
+                      :value="i.name"
+                      @click="addTag(i)"
+                  ></Tag>
+                </div>
+              </div>
             </Panel>
           </div>
 
           <div class="space-x-2 space-y-2">
 
           </div>
-
 
           <Button
 
@@ -326,5 +343,13 @@ onMounted(() => {
 .p-panel-header {
   height: 35px;
   padding: 0 !important;
+}
+
+.p-panel-content {
+  padding: 0 !important;
+}
+
+.p-panel {
+  border: 0;
 }
 </style>
