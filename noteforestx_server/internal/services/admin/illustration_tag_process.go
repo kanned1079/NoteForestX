@@ -2,13 +2,14 @@ package admin
 
 import (
 	"errors"
-	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
-	"gorm.io/gorm"
 	"net/http"
 	"noteforestx_server/internal/models"
 	"noteforestx_server/internal/services/admin/dto"
 	"strings"
+
+	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
+	"gorm.io/gorm"
 )
 
 // doc process crud
@@ -135,7 +136,7 @@ func (this *AdminService) GetIllustrationTagList(ctx *gin.Context) {
 		req.Page = 1
 	}
 	if req.Size <= 0 {
-		req.Size = 10
+		req.Size = 20
 	}
 
 	var tags []models.IllustrationTag

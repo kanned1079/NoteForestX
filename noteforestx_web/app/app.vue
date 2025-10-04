@@ -32,8 +32,27 @@
 }
 
 
-body {
-  //background-color: #9ca3af;
+ :root{
+   --body-bg: #f8fafc;
+   --text: #111;
+ }
+
+@media (prefers-color-scheme: dark){
+  :root{
+    --body-bg: #111113; /* 你提到想用的更深色 */
+    --text: #eee;
+  }
+}
+
+html,body{
+  height:100%;
+  margin:0;
+}
+
+body{
+  background: var(--body-bg);
+  color: var(--text);
+  transition: background .25s ease, color .25s ease;
 }
 
 </style>

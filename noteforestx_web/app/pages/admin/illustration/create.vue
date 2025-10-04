@@ -7,10 +7,12 @@ import InputText from "primevue/inputtext"
 import Textarea from "primevue/textarea"
 import Checkbox from "primevue/checkbox"
 import Button from "primevue/button"
+import {useToast} from 'primevue/usetoast';
 import PageHeaderL2 from "~/components/PageHeaderL2.vue";
 import type {Illustration, IllustrationTag} from "~/types/illustration";
 
 const {t} = useI18n()
+const toast = useToast();
 
 // 表单 DTO
 type createIllustrationRequestDto = {
@@ -94,22 +96,40 @@ const showTagsSelection = ref<boolean>(false)
 const tagSearch = ref<string>("")
 const tagsSelected = ref<IllustrationTag[]>([])
 
+const tagsSearchPage = ref<number>(1)
+const tagsSearchSize = ref<number>(40)
+const tagsSearchTotal = ref<number>(0)
 
 const fetchIllustrationTags = async () => {
   try {
     const data = await $fetch<fetchTagsResponseDto>(`/api/admin/illustration_tag`, {
       method: "GET",
       query: {
-        page: 1,
-        size: 100,
+        page: tagsSearchPage.value,
+        size: tagsSearchSize.value,
         search: tagSearch.value
       }
     });
     if (data) {
       tagsResponse.value = data
+      setTimeout(() => showTagsSelection.value = true, 500)
+      if (tagsResponse.value.list.length === 0) {
+        toast.add({
+          severity: 'warn',
+          summary: t('admin.illustration.tagsSearchNotFound'),
+          detail: t('admin.illustration.tagsSearchNotFoundHint', {name: tagSearch.value}),
+          life: 3000
+        });
+      }
     }
   } catch (err: any) {
     console.error("err: ", err);
+    toast.add({
+      severity: 'error',
+      summary: t('universal.errToast'),
+      detail: `${t('universal.errToastMessage')} ${err}`,
+      life: 3000
+    });
   }
 };
 
@@ -137,10 +157,44 @@ const addTag = (tag: IllustrationTag) => {
   tagsSelected.value.push(tag)
 }
 
-fetchIllustrationTags()
+// fetchIllustrationTags()
+
+const getTotalPagesFunc = (total: number, size: number): number => {
+  if (!tagsResponse.value) return 1
+  return Math.ceil(tagsResponse.value.total / tagsResponse.value.size)
+}
+
+const onPressTagSearchPaBtn = async (op: 'increase' | 'decrease') => {
+  let overIndexErr = () => {
+    toast.add({
+      severity: 'info',
+      summary: t('universal.info'),
+      detail: t('universal.overIndex'),
+      life: 3000,
+    });
+  }
+
+  let maxPages = getTotalPagesFunc(tagsResponse.value?.total || 1, tagsResponse.value?.page || 1)
+  switch (op) {
+    case "increase": {// 向後一頁
+      if (tagsSearchPage.value >= maxPages) return overIndexErr()
+      tagsSearchPage.value += 1;
+    }
+      break
+    case "decrease": { //
+      if (tagsSearchPage.value <= 1) return overIndexErr()
+      tagsSearchPage.value -= 1;
+    }
+      break
+  }
+  await fetchIllustrationTags()
+}
+
 
 onMounted(() => {
-  setTimeout(() => showTagsSelection.value = true, 1000)
+  setTimeout(() => {
+    fetchIllustrationTags()
+  }, 500)
 })
 
 </script>
@@ -163,7 +217,7 @@ onMounted(() => {
             <div
                 v-for="(url, idx) in previewUrls"
                 :key="idx"
-                class="relative group w-full shadow-lg rounded-lg"
+                class="relative group w-full drop-shadow-lg rounded-lg"
             >
               <!-- 圖片填滿 -->
               <img
@@ -219,11 +273,10 @@ onMounted(() => {
           </FileUpload>
 
 
+          <!--          <Skeleton width="100%" height="150px" class="rounded-lg">-->
 
-<!--          <Skeleton width="100%" height="150px" class="rounded-lg">-->
 
-
-<!--          </Skeleton>-->
+          <!--          </Skeleton>-->
 
           <Card v-if="uploadedFiles.length===0" class="rounded-lg mt-4 border-1 shadow-none">
 
@@ -233,8 +286,8 @@ onMounted(() => {
               >
 
                 还没有上传图片
-                </div>
-              </template>
+              </div>
+            </template>
           </Card>
 
 
@@ -313,12 +366,11 @@ onMounted(() => {
                   :value="i.name"
                   @click="delTag(i.id)"
               ></Tag>
-              <Tag size="small" class="text-sm font-normal" v-if="tagsSelected.length===0" icon="pi pi-info-circle" severity="warn" value="你还没有选择标签"></Tag>
-
-
+              <Tag size="small" class="text-sm font-normal" v-if="tagsSelected.length===0" icon="pi pi-info-circle"
+                   severity="warn" value="你还没有选择标签"></Tag>
             </div>
 
-            <Panel header="標籤選擇" :collapsed="!showTagsSelection">
+            <Panel :collapsed="!showTagsSelection">
 
               <template #header>
                 <IconField class="w-full border-0">
@@ -331,8 +383,26 @@ onMounted(() => {
                 </IconField>
               </template>
               <div class="pt-2">
-                <p class="text-sm font-semibold pb-1">最近添加的标签</p>
-                <div class="flex flex-wrap gap-2">
+                <Message v-if="tagsResponse?.list.length===0" class="mt-1 mb-1" severity="warn" size="small">
+                  {{ t('admin.illustration.tagsSearchNotFound') }}
+                </Message>
+                <div class="flex flex-row justify-between items-center mb-1">
+                  <span class="space-x-2" v-if="tagsResponse?.list.length!==0">
+<!--                  <label for="tag">Tags</label>-->
+                  <label class="text-sm font-semibold pb-1">選取Tag</label>
+                  <Button link size="small" class="p-0 underline"
+                          @click="onPressTagSearchPaBtn('decrease')"
+                  >
+                    {{ t('universal.pageF') }}
+                  </Button>
+                    <Button link size="small" class="p-0 underline"
+                            @click="onPressTagSearchPaBtn('increase')"
+                    >
+                    {{ t('universal.pageA') }}
+                  </Button>
+                </span>
+                </div>
+                <div class="flex flex-wrap gap-2 justify-start">
                   <Tag
                       v-for="i in tagsResponse?.list"
                       :key="i.id"
@@ -341,7 +411,29 @@ onMounted(() => {
                       class="text-xs font-normal hover:underline"
                       :value="i.name"
                       @click="addTag(i)"
-                  ></Tag>
+                  />
+                </div>
+                <!--                <div class="flex flex-wrap gap-2">-->
+                <!--                  <Tag-->
+                <!--                      v-for="i in tagsResponse?.list"-->
+                <!--                      :key="i.id"-->
+                <!--                      icon="pi pi-hashtag"-->
+                <!--                      size="small"-->
+                <!--                      class="text-xs font-normal hover:underline"-->
+                <!--                      :value="i.name"-->
+                <!--                      @click="addTag(i)"-->
+                <!--                  ></Tag>-->
+                <!--                </div>-->
+
+                <div class="space-x-2 mt-2 opacity-70">
+                  <label class="text-sm font-semibold pb-1">
+                    分頁參數
+                  </label>
+                  <label class="text-sm font-normal font-mono pb-1">
+                    [{{ t('universal.current') }} {{ tagsResponse?.page || 1 }}/{{ t('universal.total') }}
+                    {{ getTotalPagesFunc(tagsResponse?.total || 1, tagsResponse?.page || 1) }}]
+                  </label>
+                  <!--                  <label class="text-sm font-normal font-mono pb-1 ">{{ tagsResponse?.total }}</label>-->
                 </div>
               </div>
             </Panel>

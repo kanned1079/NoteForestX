@@ -22,7 +22,15 @@
     "noLoginRole": "点击以登录"
   },
   "universal": {
-    "showSize": "显示数量"
+    "showSize": "显示数量",
+    "errToast": "遇到錯誤",
+    "errToastMessage": "錯誤信息：",
+    "pageF" : "向前一頁",
+    "pageA" : "向後一頁",
+    "current": "當前",
+    "total": "總計",
+    "info": "提示",
+    "overIndex": "超出所允許的頁面編號下標"
   },
   "admin": {
     "illustration": {
@@ -31,7 +39,11 @@
       "selectTags": "選擇Tags",
       "imageUploadedTitle": "點擊以上傳文件",
       "noImageUploaded": "上傳前請核對文件名、圖片格式以及順序，第一張圖片將作為插畫集的封面。",
-      "uploadImageDescription": "點擊按鈕來添加插畫文件，支持主流圖片格式文件，請確保文件名正確，不要上傳敏感數據，比如銀行卡號和密碼，新用卡號安全碼等等。"
+      "uploadImageDescription": "點擊按鈕來添加插畫文件，支持主流圖片格式文件，請確保文件名正確，不要上傳敏感數據，比如銀行卡號和密碼，新用卡號安全碼等等。",
+
+
+      "tagsSearchNotFound": "無搜索結果",
+      "tagsSearchNotFoundHint": "對於名為 {name} 的Tag，無搜索結果"
     }
   }
 }

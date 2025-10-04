@@ -86,7 +86,7 @@ const deleteIllust = async (id: string) => {
 }
 
 const createNewIllustrationClick = async () => router.push({
-  path: "/admin/illustration/create"
+  path: "/admin/illustration/create",
 })
 
 // 初始化加载
