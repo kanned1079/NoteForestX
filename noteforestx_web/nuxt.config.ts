@@ -303,13 +303,13 @@ export default defineNuxtConfig({
         locales: [
             {code: 'en_us', language: 'en-US', file: 'en_US.json'},
             {code: 'zh_cn', language: 'zh-CN', file: 'zh_CN.json'},
-            {code: 'zh_hk', language: 'zh-HK', file: 'zh_HK.json'},
-            {code: 'ja_jp', language: 'ja-JP', file: 'ja_JP.json'},
-            {code: 'es_es', language: 'es-ES', file: 'es_ES.json'},
-            {code: 'fr_fr', language: 'fr-FR', file: 'fr_FR.json'},
-            {code: 'fi_fi', language: 'fi-FI', file: 'fi_FI.json'},
-            {code: 'de_de', language: 'de-DE', file: 'de_DE.json'},
-            {code: 'nl_nl', language: 'nl-NL', file: 'nl_NL.json'}
+            // {code: 'zh_hk', language: 'zh-HK', file: 'zh_HK.json'},
+            // {code: 'ja_jp', language: 'ja-JP', file: 'ja_JP.json'},
+            // {code: 'es_es', language: 'es-ES', file: 'es_ES.json'},
+            // {code: 'fr_fr', language: 'fr-FR', file: 'fr_FR.json'},
+            // {code: 'fi_fi', language: 'fi-FI', file: 'fi_FI.json'},
+            // {code: 'de_de', language: 'de-DE', file: 'de_DE.json'},
+            // {code: 'nl_nl', language: 'nl-NL', file: 'nl_NL.json'}
         ],
         strategy: 'prefix',
         defaultLocale: "zh_cn"

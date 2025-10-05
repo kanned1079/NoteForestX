@@ -3,16 +3,14 @@ import {ref} from "vue"
 import {useI18n} from "vue-i18n"
 import PageHeader from "~/components/PageHeader.vue"
 import FileUpload, {type FileUploadSelectEvent} from "primevue/fileupload"
-import InputText from "primevue/inputtext"
-import Textarea from "primevue/textarea"
-import Checkbox from "primevue/checkbox"
-import Button from "primevue/button"
 import {useToast} from 'primevue/usetoast';
 import PageHeaderL2 from "~/components/PageHeaderL2.vue";
 import type {Illustration, IllustrationTag} from "~/types/illustration";
+import type{DialogProps} from 'primevue/dialog'
 
 const {t} = useI18n()
 const toast = useToast();
+
 
 // 表单 DTO
 type createIllustrationRequestDto = {
@@ -165,7 +163,7 @@ const getTotalPagesFunc = (total: number, size: number): number => {
 }
 
 const onPressTagSearchPaBtn = async (op: 'increase' | 'decrease') => {
-  let overIndexErr = () => {
+  const overIndexErr = () => {
     toast.add({
       severity: 'info',
       summary: t('universal.info'),
@@ -176,12 +174,12 @@ const onPressTagSearchPaBtn = async (op: 'increase' | 'decrease') => {
 
   let maxPages = getTotalPagesFunc(tagsResponse.value?.total || 1, tagsResponse.value?.page || 1)
   switch (op) {
-    case "increase": {// 向後一頁
+    case "increase": {
       if (tagsSearchPage.value >= maxPages) return overIndexErr()
       tagsSearchPage.value += 1;
     }
       break
-    case "decrease": { //
+    case "decrease": {
       if (tagsSearchPage.value <= 1) return overIndexErr()
       tagsSearchPage.value -= 1;
     }
@@ -190,11 +188,15 @@ const onPressTagSearchPaBtn = async (op: 'increase' | 'decrease') => {
   await fetchIllustrationTags()
 }
 
+const showModalCard = ref<boolean>(false)
+const dialogRef = ref<HTMLElement | null>(null)
+const dialogTitle = ref<string>("")
 
 onMounted(() => {
   setTimeout(() => {
     fetchIllustrationTags()
   }, 500)
+
 })
 
 </script>
@@ -300,7 +302,7 @@ onMounted(() => {
 
 
           <div class="flex flex-col gap-2">
-            <label for="name">Illustration name</label>
+            <label for="name">{{ t('universal.illustration.name') }}</label>
             <IconField>
               <InputIcon class="pi pi-images"></InputIcon>
               <InputText autofocus variant="outlined" size="small" id="name" placeholder="夏夜に咲く星"
@@ -314,7 +316,7 @@ onMounted(() => {
           <!--          </div>-->
 
           <div class="flex flex-col gap-2">
-            <label for="link">Original link</label>
+            <label for="link">{{ t('universal.illustration.link') }}</label>
             <IconField>
               <InputIcon class="pi pi-link"></InputIcon>
               <InputText size="small" id="link" v-model="newIllustration.link"
@@ -324,7 +326,7 @@ onMounted(() => {
           </div>
 
           <div class="flex flex-col gap-2">
-            <label for="description">Description</label>
+            <label for="description">{{ t('universal.illustration.description') }}</label>
             <Textarea size="small" id="description"
                       placeholder="ひさかたの あめゆくつきを あみにさし わがおほきみは きぬがさにせり。"
                       v-model="newIllustration.description" rows="4" class="w-full"/>
@@ -332,7 +334,7 @@ onMounted(() => {
 
           <div class="flex flex-col gap-2">
             <span class="space-x-2">
-              <label for="source">Original</label>
+              <label for="source">{{ t('universal.illustration.original') }}</label>
             <Button link size="small" class="p-0 underline" @click="newIllustration.source='Pixiv'">Pixiv</Button>
             <Button link size="small" class="p-0 underline" @click="newIllustration.source='X'">X</Button>
             <Button link size="small" class="p-0 underline"
@@ -342,16 +344,16 @@ onMounted(() => {
           </div>
 
           <div class="flex flex-col gap-2">
-            <label class="text-sm">Is Limited (NSFW)</label>
+            <label class="text-sm">{{ t('universal.illustration.isLimited') }}</label>
             <div class="flex items-center gap-2">
               <Checkbox size="small" v-model="newIllustration.limited" :binary="true" inputId="limited"/>
-              <label for="limited" class="text-sm">如果被选择，该插画集将对部分用户不可见。</label>
+              <label for="limited" class="text-sm">{{ t('universal.illustration.isLimitedHint') }}</label>
             </div>
           </div>
 
           <div class="flex flex-col gap-2">
             <span class="space-x-2">
-              <label for="tag">Tags</label>
+              <label for="tag">{{ t('universal.illustration.tags') }}</label>
             <Button link size="small" class="p-0 underline"
                     @click="showTagsSelection=!showTagsSelection">選擇標籤</Button>
             </span>
@@ -366,7 +368,7 @@ onMounted(() => {
                   :value="i.name"
                   @click="delTag(i.id)"
               ></Tag>
-              <Tag size="small" class="text-sm font-normal" v-if="tagsSelected.length===0" icon="pi pi-info-circle"
+              <Tag size="small" class="text-xs font-normal" v-if="tagsSelected.length===0" icon="pi pi-info-circle"
                    severity="warn" value="你还没有选择标签"></Tag>
             </div>
 
@@ -375,7 +377,7 @@ onMounted(() => {
               <template #header>
                 <IconField class="w-full border-0">
                   <InputIcon class="pi pi-search"></InputIcon>
-                  <InputText size="small" id="link" v-model="tagSearch" placeholder="女の子"
+                  <InputText size="small" id="link" v-model="tagSearch" :placeholder="t('admin.illustration.tagSearchInputPlaceholder', {name: '女の子'})"
                              class="w-full"
                              @keyup.enter="onPressTagSearch"
                   />
@@ -386,10 +388,8 @@ onMounted(() => {
                 <Message v-if="tagsResponse?.list.length===0" class="mt-1 mb-1" severity="warn" size="small">
                   {{ t('admin.illustration.tagsSearchNotFound') }}
                 </Message>
-                <div class="flex flex-row justify-between items-center mb-1">
+                <div class="flex flex-row justify-between items-baseline mb-1">
                   <span class="space-x-2" v-if="tagsResponse?.list.length!==0">
-<!--                  <label for="tag">Tags</label>-->
-                  <label class="text-sm font-semibold pb-1">選取Tag</label>
                   <Button link size="small" class="p-0 underline"
                           @click="onPressTagSearchPaBtn('decrease')"
                   >
@@ -399,6 +399,18 @@ onMounted(() => {
                             @click="onPressTagSearchPaBtn('increase')"
                     >
                     {{ t('universal.pageA') }}
+                  </Button>
+                    <label class="font-normal text-xs font-mono pb-1 opacity-70">
+                      {{ t('universal.pages') }}
+                    [{{ tagsResponse?.page || 1 }}/{{ getTotalPagesFunc(tagsResponse?.total || 1, tagsResponse?.page || 1) }}]
+                  </label>
+                </span>
+                  <span class="text-sm">
+                  <label>沒有找到符合的標籤？</label>
+                   <Button link size="small" class="p-0 underline"
+                           @click="() => {dialogTitle='admin.illustration.tagMgr' ;showModalCard=true}"
+                   >
+                    {{ "添加" }}
                   </Button>
                 </span>
                 </div>
@@ -413,28 +425,7 @@ onMounted(() => {
                       @click="addTag(i)"
                   />
                 </div>
-                <!--                <div class="flex flex-wrap gap-2">-->
-                <!--                  <Tag-->
-                <!--                      v-for="i in tagsResponse?.list"-->
-                <!--                      :key="i.id"-->
-                <!--                      icon="pi pi-hashtag"-->
-                <!--                      size="small"-->
-                <!--                      class="text-xs font-normal hover:underline"-->
-                <!--                      :value="i.name"-->
-                <!--                      @click="addTag(i)"-->
-                <!--                  ></Tag>-->
-                <!--                </div>-->
 
-                <div class="space-x-2 mt-2 opacity-70">
-                  <label class="text-sm font-semibold pb-1">
-                    分頁參數
-                  </label>
-                  <label class="text-sm font-normal font-mono pb-1">
-                    [{{ t('universal.current') }} {{ tagsResponse?.page || 1 }}/{{ t('universal.total') }}
-                    {{ getTotalPagesFunc(tagsResponse?.total || 1, tagsResponse?.page || 1) }}]
-                  </label>
-                  <!--                  <label class="text-sm font-normal font-mono pb-1 ">{{ tagsResponse?.total }}</label>-->
-                </div>
               </div>
             </Panel>
           </div>
@@ -456,6 +447,19 @@ onMounted(() => {
       </div>
     </div>
   </div>
+
+  <Dialog
+      ref="dialogRef"
+      :dismissableMask="true"
+      v-model:visible="showModalCard"
+      maximizable modal
+      :header="t(dialogTitle as string)"
+      :style="{ width: '50rem' }"
+      :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
+  >
+    <IllustrationTagsMgrPanel :tag_list="tagsResponse?.list" />
+  </Dialog>
+
 </template>
 
 <style>
