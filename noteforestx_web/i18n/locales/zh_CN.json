@@ -25,6 +25,7 @@
     "showSize": "显示数量",
     "errToast": "遇到錯誤",
     "successToast": "成功",
+    "warnToast": "注意",
     "pages": "頁碼",
     "errToastMessage": "錯誤信息：",
     "pageF" : "前一頁",
@@ -41,8 +42,16 @@
       "isLimited": "是否限制型(NSFW)",
       "isLimitedHint": "如果被選擇，該插畫集將對部分用戶不可見。",
       "tags": "標籤",
+      "author": "作者",
+      "eshi": "畫師",
+      "relatedIllustrationCount": "關聯插畫數量",
       "createdAt": "創建時間",
-      "updatedAt": "更新時間"
+      "updatedAt": "更新時間",
+      "edit": "編輯",
+      "delete": "刪除",
+      "save": "保存",
+      "cancel": "取消",
+      "notFound": "無內容"
     }
   },
   "admin": {
@@ -55,13 +64,22 @@
       "uploadImageDescription": "點擊按鈕來添加插畫文件，支持主流圖片格式文件，請確保文件名正確，不要上傳敏感數據，比如銀行卡號和密碼，新用卡號安全碼等等。",
 
       "tagSelectorOpenBtn": "打開選擇器",
-      "tagSearchInputPlaceholder": "搜尋单个Tag名稱并键入Enter以搜寻　eg: {name} ...",
+      "tagSearchInputPlaceholder": "搜尋Tag名并键入Enter以搜寻　eg: {name} ...",
+      "authorSearchInputPlaceholder": "搜尋作者名并键入Enter以搜寻　eg: {name} ...",
       "tagsSearchNotFound": "無搜索結果",
       "tagsSearchNotFoundHint": "對於名為 {name} 的Tag，無搜索結果",
       "tagMgr": "標籤管理&添加",
+      "authorMgr": "作者管理&添加",
       "tag": {
         "copySuccess": "複製到剪貼板成功 {text}",
-        "copyFailure": "複製錯誤 {msg}"
+        "copyFailure": "複製錯誤 {msg}",
+        "tagNameNotValid": "標籤名不合法或重名，請檢查後重試一次。",
+        "editTagNameHint": "*僅更新Tag名稱，所關聯的所有作品都將被修改。",
+        "editTagNameSuccessHint": "修改Tag名稱成功",
+        "deleteTagSuccessHint": "刪除Tag成功",
+        "deleteTagConflict": "該Tag有連結到插畫集，不能刪除。",
+        "noTagsSatisfied": "沒有找到符合的標籤？",
+        "noAuthorSatisfied": "沒有找到符合的作者？"
       }
     }
   }

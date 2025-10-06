@@ -5,8 +5,10 @@ import PageHeader from "~/components/PageHeader.vue"
 import FileUpload, {type FileUploadSelectEvent} from "primevue/fileupload"
 import {useToast} from 'primevue/usetoast';
 import PageHeaderL2 from "~/components/PageHeaderL2.vue";
-import type {Illustration, IllustrationTag} from "~/types/illustration";
-import type{DialogProps} from 'primevue/dialog'
+import type {Illustration, IllustrationAuthor, IllustrationTag} from "~/types/illustration";
+import type {DialogProps} from 'primevue/dialog'
+import {Icon} from '@vicons/utils'
+import {CaretForwardOutline, GlobeOutline} from "@vicons/ionicons5"
 
 const {t} = useI18n()
 const toast = useToast();
@@ -88,14 +90,23 @@ type fetchTagsResponseDto = {
   list: IllustrationTag[]
 }
 
+type fetchAuthorsResponseDto = {
+  page: number
+  size: number
+  total: number
+  list: IllustrationAuthor[]
+}
+
 const tagsResponse = ref<fetchTagsResponseDto>()
+const authorsResponse = ref<fetchAuthorsResponseDto>()
 
 const showTagsSelection = ref<boolean>(false)
+const showAuthorSelection = ref<boolean>(false)
 const tagSearch = ref<string>("")
 const tagsSelected = ref<IllustrationTag[]>([])
 
 const tagsSearchPage = ref<number>(1)
-const tagsSearchSize = ref<number>(40)
+const tagsSearchSize = ref<number>(30)
 const tagsSearchTotal = ref<number>(0)
 
 const fetchIllustrationTags = async () => {
@@ -109,7 +120,9 @@ const fetchIllustrationTags = async () => {
       }
     });
     if (data) {
+      console.log(data)
       tagsResponse.value = data
+      tagsSearchTotal.value = data.total
       setTimeout(() => showTagsSelection.value = true, 500)
       if (tagsResponse.value.list.length === 0) {
         toast.add({
@@ -131,10 +144,53 @@ const fetchIllustrationTags = async () => {
   }
 };
 
+const authorSearchPage = ref<number>(1)
+const authorSearchSize = ref<number>(30)
+const authorSearchTotal = ref<number>(0)
+const authorSearch = ref<string>("")
+const authorSelected = ref<IllustrationAuthor>()
+
+const fetchAuthors = async () => {
+  try {
+    const data = await $fetch<fetchAuthorsResponseDto>(`/api/admin/illustration_author`, {
+      method: "GET",
+      query: {
+        page: authorSearchPage.value,
+        size: authorSearchSize.value,
+        search: authorSearch.value
+      }
+    });
+    if (data) {
+      console.log(data)
+      authorsResponse.value = data
+      authorSearchTotal.value = data.total
+      setTimeout(() => showAuthorSelection.value = true, 800)
+      if (authorsResponse.value.list.length === 0) {
+        toast.add({
+          severity: 'warn',
+          summary: t('admin.illustration.tagsSearchNotFound'),
+          detail: t('admin.illustration.tagsSearchNotFoundHint', {name: tagSearch.value}),
+          life: 3000
+        });
+      }
+    }
+  } catch (err: any) {
+    console.error("err: ", err);
+    toast.add({
+      severity: 'error',
+      summary: t('universal.errToast'),
+      detail: `${t('universal.errToastMessage')} ${err}`,
+      life: 3000
+    });
+  }
+};
+
 const onPressTagSearch = async () => {
-  console.log("tag search")
-  console.log(tagSearch.value)
   await fetchIllustrationTags()
+}
+
+const onPressAuthorSearch = async () => {
+  await fetchAuthors()
 }
 
 const delTag = (uuid: string) => {
@@ -153,6 +209,13 @@ const addTag = (tag: IllustrationTag) => {
   // 添加到已选 tag 列表
   newIllustration.value.tags_id.push(tag.id as string)
   tagsSelected.value.push(tag)
+}
+
+const addAuthor = (author: IllustrationAuthor) => {
+  if (author) {
+    authorSelected.value = author
+    newIllustration.value.author_id = author.id
+  }
 }
 
 // fetchIllustrationTags()
@@ -188,13 +251,22 @@ const onPressTagSearchPaBtn = async (op: 'increase' | 'decrease') => {
   await fetchIllustrationTags()
 }
 
+const openLink = (url: string | undefined) => {
+  if (url) {
+    window.open(url, "_blank", "noopener noreferrer");
+  }
+};
+
 const showModalCard = ref<boolean>(false)
 const dialogRef = ref<HTMLElement | null>(null)
-const dialogTitle = ref<string>("")
+const dialogTitle = ref<string>("admin.illustration.tagMgr")
+
+fetchIllustrationTags()
+fetchAuthors()
 
 onMounted(() => {
   setTimeout(() => {
-    fetchIllustrationTags()
+
   }, 500)
 
 })
@@ -221,13 +293,9 @@ onMounted(() => {
                 :key="idx"
                 class="relative group w-full drop-shadow-lg rounded-lg"
             >
-              <!-- 圖片填滿 -->
               <img
                   :src="url"
-                  class="w-full h-auto object-contain rounded-lg"
-              />
-
-              <!-- 底部懸浮信息 -->
+                  class="w-full h-auto object-contain rounded-lg"/>
               <div
                   class="absolute bottom-0 left-0 right-0 bg-black/30 text-white text-sm px-3 py-2
              opacity-0 group-hover:opacity-100 transition-opacity duration-300
@@ -274,25 +342,16 @@ onMounted(() => {
             </template>
           </FileUpload>
 
-
-          <!--          <Skeleton width="100%" height="150px" class="rounded-lg">-->
-
-
-          <!--          </Skeleton>-->
-
           <Card v-if="uploadedFiles.length===0" class="rounded-lg mt-4 border-1 shadow-none">
 
             <template #content>
               <div
                   class="w-full h-64 rounded-lg flex flex-col justify-center items-center cursor-pointer"
               >
-
                 还没有上传图片
               </div>
             </template>
           </Card>
-
-
         </div>
 
         <!-- 右侧：表单 -->
@@ -309,11 +368,6 @@ onMounted(() => {
                          v-model="newIllustration.name" class="w-full"/>
             </IconField>
           </div>
-
-          <!--          <div class="flex flex-col gap-2">-->
-          <!--            <label for="author">作者ID</label>-->
-          <!--            <InputText id="author" v-model="newIllustration.author_id" class="w-full"/>-->
-          <!--          </div>-->
 
           <div class="flex flex-col gap-2">
             <label for="link">{{ t('universal.illustration.link') }}</label>
@@ -369,7 +423,7 @@ onMounted(() => {
                   @click="delTag(i.id)"
               ></Tag>
               <Tag size="small" class="text-xs font-normal" v-if="tagsSelected.length===0" icon="pi pi-info-circle"
-                   severity="warn" value="你还没有选择标签"></Tag>
+                   severity="warn" :value="t('admin.illustration.tag.noTagsSatisfied')"></Tag>
             </div>
 
             <Panel :collapsed="!showTagsSelection">
@@ -377,7 +431,8 @@ onMounted(() => {
               <template #header>
                 <IconField class="w-full border-0">
                   <InputIcon class="pi pi-search"></InputIcon>
-                  <InputText size="small" id="link" v-model="tagSearch" :placeholder="t('admin.illustration.tagSearchInputPlaceholder', {name: '女の子'})"
+                  <InputText size="small" id="link" v-model="tagSearch"
+                             :placeholder="t('admin.illustration.tagSearchInputPlaceholder', {name: '女の子'})"
                              class="w-full"
                              @keyup.enter="onPressTagSearch"
                   />
@@ -390,27 +445,26 @@ onMounted(() => {
                 </Message>
                 <div class="flex flex-row justify-between items-baseline mb-1">
                   <span class="space-x-2" v-if="tagsResponse?.list.length!==0">
-                  <Button link size="small" class="p-0 underline"
-                          @click="onPressTagSearchPaBtn('decrease')"
-                  >
-                    {{ t('universal.pageF') }}
-                  </Button>
-                    <Button link size="small" class="p-0 underline"
-                            @click="onPressTagSearchPaBtn('increase')"
-                    >
-                    {{ t('universal.pageA') }}
+
+                    <Button link size="small" class="p-0 underline" @click="onPressTagSearchPaBtn('decrease')"
+                    >{{ t('universal.pageF') }}
+                    </Button>
+                    <Button link size="small" class="p-0 underline" @click="onPressTagSearchPaBtn('increase')"
+                    >{{ t('universal.pageA') }}
                   </Button>
                     <label class="font-normal text-xs font-mono pb-1 opacity-70">
                       {{ t('universal.pages') }}
-                    [{{ tagsResponse?.page || 1 }}/{{ getTotalPagesFunc(tagsResponse?.total || 1, tagsResponse?.page || 1) }}]
+                    [{{
+                        tagsResponse?.page || 1
+                      }}/{{ getTotalPagesFunc(tagsResponse?.total || 1, tagsResponse?.page || 1) }}]
                   </label>
                 </span>
                   <span class="text-sm">
-                  <label>沒有找到符合的標籤？</label>
+                  <label>{{ t('admin.illustration.tag.noTagsSatisfied') }}</label>
                    <Button link size="small" class="p-0 underline"
                            @click="() => {dialogTitle='admin.illustration.tagMgr' ;showModalCard=true}"
                    >
-                    {{ "添加" }}
+                    {{ t('admin.illustration.tagMgr') }}
                   </Button>
                 </span>
                 </div>
@@ -423,6 +477,91 @@ onMounted(() => {
                       class="text-xs font-normal hover:underline"
                       :value="i.name"
                       @click="addTag(i)"
+                  />
+                </div>
+              </div>
+            </Panel>
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <span class="space-x-2">
+              <label for="tag">{{ `${t('universal.illustration.author')}/${t('universal.illustration.eshi')}` }}</label>
+            <Button link size="small" class="p-0 underline"
+                    @click="showAuthorSelection=!showAuthorSelection">選擇作者</Button>
+            </span>
+            <div class="gap-2 mb-2">
+              <div v-if="authorSelected" class="flex flex-col justify-start items-start">
+                <span class="flex flex-row items-center space-x-1">
+<!--                  <i class="pi pi-circle"></i>-->
+                  <Icon class="opacity-80"><CaretForwardOutline/></Icon>
+                  <span class="text-xl font-semibold opacity-75">{{ authorSelected?.name }}</span>
+                </span>
+                <span class="flex flex-row items-center space-x-1">
+                  <Icon class="opacity-80"><CaretForwardOutline/></Icon>
+                  <Button link class="p-0 text-sm font-extralight underline" :label="authorSelected.link"
+                          @click="openLink(authorSelected.link)">
+                </Button>
+                </span>
+
+              </div>
+              <div v-else>
+                <Skeleton class="mb-2" width="16rem" height="1.75rem"></Skeleton>
+                <Skeleton width="7rem" height="1rem"></Skeleton>
+              </div>
+
+            </div>
+
+            <Panel :collapsed="!showAuthorSelection">
+
+              <template #header>
+                <IconField class="w-full border-0">
+                  <InputIcon class="pi pi-search"></InputIcon>
+                  <InputText size="small" id="link" v-model="authorSearch"
+                             :placeholder="t('admin.illustration.authorSearchInputPlaceholder', {name: 'なつき'})"
+                             class="w-full"
+                             @keyup.enter="onPressAuthorSearch"
+                  />
+                  <InputIcon class="pi pi-user"></InputIcon>
+                </IconField>
+              </template>
+              <div class="pt-2">
+                <Message v-if="authorsResponse?.list.length===0" class="mt-1 mb-1" severity="warn" size="small">
+                  {{ t('admin.illustration.tagsSearchNotFound') }}
+                </Message>
+                <div class="flex flex-row justify-between items-baseline mb-1">
+                  <span class="space-x-2" v-if="tagsResponse?.list.length!==0">
+
+                    <Button link size="small" class="p-0 underline" @click="onPressTagSearchPaBtn('decrease')"
+                    >{{ t('universal.pageF') }}
+                    </Button>
+                    <Button link size="small" class="p-0 underline" @click="onPressTagSearchPaBtn('increase')"
+                    >{{ t('universal.pageA') }}
+                  </Button>
+                    <label class="font-normal text-xs font-mono pb-1 opacity-70">
+                      {{ t('universal.pages') }}
+                    [{{
+                        tagsResponse?.page || 1
+                      }}/{{ getTotalPagesFunc(tagsResponse?.total || 1, tagsResponse?.page || 1) }}]
+                  </label>
+                </span>
+                  <span class="text-sm">
+                  <label>{{ t('admin.illustration.tag.noAuthorSatisfied') }}</label>
+                   <Button link size="small" class="p-0 underline"
+                           @click="() => {dialogTitle='admin.illustration.tagMgr' ;showModalCard=true}"
+                   >
+                    {{ t('admin.illustration.authorMgr') }}
+                  </Button>
+                </span>
+                </div>
+                <div class="flex flex-wrap gap-2 justify-start">
+                  <Tag
+                      v-for="i in authorsResponse?.list"
+                      :key="i.id"
+                      icon="pi pi-user"
+                      size="small"
+                      class="text-xs font-normal hover:underline"
+                      :value="i.name"
+                      @click="addAuthor(i)"
                   />
                 </div>
 
@@ -448,6 +587,7 @@ onMounted(() => {
     </div>
   </div>
 
+
   <Dialog
       ref="dialogRef"
       :dismissableMask="true"
@@ -457,7 +597,7 @@ onMounted(() => {
       :style="{ width: '50rem' }"
       :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
   >
-    <IllustrationTagsMgrPanel :tag_list="tagsResponse?.list" />
+    <IllustrationTagsMgrPanel :update-list="fetchIllustrationTags"/>
   </Dialog>
 
 </template>

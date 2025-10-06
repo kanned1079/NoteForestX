@@ -39,6 +39,7 @@ export type IllustrationAuthor = {
 export type IllustrationTag = {
     id: string
     name: string
+    related?: number
     created_at: string | null
     updated_at: string | null
     deleted_at: string | null

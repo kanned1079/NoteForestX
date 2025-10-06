@@ -1,16 +1,11 @@
 package models
 
 import (
+	"time"
+
 	"github.com/google/uuid"
 	"gorm.io/gorm"
-	"time"
 )
-
-/*
-一个示例
-一个插画集 其id是 `134997716` 一个字符串
-  其中有三张插画文件 分别是 `134997716_p0` `134997716_p1` `134997716_p2`
-*/
 
 // IllustrationImage 插畫圖片表 (一對多)
 type IllustrationImage struct {

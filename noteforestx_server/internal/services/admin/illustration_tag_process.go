@@ -6,6 +6,7 @@ import (
 	"noteforestx_server/internal/models"
 	"noteforestx_server/internal/services/admin/dto"
 	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -122,7 +123,10 @@ func (this *AdminService) UpdateIllustrationTagById(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, tag)
+	ctx.JSON(http.StatusOK, gin.H{
+		"tag":     tag,
+		"message": "success",
+	})
 }
 
 func (this *AdminService) GetIllustrationTagList(ctx *gin.Context) {
@@ -139,22 +143,86 @@ func (this *AdminService) GetIllustrationTagList(ctx *gin.Context) {
 		req.Size = 20
 	}
 
-	var tags []models.IllustrationTag
-	query := this.Db.Model(&models.IllustrationTag{})
-
-	if req.Search != "" {
-		search := "%" + req.Search + "%"
-		query = query.Where("name LIKE ?", search)
+	type TagWithRelated struct {
+		Id        uuid.UUID      `json:"id"`
+		Name      string         `json:"name"`
+		Related   int64          `json:"related"` // 關聯插畫數量
+		CreatedAt *time.Time     `json:"created_at"`
+		UpdatedAt *time.Time     `json:"updated_at"`
+		DeletedAt gorm.DeletedAt `json:"deleted_at"`
 	}
 
+	// ==== 構建搜尋條件 ====
+	search := ""
+	if req.Search != "" {
+		search = "%" + req.Search + "%"
+	}
+
+	// ==== 獲取總數 ====
 	var total int64
-	if err := query.Count(&total).Error; err != nil {
+	countQuery := this.Db.Model(&models.IllustrationTag{}).Where("deleted_at IS NULL")
+	if search != "" {
+		countQuery = countQuery.Where("name LIKE ?", search)
+	}
+	if err := countQuery.Count(&total).Error; err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
 	}
 
-	if err := query.Offset((req.Page - 1) * req.Size).Limit(req.Size).
-		Order("created_at desc").Find(&tags).Error; err != nil {
+	// ==== 如果請求要帶關聯數 ====
+	if req.Related {
+		var tagList []TagWithRelated
+		query := this.Db.
+			Table("x_illustration_tag AS t").
+			Select(`
+				t.id,
+				t.name,
+				t.created_at,
+				t.updated_at,
+				t.deleted_at,
+				COUNT(m.illustration_id) AS related
+			`).
+			Joins(`LEFT JOIN x_illustration_tag_mapping AS m 
+					ON t.id = m.tag_id AND m.deleted_at IS NULL`).
+			Where(`t.deleted_at IS NULL`)
+
+		// 搜尋條件
+		if search != "" {
+			query = query.Where("t.name LIKE ?", search)
+		}
+
+		err := query.
+			Group("t.id").
+			Order("t.created_at DESC").
+			Offset((req.Page - 1) * req.Size).
+			Limit(req.Size).
+			Scan(&tagList).Error
+
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+			return
+		}
+
+		ctx.JSON(http.StatusOK, gin.H{
+			"list":  tagList,
+			"total": total,
+			"page":  req.Page,
+			"size":  req.Size,
+		})
+		return
+	}
+
+	// ==== 普通標籤列表 ====
+	var tags []models.IllustrationTag
+	query := this.Db.Model(&models.IllustrationTag{}).Where("deleted_at IS NULL")
+	if search != "" {
+		query = query.Where("name LIKE ?", search)
+	}
+	if err := query.
+		Order("created_at DESC").
+		Offset((req.Page - 1) * req.Size).
+		Limit(req.Size).
+		Find(&tags).Error; err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
 	}
@@ -166,6 +234,61 @@ func (this *AdminService) GetIllustrationTagList(ctx *gin.Context) {
 		"size":  req.Size,
 	})
 }
+
+//func (this *AdminService) GetIllustrationTagList(ctx *gin.Context) {
+//	var req dto.GetIllustrationTagListRequestDto
+//	if err := ctx.ShouldBindQuery(&req); err != nil {
+//		ctx.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+//		return
+//	}
+//
+//	if req.Page <= 0 {
+//		req.Page = 1
+//	}
+//	if req.Size <= 0 {
+//		req.Size = 20
+//	}
+//
+//	type tagWithRelated struct {
+//		Related   int64          `json:"related"` // 在原模型定義上加的關聯作品數量
+//		Id        uuid.UUID      `json:"id"`
+//		Name      string         `json:"name"`
+//		CreatedAt *time.Time     `json:"created_at"`
+//		UpdatedAt *time.Time     `json:"updated_at"`
+//		DeletedAt gorm.DeletedAt `json:"deleted_at"`
+//	}
+//
+//	if req.Related { // 如果是true則查詢該tag關聯了多少個插畫集
+//
+//	}
+//
+//	var tags []models.IllustrationTag
+//	query := this.Db.Model(&models.IllustrationTag{})
+//
+//	if req.Search != "" {
+//		search := "%" + req.Search + "%"
+//		query = query.Where("name LIKE ?", search)
+//	}
+//
+//	var total int64
+//	if err := query.Count(&total).Error; err != nil {
+//		ctx.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+//		return
+//	}
+//
+//	if err := query.Offset((req.Page - 1) * req.Size).Limit(req.Size).
+//		Order("created_at desc").Find(&tags).Error; err != nil {
+//		ctx.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+//		return
+//	}
+//
+//	ctx.JSON(http.StatusOK, gin.H{
+//		"list":  tags,
+//		"total": total,
+//		"page":  req.Page,
+//		"size":  req.Size,
+//	})
+//}
 
 func (this *AdminService) GetIllustrationTagById(ctx *gin.Context) {
 	id := ctx.Param("id")

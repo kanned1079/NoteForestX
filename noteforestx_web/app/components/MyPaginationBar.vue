@@ -24,6 +24,9 @@ const onChangeSize = async (value: number) => {
   emit("update:size", value) // ✅ 双向绑定 size
   await props.fetchData()
 }
+
+
+
 </script>
 
 <template>
@@ -64,8 +67,9 @@ const onChangeSize = async (value: number) => {
   --p-paginator-nav-button-height: 2rem; /* 按钮高度 */
   --p-paginator-nav-button-border-radius: 0.375rem; /* 圆角 */
   --p-paginator-transition-duration: 150ms; /* 动画时间 */
-  --p-paginator-nav-button-background: #f9fafb; /* 默认背景 */
-  --p-paginator-nav-button-hover-background: #e5e7eb; /* hover 背景 */
+  //--p-paginator-nav-button-background: #f9fafb; /* 默认背景 */
+  //--p-paginator-nav-button-hover-background: #e5e7eb; /* hover 背景 */
+
 }
 
 .p-select-option {
