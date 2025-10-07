@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
-import type { Illustration } from "../types/illustration";
+import type { Illustration } from "~/types/illustration";
 const { locale } = useI18n();
 const config = useRuntimeConfig();
 
@@ -42,7 +42,7 @@ const onClickDelete = () => {
              flex items-center justify-center
              transition-shadow duration-200
              drop-shadow-sm hover:shadow-xl cursor-pointer"
-          @click="onClickIllItem(props.illustration?.id)"
+          @click="onClickIllItem"
       >
         <!-- 背景模糊图 -->
         <img

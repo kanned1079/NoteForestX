@@ -145,7 +145,7 @@ const fetchIllustrationTags = async () => {
 };
 
 const authorSearchPage = ref<number>(1)
-const authorSearchSize = ref<number>(30)
+const authorSearchSize = ref<number>(60)
 const authorSearchTotal = ref<number>(0)
 const authorSearch = ref<string>("")
 const authorSelected = ref<IllustrationAuthor>()
@@ -472,6 +472,7 @@ onMounted(() => {
                   <Tag
                       v-for="i in tagsResponse?.list"
                       :key="i.id"
+                      severity="info"
                       icon="pi pi-hashtag"
                       size="small"
                       class="text-xs font-normal hover:underline"

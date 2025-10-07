@@ -5,11 +5,15 @@ import Popover from 'primevue/popover';
 import dayjs from "dayjs";
 import {useI18n} from "vue-i18n";
 import {useToast} from "primevue/usetoast";
-import { Icon } from '@vicons/utils'
-import  {TrashOutline, PencilOutline } from "@vicons/ionicons5"
+import {Icon} from '@vicons/utils'
+import {TrashOutline, PencilOutline, AlertOutline} from "@vicons/ionicons5"
 import NotFoundResult from "~/components/NotFoundResult.vue";
+import ConfirmDialog from 'primevue/confirmdialog';
+import {useConfirm} from "primevue/useconfirm";
+
 const {t} = useI18n()
 const toast = useToast()
+const confirm = useConfirm();
 const props = defineProps<{
   // tag_list?: IllustrationTag[]
   updateList: () => void
@@ -54,7 +58,7 @@ type fetchTagsResponseDto = {
 }
 
 const tagsSearchPage = ref<number>(1)
-const tagsSearchSize = ref<number>(30)
+const tagsSearchSize = ref<number>(60)
 const tagTotal = ref<number>(0)
 const tagSearch = ref<string>("")
 
@@ -144,7 +148,7 @@ const onClickSave = async () => {
   }
 }
 
-const onClickDeleteTag = async (id: string | null | undefined) => {
+const handleDeleteTagById = async (id: string | null | undefined) => {
   if (id) {
     try {
       const data = await $fetch<{
@@ -175,6 +179,21 @@ const onClickDeleteTag = async (id: string | null | undefined) => {
   }
 }
 
+const showDeleteBtn = ref<boolean>(true)
+const showDeleteConfirmBtn = ref<boolean>(false)
+
+const switchToConfirm = () => {
+  showDeleteBtn.value = false
+  showDeleteConfirmBtn.value = true
+}
+
+const onClickDeleteConfirmTag = async (id: string | undefined) => {
+  console.log(id)
+  await handleDeleteTagById(id)
+  await fetchTagsList()
+}
+
+
 const onSearchTagPress = async () => {
 
 }
@@ -189,8 +208,8 @@ onBeforeMount(() => {
 <template>
   <div class="card">
 
-<!--    <PageHeaderL2 :title="'標籤管理'" :subtitle="'您可以在這裡管理所有的標籤，如果'" />-->
-<!--    <div></div>-->
+    <!--    <PageHeaderL2 :title="'標籤管理'" :subtitle="'您可以在這裡管理所有的標籤，如果'" />-->
+    <!--    <div></div>-->
 
     <div>
       <IconField class="w-full border-0 mt-2 mb-4">
@@ -208,7 +227,7 @@ onBeforeMount(() => {
       {{ t('admin.illustration.tagsSearchNotFound') }}
     </Message>
 
-    <NotFoundResult />
+    <NotFoundResult/>
 
     <div class="flex flex-wrap gap-2">
       <Tag
@@ -223,11 +242,11 @@ onBeforeMount(() => {
     </div>
 
     <div class="mt-6">
-      <MyPaginationBar :page="tagsSearchPage" :size="tagsSearchSize" :total="tagTotal" :fetch-data="fetchTagsList" />
+      <MyPaginationBar :page="tagsSearchPage" :size="tagsSearchSize" :total="tagTotal" :fetch-data="fetchTagsList"/>
     </div>
 
     <!-- Popover -->
-    <Popover ref="popoverRef" class="opacity-95">
+    <Popover ref="popoverRef" class="opacity-95" @hide="() => {showDeleteBtn=true; showDeleteConfirmBtn=false}">
       <div v-if="currentTag as IllustrationTag" class="text-xs space-y-1">
         <div class="font-mono hover:underline" @click="copy(currentTag?.name as string)"><b
             class="opacity-80">{{ t('universal.illustration.tags') }}: </b>{{ currentTag?.name }}
@@ -247,7 +266,7 @@ onBeforeMount(() => {
             t('universal.illustration.updatedAt')
           }}: </b>{{ dayjs(currentTag?.updated_at).format('YYYY-MM-DD HH:mm:ss') }}
         </div>
-       <div class="pt-1">
+        <div class="pt-1">
           <span class="space-x-2">
            <Tag
                size="small"
@@ -256,28 +275,75 @@ onBeforeMount(() => {
                @click="onClickEditBtn(currentTag)"
            >
              <template #icon>
-               <Icon><PencilOutline /></Icon>
+               <Icon><PencilOutline/></Icon>
              </template>
            </Tag>
-          <Tag
-              size="small"
-              severity="danger"
-              class="text-xs font-normal hover:underline cursor-pointer"
-              :value="t('universal.illustration.delete')"
-              @click="onClickDeleteTag(currentTag?.id)"
-          >
-            <template #icon>
-              <Icon><TrashOutline /></Icon>
-            </template>
-          </Tag>
+
+            <!--          <Tag-->
+            <!--              v-if="showDeleteBtn"-->
+            <!--              size="small"-->
+            <!--              severity="danger"-->
+            <!--              class="text-xs font-normal hover:underline cursor-pointer"-->
+            <!--              :value="t('universal.illustration.delete')"-->
+            <!--              @click="onClickDeleteTag"-->
+            <!--          >-->
+            <!--            <template #icon>-->
+            <!--              <Icon><TrashOutline/></Icon>-->
+            <!--            </template>-->
+            <!--          </Tag>-->
+            <!--            <Tag-->
+            <!--                v-if="showDeleteConfirmBtn"-->
+            <!--                size="small"-->
+            <!--                severity="contrast"-->
+            <!--                class="text-xs font-normal hover:underline cursor-pointer"-->
+            <!--                :value="t('universal.illustration.deleteConfirm')"-->
+            <!--                @click="onClickDeleteConfirmTag(currentTag?.id)"-->
+            <!--            >-->
+            <!--            <template #icon>-->
+            <!--              <Icon><TrashOutline/></Icon>-->
+            <!--            </template>-->
+            <!--          </Tag>-->
+
+           <Transition name="fade-only" mode="out-in">
+      <Tag
+          v-if="showDeleteBtn"
+          key="delete"
+          size="small"
+          severity="danger"
+          class="text-xs font-normal hover:underline cursor-pointer"
+          :value="t('universal.illustration.delete')"
+          @click="switchToConfirm"
+      >
+        <template #icon>
+          <Icon><TrashOutline/></Icon>
+        </template>
+      </Tag>
+
+      <Tag
+          v-else
+          key="confirm"
+          size="small"
+          severity="contrast"
+          class="text-xs font-normal hover:underline cursor-pointer"
+          :value="t('universal.illustration.deleteConfirm')"
+          @click="onClickDeleteConfirmTag(currentTag?.id)"
+      >
+        <template #icon>
+          <Icon><AlertOutline/></Icon>
+        </template>
+      </Tag>
+    </Transition>
+
+            <!--            <Tag icon="pi pi-cog" severity="contrast" value="Contrast"></Tag>-->
         </span>
-       </div>
+        </div>
       </div>
     </Popover>
   </div>
 
   <Dialog :show-header="true" :dismissable-mask="true" v-model:visible="showEditDialog"
-          :header="`${t('universal.illustration.edit')} 「${tagNameBeforeEditing}」`" :style="{ width: '25rem' }" position="top" :modal="true"
+          :header="`${t('universal.illustration.edit')} 「${tagNameBeforeEditing}」`" :style="{ width: '25rem' }"
+          position="top" :modal="true"
           :draggable="false">
 
     <div class="flex flex-col gap-2 ">
@@ -293,7 +359,9 @@ onBeforeMount(() => {
     </div>
 
     <span
-        class="text-surface-500 dark:text-surface-400 block mb-4 text-sm mt-2">{{ t('admin.illustration.tag.editTagNameHint') }}</span>
+        class="text-surface-500 dark:text-surface-400 block mb-4 text-sm mt-2">{{
+        t('admin.illustration.tag.editTagNameHint')
+      }}</span>
 
     <div class="flex justify-end gap-2 mt-4">
       <Button class="p" size="small" type="button" :label="t('universal.illustration.cancel')" severity="secondary"
@@ -309,4 +377,14 @@ onBeforeMount(() => {
   position: relative;
 }
 
+/* 淡入淡出動畫 */
+.fade-only-enter-active,
+.fade-only-leave-active {
+  transition: opacity 0.25s ease;
+}
+
+.fade-only-enter-from,
+.fade-only-leave-to {
+  opacity: 0;
+}
 </style>

@@ -50,8 +50,9 @@ type IllustrationAuthor struct {
 
 // IllustrationTag 插画标签表
 type IllustrationTag struct {
-	Id        uuid.UUID      `json:"id" gorm:"type:char(36);primaryKey"`
-	Name      string         `json:"name" gorm:"type:varchar(255);uniqueIndex"`
+	Id   uuid.UUID `json:"id" gorm:"type:char(36);primaryKey"`
+	Name string    `json:"name" gorm:"type:varchar(255);index"`
+	//Name      string         `json:"name" gorm:"type:varchar(255);uniqueIndex"`
 	CreatedAt *time.Time     `json:"created_at"`
 	UpdatedAt *time.Time     `json:"updated_at"`
 	DeletedAt gorm.DeletedAt `json:"deleted_at"`
