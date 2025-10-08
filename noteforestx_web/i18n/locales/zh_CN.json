@@ -22,17 +22,21 @@
     "noLoginRole": "点击以登录"
   },
   "universal": {
+    "pagination": {
+      "itemsPerPage": "{size} 項目/頁"
+    },
     "showSize": "显示数量",
     "errToast": "遇到錯誤",
     "successToast": "成功",
     "warnToast": "注意",
     "pages": "頁碼",
     "errToastMessage": "錯誤信息：",
-    "pageF" : "前一頁",
-    "pageA" : "後一頁",
+    "pageF": "前一頁",
+    "pageA": "後一頁",
     "current": "當前",
     "total": "總計",
     "info": "提示",
+    "formNotInvalid": "表單不符合要求，請檢查輸入項目。(400)",
     "overIndex": "超出所允許的頁面編號下標",
     "illustration": {
       "name": "插畫集名稱",
@@ -63,14 +67,16 @@
       "imageUploadedTitle": "點擊以上傳文件",
       "noImageUploaded": "上傳前請核對文件名、圖片格式以及順序，第一張圖片將作為插畫集的封面。",
       "uploadImageDescription": "點擊按鈕來添加插畫文件，支持主流圖片格式文件，請確保文件名正確，不要上傳敏感數據，比如銀行卡號和密碼，新用卡號安全碼等等。",
-
       "tagSelectorOpenBtn": "打開選擇器",
       "tagSearchInputPlaceholder": "搜尋Tag名并键入Enter以搜寻　eg: {name} ...",
       "authorSearchInputPlaceholder": "搜尋作者名并键入Enter以搜寻　eg: {name} ...",
       "tagsSearchNotFound": "無搜索結果",
-      "tagsSearchNotFoundHint": "對於名為 {name} 的Tag，無搜索結果",
+      "tagsSearchNotFoundHint": "對於名為 {name} 的Tag，無搜索結果，嘗試換一個關鍵詞。或使用Meta+Enter创建。",
+      "authorsSearchNotFoundHint": "對於名為 {name} 的作者，無搜索結果，嘗試換一個關鍵詞。或使用Meta+Enter创建。",
       "tagMgr": "標籤管理&添加",
       "authorMgr": "作者管理&添加",
+      "toggleCreateMode": "切換到新建模式",
+      "esc": "關閉當前窗口",
       "tag": {
         "copySuccess": "複製到剪貼板成功 {text}",
         "copyFailure": "複製錯誤 {msg}",
@@ -81,6 +87,14 @@
         "deleteTagConflict": "該Tag有連結到插畫集，不能刪除。",
         "noTagsSatisfied": "沒有找到符合的標籤？",
         "noAuthorSatisfied": "沒有找到符合的作者？"
+      },
+      "author": {
+      "editTagNameHint": "*僅更新作者名稱，所關聯的所有作品都將被修改。",
+        "deleteTagSuccessHint": "刪除成功",
+        "editSuccess": "編輯成功",
+        "noAuthorSatisfied": "沒有找到符合的標籤？",
+        "authorNameConflict": "遇到冲突，该作者是否已经存存在？",
+        "authorAdded": "添加作者成功"
       }
     }
   }

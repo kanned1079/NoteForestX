@@ -171,7 +171,7 @@ func (this *AdminService) GetIllustrationTagList(ctx *gin.Context) {
 
 	// ==== 如果請求要帶關聯數 ====
 	if req.Related {
-		var tagList []TagWithRelated
+		tagList := make([]TagWithRelated, 0) // ✅ 确保即使无结果也返回 []
 		query := this.Db.
 			Table("x_illustration_tag AS t").
 			Select(`
@@ -213,7 +213,7 @@ func (this *AdminService) GetIllustrationTagList(ctx *gin.Context) {
 	}
 
 	// ==== 普通標籤列表 ====
-	var tags []models.IllustrationTag
+	tags := make([]models.IllustrationTag, 0) // ✅ 确保即使无结果也返回 []
 	query := this.Db.Model(&models.IllustrationTag{}).Where("deleted_at IS NULL")
 	if search != "" {
 		query = query.Where("name LIKE ?", search)

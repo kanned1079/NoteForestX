@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
     }
 
     // 拼接後端請求 URL
-    const url = new URL(`${config.public.apiBase}/api/v1/admin/illustration_tag/${id}`)
+    const url = new URL(`${config.public.apiBase}/api/v1/admin/illustration_author/${id}`)
     Object.entries(query).forEach(([key, value]) => {
         if (value !== undefined) url.searchParams.set(key, value as string)
     })

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {ref, onBeforeMount} from "vue"
-import type {IllustrationTag} from "~/types/illustration";
+import type {IllustrationAuthor, IllustrationTag} from "~/types/illustration";
 import Popover from 'primevue/popover';
 import dayjs from "dayjs";
 import {useI18n} from "vue-i18n";
@@ -8,24 +8,18 @@ import {useToast} from "primevue/usetoast";
 import {Icon} from '@vicons/utils'
 import {TrashOutline, PencilOutline, AlertOutline} from "@vicons/ionicons5"
 import NotFoundResult from "~/components/NotFoundResult.vue";
-import ConfirmDialog from 'primevue/confirmdialog';
-import {useConfirm} from "primevue/useconfirm";
-
 const {t} = useI18n()
 const toast = useToast()
-const confirm = useConfirm();
 const props = defineProps<{
-  // tag_list?: IllustrationTag[]
-  updateList: () => void
+  updateList: () => void //　副組件執行更新
 }>()
 
-// const tagsArr = ref<IllustrationTag[]>()
+const animatedTag = ref<boolean>(false)
+
 const popoverRef = ref()
 const currentTag = ref<IllustrationTag | null>(null)
+const curr = ref<IllustrationAuthor>
 
-// const tagSearch = ref<string>("")
-
-// 點擊 tag 顯示 Popover
 const clickTag = (event: MouseEvent, tag: IllustrationTag) => {
   currentTag.value = tag
   popoverRef.value.toggle(event)
@@ -58,13 +52,16 @@ type fetchTagsResponseDto = {
 }
 
 const tagsSearchPage = ref<number>(1)
-const tagsSearchSize = ref<number>(60)
+const tagsSearchSize = ref<number>(30)
 const tagTotal = ref<number>(0)
 const tagSearch = ref<string>("")
+const lastSearch = ref<string>("")
 
 const tagsResponse = ref<fetchTagsResponseDto>()
 
 const fetchTagsList = async () => {
+  lastSearch.value = tagSearch.value
+  animatedTag.value = false
   try {
     const data = await $fetch<fetchTagsResponseDto>(`/api/admin/illustration_tag`, {
       method: "GET",
@@ -78,8 +75,8 @@ const fetchTagsList = async () => {
     if (data) {
       tagsResponse.value = data
       tagTotal.value = data.total
-      // setTimeout(() => showTagsSelection.value = true, 500)
-      if (tagsResponse.value.list.length === 0) {
+      animatedTag.value = true
+      if (!data.list || tagsResponse.value?.list.length == 0) {
         toast.add({
           severity: 'warn',
           summary: t('admin.illustration.tagsSearchNotFound'),
@@ -108,6 +105,7 @@ const tagNameBeforeEditing = ref<string>("")
 const onClickEditBtn = (tag: IllustrationTag | null) => {
   if (tag) {
     editTag.value = tag
+    newTagName.value = tag.name
     tagNameBeforeEditing.value = tag.name
     showEditDialog.value = true
   }
@@ -194,10 +192,6 @@ const onClickDeleteConfirmTag = async (id: string | undefined) => {
 }
 
 
-const onSearchTagPress = async () => {
-
-}
-
 fetchTagsList()
 
 onBeforeMount(() => {
@@ -207,9 +201,6 @@ onBeforeMount(() => {
 
 <template>
   <div class="card">
-
-    <!--    <PageHeaderL2 :title="'標籤管理'" :subtitle="'您可以在這裡管理所有的標籤，如果'" />-->
-    <!--    <div></div>-->
 
     <div>
       <IconField class="w-full border-0 mt-2 mb-4">
@@ -223,26 +214,35 @@ onBeforeMount(() => {
       </IconField>
     </div>
 
-    <Message v-if="tagsResponse?.list.length===0" class="mt-1 mb-1" severity="warn" size="medium">
-      {{ t('admin.illustration.tagsSearchNotFound') }}
-    </Message>
 
-    <NotFoundResult/>
+    <Transition name="fade-only" mode="out-in">
+      <NotFoundResult v-if="tagsResponse?.list.length===0" :title="t('admin.illustration.tagsSearchNotFound')"
+                      :text="t('admin.illustration.tagsSearchNotFoundHint', {name: lastSearch})"/>
+    </Transition>
 
-    <div class="flex flex-wrap gap-2">
-      <Tag
-          v-for="i in tagsResponse?.list"
-          :key="i.id"
-          icon="pi pi-hashtag"
-          size="small"
-          class="text-xs font-normal hover:underline cursor-pointer"
-          :value="i.name"
-          @click="(e) => clickTag(e, i)"
-      />
-    </div>
+
+    <Transition name="fade-only">
+      <div v-if="tagsResponse?.list.length!==0 && animatedTag" class="flex flex-wrap gap-2 mt-4">
+        <Tag
+            v-for="i in tagsResponse?.list"
+            :key="i.id"
+            icon="pi pi-hashtag"
+            size="small"
+            class="text-xs font-normal hover:underline cursor-pointer"
+            :value="i.name"
+            @click="(e) => clickTag(e, i)"
+        />
+      </div>
+    </Transition>
 
     <div class="mt-6">
-      <MyPaginationBar :page="tagsSearchPage" :size="tagsSearchSize" :total="tagTotal" :fetch-data="fetchTagsList"/>
+      <MyPaginationBar
+          v-model:page="tagsSearchPage"
+          v-model:size="tagsSearchSize"
+          :total="tagTotal"
+          :fetch-data="fetchTagsList"
+          place="right"
+      />
     </div>
 
     <!-- Popover -->
@@ -279,31 +279,6 @@ onBeforeMount(() => {
              </template>
            </Tag>
 
-            <!--          <Tag-->
-            <!--              v-if="showDeleteBtn"-->
-            <!--              size="small"-->
-            <!--              severity="danger"-->
-            <!--              class="text-xs font-normal hover:underline cursor-pointer"-->
-            <!--              :value="t('universal.illustration.delete')"-->
-            <!--              @click="onClickDeleteTag"-->
-            <!--          >-->
-            <!--            <template #icon>-->
-            <!--              <Icon><TrashOutline/></Icon>-->
-            <!--            </template>-->
-            <!--          </Tag>-->
-            <!--            <Tag-->
-            <!--                v-if="showDeleteConfirmBtn"-->
-            <!--                size="small"-->
-            <!--                severity="contrast"-->
-            <!--                class="text-xs font-normal hover:underline cursor-pointer"-->
-            <!--                :value="t('universal.illustration.deleteConfirm')"-->
-            <!--                @click="onClickDeleteConfirmTag(currentTag?.id)"-->
-            <!--            >-->
-            <!--            <template #icon>-->
-            <!--              <Icon><TrashOutline/></Icon>-->
-            <!--            </template>-->
-            <!--          </Tag>-->
-
            <Transition name="fade-only" mode="out-in">
       <Tag
           v-if="showDeleteBtn"
@@ -333,8 +308,6 @@ onBeforeMount(() => {
         </template>
       </Tag>
     </Transition>
-
-            <!--            <Tag icon="pi pi-cog" severity="contrast" value="Contrast"></Tag>-->
         </span>
         </div>
       </div>

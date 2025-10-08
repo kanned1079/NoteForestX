@@ -9,6 +9,8 @@ import type {Illustration, IllustrationAuthor, IllustrationTag} from "~/types/il
 import type {DialogProps} from 'primevue/dialog'
 import {Icon} from '@vicons/utils'
 import {CaretForwardOutline, GlobeOutline} from "@vicons/ionicons5"
+import {Command, CircleArrowOutUpLeft} from "lucide-vue-next"
+
 
 const {t} = useI18n()
 const toast = useToast();
@@ -215,6 +217,7 @@ const addAuthor = (author: IllustrationAuthor) => {
   if (author) {
     authorSelected.value = author
     newIllustration.value.author_id = author.id
+    showAuthorSelection.value = false
   }
 }
 
@@ -225,7 +228,7 @@ const getTotalPagesFunc = (total: number, size: number): number => {
   return Math.ceil(tagsResponse.value.total / tagsResponse.value.size)
 }
 
-const onPressTagSearchPaBtn = async (op: 'increase' | 'decrease') => {
+const onPressSearchPaBtn = async (type: 'tag' | 'author', op: 'increase' | 'decrease') => {
   const overIndexErr = () => {
     toast.add({
       severity: 'info',
@@ -235,20 +238,43 @@ const onPressTagSearchPaBtn = async (op: 'increase' | 'decrease') => {
     });
   }
 
-  let maxPages = getTotalPagesFunc(tagsResponse.value?.total || 1, tagsResponse.value?.page || 1)
-  switch (op) {
-    case "increase": {
-      if (tagsSearchPage.value >= maxPages) return overIndexErr()
-      tagsSearchPage.value += 1;
+  switch (type) {
+    case "tag": {
+      let maxPages = getTotalPagesFunc(tagsResponse.value?.total || 1, tagsResponse.value?.page || 1)
+      switch (op) {
+        case "increase": {
+          if (tagsSearchPage.value >= maxPages) return overIndexErr()
+          tagsSearchPage.value += 1;
+        }
+          break
+        case "decrease": {
+          if (tagsSearchPage.value <= 1) return overIndexErr()
+          tagsSearchPage.value -= 1;
+        }
+          break
+      }
+      await fetchIllustrationTags()
     }
       break
-    case "decrease": {
-      if (tagsSearchPage.value <= 1) return overIndexErr()
-      tagsSearchPage.value -= 1;
+    case "author": {
+      let maxPages = getTotalPagesFunc(authorsResponse.value?.total || 1, authorsResponse.value?.page || 1)
+      switch (op) {
+        case "increase": {
+          if (authorSearchPage.value >= maxPages) return overIndexErr()
+          authorSearchPage.value += 1;
+        }
+          break
+        case "decrease": {
+          if (authorSearchPage.value <= 1) return overIndexErr()
+          authorSearchPage.value -= 1;
+        }
+          break
+      }
+      await fetchAuthors()
     }
-      break
   }
-  await fetchIllustrationTags()
+
+
 }
 
 const openLink = (url: string | undefined) => {
@@ -257,7 +283,13 @@ const openLink = (url: string | undefined) => {
   }
 };
 
-const showModalCard = ref<boolean>(false)
+const showModalCard = ref<{
+  show: boolean
+  type: 'tag' | 'author'
+}>({
+  show: false,
+  type: 'tag'
+})
 const dialogRef = ref<HTMLElement | null>(null)
 const dialogTitle = ref<string>("admin.illustration.tagMgr")
 
@@ -446,10 +478,10 @@ onMounted(() => {
                 <div class="flex flex-row justify-between items-baseline mb-1">
                   <span class="space-x-2" v-if="tagsResponse?.list.length!==0">
 
-                    <Button link size="small" class="p-0 underline" @click="onPressTagSearchPaBtn('decrease')"
+                    <Button link size="small" class="p-0 underline" @click="onPressSearchPaBtn('tag', 'decrease')"
                     >{{ t('universal.pageF') }}
                     </Button>
-                    <Button link size="small" class="p-0 underline" @click="onPressTagSearchPaBtn('increase')"
+                    <Button link size="small" class="p-0 underline" @click="onPressSearchPaBtn('tag', 'increase')"
                     >{{ t('universal.pageA') }}
                   </Button>
                     <label class="font-normal text-xs font-mono pb-1 opacity-70">
@@ -462,7 +494,7 @@ onMounted(() => {
                   <span class="text-sm">
                   <label>{{ t('admin.illustration.tag.noTagsSatisfied') }}</label>
                    <Button link size="small" class="p-0 underline"
-                           @click="() => {dialogTitle='admin.illustration.tagMgr' ;showModalCard=true}"
+                           @click="() => {dialogTitle='admin.illustration.tagMgr' ;showModalCard.type='tag'; showModalCard.show=true}"
                    >
                     {{ t('admin.illustration.tagMgr') }}
                   </Button>
@@ -472,7 +504,6 @@ onMounted(() => {
                   <Tag
                       v-for="i in tagsResponse?.list"
                       :key="i.id"
-                      severity="info"
                       icon="pi pi-hashtag"
                       size="small"
                       class="text-xs font-normal hover:underline"
@@ -530,25 +561,25 @@ onMounted(() => {
                   {{ t('admin.illustration.tagsSearchNotFound') }}
                 </Message>
                 <div class="flex flex-row justify-between items-baseline mb-1">
-                  <span class="space-x-2" v-if="tagsResponse?.list.length!==0">
+                  <span class="space-x-2" v-if="authorsResponse?.list.length!==0">
 
-                    <Button link size="small" class="p-0 underline" @click="onPressTagSearchPaBtn('decrease')"
+                    <Button link size="small" class="p-0 underline" @click="onPressSearchPaBtn('author', 'decrease')"
                     >{{ t('universal.pageF') }}
                     </Button>
-                    <Button link size="small" class="p-0 underline" @click="onPressTagSearchPaBtn('increase')"
+                    <Button link size="small" class="p-0 underline" @click="onPressSearchPaBtn('author', 'increase')"
                     >{{ t('universal.pageA') }}
                   </Button>
                     <label class="font-normal text-xs font-mono pb-1 opacity-70">
                       {{ t('universal.pages') }}
                     [{{
                         tagsResponse?.page || 1
-                      }}/{{ getTotalPagesFunc(tagsResponse?.total || 1, tagsResponse?.page || 1) }}]
+                      }}/{{ getTotalPagesFunc(authorsResponse?.total || 1, authorsResponse?.page || 1) }}]
                   </label>
                 </span>
                   <span class="text-sm">
                   <label>{{ t('admin.illustration.tag.noAuthorSatisfied') }}</label>
                    <Button link size="small" class="p-0 underline"
-                           @click="() => {dialogTitle='admin.illustration.tagMgr' ;showModalCard=true}"
+                           @click="() => {dialogTitle='admin.illustration.authorMgr' ;showModalCard.type='author'; showModalCard.show=true}"
                    >
                     {{ t('admin.illustration.authorMgr') }}
                   </Button>
@@ -588,17 +619,46 @@ onMounted(() => {
     </div>
   </div>
 
-
   <Dialog
       ref="dialogRef"
       :dismissableMask="true"
-      v-model:visible="showModalCard"
+      v-model:visible="showModalCard.show"
       maximizable modal
       :header="t(dialogTitle as string)"
       :style="{ width: '50rem' }"
       :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
   >
-    <IllustrationTagsMgrPanel :update-list="fetchIllustrationTags"/>
+    <IllustrationTagsMgrPanel v-if="showModalCard.type==='tag'" :update-list="fetchIllustrationTags"/>
+
+
+    <IllustrationAuthorsMgrPanel v-if="showModalCard.type==='author'" :update-list="fetchAuthors"/>
+
+    <template #footer>
+      <Divider class="mt-0 mb-2" />
+      <div class="w-full flex flex-col justify-center items-start pl-5 pr-5 pb-3">
+        <div class="gap-2 flex flex-row justify-start items-center">
+          <Tag
+              size="small"
+              class="text-xs font-normal cursor-pointer font-mono pt-0.5 pb-0.5"
+              severity="secondary" value="Secondary">
+            <Command class="w-3 h-3"/>
+            + Enter
+          </Tag>
+          <span class="text-sm opacity-80">{{ t('admin.illustration.toggleCreateMode') }}</span>
+
+          <Tag
+              size="small"
+              class="text-xs font-normal cursor-pointer font-mono pt-0.5 pb-0.5 ml-2"
+              severity="secondary" value="Secondary">
+            <CircleArrowOutUpLeft class="w-3 h-3"/> Esc
+          </Tag>
+          <span class="text-sm opacity-80">{{ t('admin.illustration.esc') }}</span>
+        </div>
+
+
+      </div>
+    </template>
+
   </Dialog>
 
 </template>
@@ -627,4 +687,11 @@ onMounted(() => {
   border: 0;
   background-color: rgba(0, 0, 0, 0) !important;
 }
+
+.p-dialog-footer {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
 </style>
