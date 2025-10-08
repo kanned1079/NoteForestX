@@ -6,14 +6,97 @@
     "aboutMe": "About Me",
     "myAccount": "My Account",
     "logout": "Logout",
-    "statistic": "Statistical Data",
+    "statistic": "Statistics",
     "knowledgeMgr": "Article Management",
     "illustrationMgr": "Illustration Management",
-    "sponsor": "Sponsor"
+    "sponsor": "Sponsor",
+    "changLang": "Change Language"
   },
   "appMenu": {
     "general": "General",
     "profile": "User Portal",
-    "admin": "Admin Portal"
+    "admin": "Admin Portal",
+    "lang": "Language",
+    "userRole": "User",
+    "adminRole": "Administrator",
+    "noLoginRole": "Click to Login"
+  },
+  "universal": {
+    "pagination": {
+      "itemsPerPage": "{size} Items/Page"
+    },
+    "showSize": "Display Count",
+    "errToast": "Error Encountered",
+    "successToast": "Success",
+    "warnToast": "Warning",
+    "pages": "Page Numbers",
+    "errToastMessage": "Error Message: ",
+    "pageF": "Previous Page",
+    "pageA": "Next Page",
+    "current": "Current",
+    "total": "Total",
+    "info": "Information",
+    "formNotInvalid": "Form does not meet requirements, please check input items. (400)",
+    "overIndex": "Exceeds the allowed page number index",
+    "illustration": {
+      "name": "Illustration Collection Name",
+      "link": "Original Link",
+      "description": "Description",
+      "original": "Source",
+      "isLimited": "Is Restricted (NSFW)",
+      "isLimitedHint": "If selected, this illustration collection will be invisible to some users.",
+      "tags": "Tags",
+      "author": "Author",
+      "eshi": "Illustrator",
+      "relatedIllustrationCount": "Number of Related Illustrations",
+      "createdAt": "Creation Time",
+      "updatedAt": "Update Time",
+      "edit": "Edit",
+      "delete": "Delete",
+      "deleteConfirm": "Confirm Deletion",
+      "save": "Save",
+      "cancel": "Cancel",
+      "notFound": "No Content"
+    }
+  },
+  "admin": {
+    "illustration": {
+      "createIllustrationTitle": "Add New Illustration",
+      "createIllustrationSubtitle": "The new illustration will be directly added to the user-visible illustration list",
+      "selectTags": "Select Tags",
+      "imageUploadedTitle": "Click to Upload File",
+      "noImageUploaded": "Please check the file name, image format and order before uploading. The first image will be used as the cover of the illustration collection.",
+      "uploadImageDescription": "Click the button to add illustration files. Mainstream image formats are supported. Please ensure the file name is correct and do not upload sensitive data, such as bank card numbers, passwords, and new card security codes.",
+      "tagSelectorOpenBtn": "Open Selector",
+      "tagSearchInputPlaceholder": "Search for Tag name and press Enter to search　e.g: {name} ...",
+      "authorSearchInputPlaceholder": "Search for Author name and press Enter to search　e.g: {name} ...",
+      "tagsSearchNotFound": "No Search Results",
+      "tagsSearchNotFoundHint": "No search results for the Tag named {name}. Try a different keyword. Or use Meta+Enter to create.",
+      "authorsSearchNotFoundHint": "No search results for the Author named {name}. Try a different keyword. Or use Meta+Enter to create.",
+      "tagMgr": "Tag Management & Addition",
+      "authorMgr": "Author Management & Addition",
+      "toggleCreateMode": "Switch to Create Mode",
+      "esc": "Close Current Window",
+      "tag": {
+        "copySuccess": "Copied to Clipboard Successfully {text}",
+        "copyFailure": "Copy Error {msg}",
+        "tagNameNotValid": "Tag name is invalid or duplicated. Please check and try again.",
+        "editTagNameHint": "*Only update the Tag name. All associated works will be modified.",
+        "editTagNameSuccessHint": "Tag name updated successfully",
+        "deleteTagSuccessHint": "Tag deleted successfully",
+        "deleteTagConflict": "This Tag is linked to illustration collections and cannot be deleted.",
+        "noTagsSatisfied": "No matching tags found?",
+        "noAuthorSatisfied": "No matching authors found?"
+      },
+      "author": {
+        "editTagNameHint": "*Only update the Author name. All associated works will be modified.",
+        "deleteTagSuccessHint": "Deletion Successful",
+        "editSuccess": "Editing Successful",
+        "noAuthorSatisfied": "No matching tags found?",
+        "authorNameConflict": "Conflict encountered. Does this author already exist?",
+        "authorAdded": "Author added successfully",
+        "emptySearchHint": "Enter at least one keyword to proceed to the new author creation step."
+      }
+    }
   }
 }

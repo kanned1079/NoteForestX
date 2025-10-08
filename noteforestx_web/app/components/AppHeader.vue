@@ -138,13 +138,8 @@ const getUserName = computed(() => {
       : "sample@domain.com"
 })
 
+
 const onSearchBtnClicked = () => themeStore.searchDialog.show = true
-
-onMounted(() => {
-  console.log(userStore)
-})
-
-
 
 </script>
 

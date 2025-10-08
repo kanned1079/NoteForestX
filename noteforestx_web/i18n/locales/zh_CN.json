@@ -39,6 +39,7 @@
     "formNotInvalid": "表單不符合要求，請檢查輸入項目。(400)",
     "overIndex": "超出所允許的頁面編號下標",
     "illustration": {
+      "illustrationName": "插畫集信息Meta",
       "name": "插畫集名稱",
       "link": "原始連結",
       "description": "描述",
@@ -61,6 +62,7 @@
   },
   "admin": {
     "illustration": {
+      "editIllustrationMeta": "編輯插畫集信息，支持更新插畫集名稱、描述、來源、是否限制型(NSFW)、標籤、作者。部分功能請善用搜索。",
       "createIllustrationTitle": "添加新的插畫",
       "createIllustrationSubtitle": "新的插畫將直接加入對用戶可見的插畫列表中",
       "selectTags": "選擇Tags",
@@ -94,7 +96,8 @@
         "editSuccess": "編輯成功",
         "noAuthorSatisfied": "沒有找到符合的標籤？",
         "authorNameConflict": "遇到冲突，该作者是否已经存存在？",
-        "authorAdded": "添加作者成功"
+        "authorAdded": "添加作者成功",
+        "emptySearchHint": "至少一個關鍵詞進入新建作者步驟。"
       }
     }
   }

@@ -223,10 +223,8 @@ const addAuthor = (author: IllustrationAuthor) => {
 
 // fetchIllustrationTags()
 
-const getTotalPagesFunc = (total: number, size: number): number => {
-  if (!tagsResponse.value) return 1
-  return Math.ceil(tagsResponse.value.total / tagsResponse.value.size)
-}
+const getTotalPagesFunc = (total: number, size: number): number => Math.ceil(total / size)
+
 
 const onPressSearchPaBtn = async (type: 'tag' | 'author', op: 'increase' | 'decrease') => {
   const overIndexErr = () => {
@@ -389,7 +387,7 @@ onMounted(() => {
         <!-- 右侧：表单 -->
 
         <div class="md:col-span-6 flex flex-col gap-5">
-          <PageHeaderL2 title="插畫集信息" subtitle="編輯該插畫集信息"/>
+          <PageHeaderL2 :title="t('universal.illustration.illustrationName')" :subtitle="t('admin.illustration.editIllustrationMeta')"/>
 
 
           <div class="flex flex-col gap-2">
@@ -629,8 +627,6 @@ onMounted(() => {
       :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
   >
     <IllustrationTagsMgrPanel v-if="showModalCard.type==='tag'" :update-list="fetchIllustrationTags"/>
-
-
     <IllustrationAuthorsMgrPanel v-if="showModalCard.type==='author'" :update-list="fetchAuthors"/>
 
     <template #footer>
@@ -654,7 +650,6 @@ onMounted(() => {
           </Tag>
           <span class="text-sm opacity-80">{{ t('admin.illustration.esc') }}</span>
         </div>
-
 
       </div>
     </template>

@@ -202,6 +202,8 @@ const onClickAdd = async () => {
   if (authorSearch.value.trim()) {
     newAuthorAdd.value.name = authorSearch.value
     isAddNewAuthor.value = true
+  } else {
+    onToast("info", t('universal.info'), t('admin.illustration.author.emptySearchHint'))
   }
 }
 
