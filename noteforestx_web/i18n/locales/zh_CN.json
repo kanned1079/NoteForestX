@@ -80,6 +80,7 @@
       "toggleCreateMode": "切換到新建模式",
       "esc": "關閉當前窗口",
       "tag": {
+        "newTagName": "x",
         "copySuccess": "複製到剪貼板成功 {text}",
         "copyFailure": "複製錯誤 {msg}",
         "tagNameNotValid": "標籤名不合法或重名，請檢查後重試一次。",
@@ -88,7 +89,9 @@
         "deleteTagSuccessHint": "刪除Tag成功",
         "deleteTagConflict": "該Tag有連結到插畫集，不能刪除。",
         "noTagsSatisfied": "沒有找到符合的標籤？",
-        "noAuthorSatisfied": "沒有找到符合的作者？"
+        "noAuthorSatisfied": "沒有找到符合的作者？",
+        "authorAdded" : "新的Tag添加成功",
+        "tagNameConflict": "遇到衝突，該Tag是否已經存在？"
       },
       "author": {
       "editTagNameHint": "*僅更新作者名稱，所關聯的所有作品都將被修改。",

@@ -8,6 +8,7 @@ import {useToast} from "primevue/usetoast";
 import {Icon} from '@vicons/utils'
 import {TrashOutline, PencilOutline, AlertOutline} from "@vicons/ionicons5"
 import NotFoundResult from "~/components/NotFoundResult.vue";
+
 const {t} = useI18n()
 const toast = useToast()
 const props = defineProps<{
@@ -192,37 +193,109 @@ const onClickDeleteConfirmTag = async (id: string | undefined) => {
 }
 
 
+const isAddNewTag = ref<boolean>(false)
+const newTagAddName = ref<string>('')
+
+const handleAddNewTag = async () => {
+  // newAuthorAdd.value.name = newAuthorAdd.value.name.trim()
+  // newAuthorAdd.value.link = newAuthorAdd.value.link.trim()
+  newTagAddName.value = newTagAddName.value.trim()
+  if (!newTagAddName.value) {
+    return onToast("warn", t('universal.warnToast'), t('universal.formNotInvalid'))
+  }
+  try {
+    await $fetch<IllustrationTag>(`/api/admin/illustration_tag`, {
+      method: "POST",
+      body: {
+        name: newTagAddName.value
+      }
+    })
+    onToast("success", t('universal.successToast'), t('admin.illustration.tag.authorAdded'))
+    isAddNewTag.value = false
+    tagSearch.value = ""
+    // await fetchAuthorsList()
+    await fetchTagsList()
+    await props.updateList()
+    // await props.updateList()
+  } catch (err: any) {
+    let code = err?.response?.status ?? err?.statusCode
+    if (code === 409) {
+      onToast("error", t('universal.errToast'), `${t('admin.illustration.tag.tagNameConflict')} ${err}`)
+    } else {
+      onToast("error", t('universal.errToast'), `${t('universal.errToastMessage')} ${err}`)
+    }
+  }
+}
+
+const onClickAdd = async () => {
+  if (tagSearch.value.trim()) {
+    newTagAddName.value = tagSearch.value
+    isAddNewTag.value = true
+  } else {
+    // todo: defefwwf hint change
+    onToast("info", t('universal.info'), t('admin.illustration.author.emptySearchHint'))
+  }
+}
+
+
 fetchTagsList()
 
-onBeforeMount(() => {
-
-})
 </script>
 
 <template>
   <div class="card">
 
-    <div>
-      <IconField class="w-full border-0 mt-2 mb-4">
-        <InputIcon class="pi pi-search"></InputIcon>
-        <InputText size="medium" id="link" v-model="tagSearch"
-                   :placeholder="t('admin.illustration.tagSearchInputPlaceholder', {name: '女の子'})"
-                   class="w-full"
-                   @keyup.enter="fetchTagsList"
-        />
-        <InputIcon class="pi pi-hashtag"></InputIcon>
-      </IconField>
-    </div>
+    <Transition name="fade-only" mode="out-in">
+
+      <div v-if="!isAddNewTag">
+        <IconField class="w-full border-0 mt-2 mb-4">
+          <InputIcon class="pi pi-search"></InputIcon>
+          <InputText size="medium" id="link" v-model="tagSearch"
+                     :placeholder="t('admin.illustration.tagSearchInputPlaceholder', {name: '女の子'})"
+                     class="w-full"
+                     @keyup.enter="fetchTagsList"
+                     @keydown.enter.meta="onClickAdd"
+                     @keydown.enter.ctrl="onClickAdd"
+          />
+          <InputIcon class="pi pi-hashtag"></InputIcon>
+        </IconField>
+      </div>
+    </Transition>
+
+    <Transition name="fade-only" mode="out-in">
+      <div v-if="isAddNewTag" class="flex flex-col gap-2">
+
+        <div class="flex flex-col gap-2">
+          <label for="name">{{ t('universal.illustration.name') }}</label>
+          <IconField>
+            <InputIcon class="pi pi-user"></InputIcon>
+            <InputText autofocus variant="outlined" size="small" id="name" placeholder="なつき"
+                       v-model="newTagAddName" class="w-full"/>
+          </IconField>
+        </div>
+
+        <div class="flex justify-end gap-2 mt-4">
+          <Button icon="pi pi-replay" class="p" size="small" type="button" :label="t('universal.illustration.cancel')" severity="secondary"
+                  @click="() => {isAddNewTag = false; tagSearch=''; fetchTagsList()}"></Button>
+          <Button icon="pi pi-save" size="small" type="button" :label="t('universal.illustration.save')" @click="handleAddNewTag"></Button>
+        </div>
+      </div>
+    </Transition>
 
 
     <Transition name="fade-only" mode="out-in">
-      <NotFoundResult v-if="tagsResponse?.list.length===0" :title="t('admin.illustration.tagsSearchNotFound')"
-                      :text="t('admin.illustration.tagsSearchNotFoundHint', {name: lastSearch})"/>
+      <div v-if="tagsResponse?.list.length===0 && !isAddNewTag">
+      <NotFoundResult
+          v-if="tagsResponse?.list.length===0"
+          class="mt-4"
+          :title="t('admin.illustration.tagsSearchNotFound')"
+          :text="t('admin.illustration.tagsSearchNotFoundHint', {name: lastSearch})"/>
+      </div>
     </Transition>
 
 
     <Transition name="fade-only">
-      <div v-if="tagsResponse?.list.length!==0 && animatedTag" class="flex flex-wrap gap-2 mt-4">
+      <div v-if="tagsResponse?.list.length!==0 && animatedTag && !isAddNewTag" class="flex flex-wrap gap-2 mt-4">
         <Tag
             v-for="i in tagsResponse?.list"
             :key="i.id"
@@ -235,7 +308,9 @@ onBeforeMount(() => {
       </div>
     </Transition>
 
-    <div class="mt-6">
+
+    <Transition name="fade-only">
+      <div class="mt-6" v-if="!isAddNewTag">
       <MyPaginationBar
           v-model:page="tagsSearchPage"
           v-model:size="tagsSearchSize"
@@ -244,6 +319,7 @@ onBeforeMount(() => {
           place="right"
       />
     </div>
+    </Transition>
 
     <!-- Popover -->
     <Popover ref="popoverRef" class="opacity-95" @hide="() => {showDeleteBtn=true; showDeleteConfirmBtn=false}">

@@ -9,7 +9,7 @@ import type {Illustration, IllustrationAuthor, IllustrationTag} from "~/types/il
 import type {DialogProps} from 'primevue/dialog'
 import {Icon} from '@vicons/utils'
 import {CaretForwardOutline, GlobeOutline} from "@vicons/ionicons5"
-import {Command, CircleArrowOutUpLeft} from "lucide-vue-next"
+import {Command, CircleArrowOutUpLeft, Keyboard, Option} from "lucide-vue-next"
 
 
 const {t} = useI18n()
@@ -307,6 +307,51 @@ onMounted(() => {
   <div class="mt-4">
     <PageHeader :title="t('admin.illustration.createIllustrationTitle')"
                 :subtitle="t('admin.illustration.createIllustrationSubtitle')"/>
+    <div>
+      <div class="w-full flex flex-col justify-center items-start pl-0 pr-5 pb-3 space-y-2">
+        <!-- 行1：标签管理 -->
+        <div class="flex flex-row justify-start items-center gap-2">
+          <Tag
+              size="small"
+              class="text-xs font-normal cursor-pointer font-mono pt-0.5 pb-0.5"
+              severity="secondary"
+              value="Secondary"
+          >
+            <Option class="w-3 h-3" />
+            + t
+          </Tag>
+          <span class="text-sm opacity-80">进入以管理所有的标签</span>
+        </div>
+
+        <!-- 行2：作者管理 -->
+        <div class="flex flex-row justify-start items-center gap-2">
+          <Tag
+              size="small"
+              class="text-xs font-normal cursor-pointer font-mono pt-0.5 pb-0.5"
+              severity="secondary"
+              value="Secondary"
+          >
+            <Option class="w-3 h-3" />
+            + a
+          </Tag>
+          <span class="text-sm opacity-80">进入以管理所有的作者</span>
+        </div>
+
+        <!-- 行3：关闭Dialog -->
+        <div class="flex flex-row justify-start items-center gap-2">
+          <Tag
+              size="small"
+              class="text-xs font-normal cursor-pointer font-mono pt-0.5 pb-0.5"
+              severity="secondary"
+              value="Secondary"
+          >
+            <CircleArrowOutUpLeft class="w-3 h-3" />
+            Esc
+          </Tag>
+          <span class="text-sm opacity-80">关闭当前的Dialog或者提示框</span>
+        </div>
+      </div>
+    </div>
 
     <div class="mb-20 mt-10">
       <div class="grid grid-cols-1 md:grid-cols-12 gap-8 px-4 lg:px-20">
@@ -387,7 +432,8 @@ onMounted(() => {
         <!-- 右侧：表单 -->
 
         <div class="md:col-span-6 flex flex-col gap-5">
-          <PageHeaderL2 :title="t('universal.illustration.illustrationName')" :subtitle="t('admin.illustration.editIllustrationMeta')"/>
+          <PageHeaderL2 :title="t('universal.illustration.illustrationName')"
+                        :subtitle="t('admin.illustration.editIllustrationMeta')"/>
 
 
           <div class="flex flex-col gap-2">
@@ -599,6 +645,19 @@ onMounted(() => {
             </Panel>
           </div>
 
+          <Message severity="info">
+            <template #icon>
+              <Keyboard class="w-4 h-4"/>
+            </template>
+
+            <template #default>
+              <div class="flex flex-col justify-start">
+                <div>该页面的快捷键</div>
+
+              </div>
+            </template>
+          </Message>
+
           <div class="space-x-2 space-y-2">
 
           </div>
@@ -630,7 +689,7 @@ onMounted(() => {
     <IllustrationAuthorsMgrPanel v-if="showModalCard.type==='author'" :update-list="fetchAuthors"/>
 
     <template #footer>
-      <Divider class="mt-0 mb-2" />
+      <Divider class="mt-0 mb-2"/>
       <div class="w-full flex flex-col justify-center items-start pl-5 pr-5 pb-3">
         <div class="gap-2 flex flex-row justify-start items-center">
           <Tag
@@ -646,7 +705,8 @@ onMounted(() => {
               size="small"
               class="text-xs font-normal cursor-pointer font-mono pt-0.5 pb-0.5 ml-2"
               severity="secondary" value="Secondary">
-            <CircleArrowOutUpLeft class="w-3 h-3"/> Esc
+            <CircleArrowOutUpLeft class="w-3 h-3"/>
+            Esc
           </Tag>
           <span class="text-sm opacity-80">{{ t('admin.illustration.esc') }}</span>
         </div>

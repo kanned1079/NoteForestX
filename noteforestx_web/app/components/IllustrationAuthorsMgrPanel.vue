@@ -173,7 +173,7 @@ const newAuthorAdd = ref<{ name: string, link: string }>({
 const handleAddNewAuthor = async () => {
   newAuthorAdd.value.name = newAuthorAdd.value.name.trim()
   newAuthorAdd.value.link = newAuthorAdd.value.link.trim()
-  if (!newAuthorAdd.value.name || !newAuthorAdd.value.name) {
+  if (!newAuthorAdd.value.name || !newAuthorAdd.value.link) {
     return onToast("warn", t('universal.warnToast'), t('universal.formNotInvalid'))
   }
   try {
@@ -207,29 +207,9 @@ const onClickAdd = async () => {
   }
 }
 
-// const listeners: Record<string, (e: KeyboardEvent) => void> = {}
-//
-// const registerHotkey = (name: string, callback: () => void) => {
-//   listeners[name] = (e: KeyboardEvent) => {
-//     const isEnter = e.key === "Enter"
-//     const isShift = e.shiftKey
-//     const isCmdOrCtrl = e.metaKey || e.ctrlKey // mac ⌘ / win Ctrl
-//
-//     if (isEnter && isShift && isCmdOrCtrl) {
-//       e.preventDefault()
-//       callback()
-//     }
-//   }
-//   window.addEventListener("keydown", listeners[name])
-// }
-//
-// const backToSearch = () => {
-//
-//   isAddNewAuthor.value = false
-//
-// }
 
 fetchAuthorsList()
+
 </script>
 
 <template>
@@ -278,8 +258,6 @@ fetchAuthorsList()
                   @click="() => {isAddNewAuthor = false; authorSearch=''; fetchAuthorsList()}"></Button>
           <Button icon="pi pi-save" size="small" type="button" :label="t('universal.illustration.save')" @click="handleAddNewAuthor"></Button>
         </div>
-
-
       </div>
     </Transition>
 
