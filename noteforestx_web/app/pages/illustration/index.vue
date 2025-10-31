@@ -47,12 +47,13 @@ const fetchIllustrationList = async () => {
     if (data) {
       console.log(data)
       total.value = data.total
+      illustrationList.value = []
       data.list.forEach((item: Illustration) => illustrationList.value.push(item))
-      if (illustrationList.value) {
-        for (let i = 0; i < illustrationList.value[0].tags.length; i++ ){
-          console.log(`${illustrationList.value[0].tags[i].id} - ${illustrationList.value[0].tags[i].name}`)
-        }
-      }
+      // if (illustrationList.value) {
+      //   for (let i = 0; i < illustrationList.value[0].tags.length; i++ ){
+      //     console.log(`${illustrationList.value[0].tags[i].id} - ${illustrationList.value[0].tags[i].name}`)
+      //   }
+      // }
     }
   } catch (err: any) {
     console.log("err: ",err)

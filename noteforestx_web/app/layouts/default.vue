@@ -33,6 +33,15 @@ const closeBanner = () => {
 
 <template>
   <div>
+
+    <div v-if="showBanner" class="p-1 flex flex-row justify-between bg-gray-600 text-white items-center">
+        <div></div>
+      <div class="text-sm">Kaneko's blog, hello u my friend ~</div>
+      <div class="underline text-sm opacity-60 pr-2">
+        Close
+      </div>
+    </div>
+
     <AppHeader />
     <div class="mx-auto w-full max-w-[1680px] px-4 sm:px-6 md:px-8 lg:px-12">
       <Toast />

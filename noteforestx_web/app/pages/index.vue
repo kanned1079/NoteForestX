@@ -1,13 +1,17 @@
 <script setup lang="ts">
-// definePageMeta({
-//   layout: 'default',
-//   layoutTransition: true,
-// })
+definePageMeta({
+  layout: 'main',
+  layoutTransition: true,
+})
 </script>
 
 <template>
 <div class="">
-  index
+  <ClientOnly>
+    <FirstPage />
+  </ClientOnly>
+
+
 </div>
 </template>
 
