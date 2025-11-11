@@ -7,40 +7,40 @@ const { locale } = useI18n()
 const route = useRoute();
 const currentPath = route.path;
 
-const showBanner = ref(false)
-
-onBeforeMount(() => {
-  const closed = localStorage.getItem("bannerClosed")
-  if (closed === "true") {
-    showBanner.value = false
-  }
-})
-
-onMounted(() => {
-  console.log(currentPath, locale.value)
-  if (!localStorage.getItem("bannerClosed") && currentPath === `/${locale.value}`) {
-    setTimeout(() => {
-      showBanner.value = true
-    }, 1000)
-  }
-})
-
-const closeBanner = () => {
-  showBanner.value = false
-  localStorage.setItem("bannerClosed", "true")
-}
+// const showBanner = ref(false)
+//
+// onBeforeMount(() => {
+//   const closed = localStorage.getItem("bannerClosed")
+//   if (closed === "true") {
+//     showBanner.value = false
+//   }
+// })
+//
+// onMounted(() => {
+//   console.log(currentPath, locale.value)
+//   if (!localStorage.getItem("bannerClosed") && currentPath === `/${locale.value}`) {
+//     setTimeout(() => {
+//       showBanner.value = true
+//     }, 1000)
+//   }
+// })
+//
+// const closeBanner = () => {
+//   showBanner.value = false
+//   localStorage.setItem("bannerClosed", "true")
+// }
 </script>
 
 <template>
   <div>
 
-    <div v-if="showBanner" class="p-1 flex flex-row justify-between bg-gray-600 text-white items-center">
-        <div></div>
-      <div class="text-sm">Kaneko's blog, hello u my friend ~</div>
-      <div class="underline text-sm opacity-60 pr-2">
-        Close
-      </div>
-    </div>
+<!--    <div v-if="showBanner" class="p-1 flex flex-row justify-between bg-gray-600 text-white items-center">-->
+<!--        <div></div>-->
+<!--      <div class="text-sm">Kaneko's blog, hello u my friend ~</div>-->
+<!--      <div class="underline text-sm opacity-60 pr-2">-->
+<!--        Close-->
+<!--      </div>-->
+<!--    </div>-->
 
     <AppHeader />
     <div class="mx-auto w-full max-w-[1680px] px-4 sm:px-6 md:px-8 lg:px-12">

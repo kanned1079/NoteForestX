@@ -7,9 +7,10 @@ definePageMeta({
 
 <template>
 <div class="">
-  <ClientOnly>
+<!--  <ClientOnly>-->
     <FirstPage />
-  </ClientOnly>
+    <AboutMe />
+<!--  </ClientOnly>-->
 
 
 </div>

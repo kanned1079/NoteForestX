@@ -1,11 +1,18 @@
 <template>
   <client-only>
-    <div class="meteor-root relative w-full h-screen overflow-hidden index-root">
+    <div class="meteor-root relative w-full overflow-hidden index-root">
       <div ref="containerRef" class="meteor-container absolute inset-0 pointer-events-none"></div>
 
       <!-- 中间文字，略偏上 -->
+
+      <Transition >
+        <div v-if="false">
+
+        </div>
+      </Transition>
+
       <div
-          class="absolute inset-0 flex flex-col justify-center items-center z-10 px-6 leading-relaxed"
+          class="absolute inset-0 flex flex-col justify-center items-center z-10 px-6 leading-relaxed opacity-90"
       >
         <div class="text-start space-y-2 transform -translate-y-1/6 text-xl md:text-2xl font-mono">
           <div>I never wished for an easy life.</div>
@@ -17,9 +24,9 @@
 
       <!-- Scroll Down 固定在底部 -->
       <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 z-10">
-        <span class="text-xl font-medium">Scroll Down</span>
+        <span class="text-xl font-normal">Scroll down to know more.</span>
         <span class="animate-bounce h-8 w-8 bg-primary text-primary-contrast rounded-full inline-flex items-center justify-center">
-          <i class="pi pi-arrow-down" />
+          <i class="mt-2 opacity-70 pi pi-arrow-down" />
         </span>
       </div>
     </div>
@@ -43,8 +50,8 @@ onMounted(async () => {
   const METEOR_COUNT = 5
   const MIN_DURATION = 1.8
   const MAX_DURATION = 3
-  const MIN_LENGTH = 180
-  const MAX_LENGTH = 650
+  const MIN_LENGTH = 120
+  const MAX_LENGTH = 480
 
   let W = window.innerWidth
   let H = window.innerHeight
@@ -113,7 +120,7 @@ onBeforeUnmount(() => {
 <style>
 
 .index-root {
-  height: 85vh;
+  height: 80vh;
 }
 
 .meteor {
@@ -145,7 +152,7 @@ onBeforeUnmount(() => {
   height: 120px;
   background: var(--meteor-color);
   filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8))
-  drop-shadow(0 0 20px rgba(180, 200, 255, 0.6));
+  drop-shadow(0 0 30px rgba(180, 200, 255, 0.2));
   pointer-events: none;
   transform-origin: 0 0;
   border-radius: 2px;
