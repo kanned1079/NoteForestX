@@ -98,5 +98,35 @@
         "emptySearchHint": "Enter at least one keyword to proceed to the new author creation step."
       }
     }
+  },
+  "details": {
+    "open_source": "Open Source",
+    "open_source_desc": "This project is open-sourced on GitHub",
+    "open_source_link": "https://github.com/kanned1079/NoteForestX",
+
+    "background_title": "Background and Objectives",
+    "background_desc": "The purpose of this blog is to record daily learning, technical sharing and project experience. I hope to practice the technologies involved in full-stack development, system design and DevOps deployment through this project. In the old version of the blog, some functional designs were relatively simplistic. Therefore, the brand-new NoteForest X version fixes the bugs existing in the old version and expands some new features.",
+
+    "tech_stack": "Technology Stack",
+
+    "frontend_title": "Frontend Section",
+    "frontend_list_1": "Nuxt4 —— Used to provide SSR/SSG capabilities",
+    "frontend_list_2": "Vue3 + TypeScript —— Core development framework and programming language",
+    "frontend_list_3": "Vite —— Serves as a high-performance build tool",
+    "frontend_list_4": "PrimeVue —— Primary component library",
+    "frontend_list_5": "md-editor-v3 —— Used for Markdown text editing and rendering",
+    "frontend_list_6": "GSAP, Pinia, Tailwind CSS, Flag Icons —— Animation, state management, styling and icon libraries",
+    "frontend_desc": "The reason for choosing Vue is its lightweight architecture, high efficiency and comprehensive ecosystem. Meanwhile, I have been using Vue for a long time and am very familiar with its development paradigm.",
+
+    "backend_title": "Backend Section",
+    "backend_list_1": "Golang —— High-performance, concise core backend programming language",
+    "backend_list_2": "Custom REST API based on GIN —— Provides data interfaces for articles, illustration collections and user systems",
+    "backend_list_3": "Redis —— Used for caching, session storage and query acceleration",
+    "backend_list_4": "MySQL/MariaDB —— Persistent storage for the corresponding paths of articles and illustrations",
+    "backend_list_5": "Anubis —— Lightweight web AI firewall utility",
+    "backend_list_6": "Docker + Nginx + pm2 —— Underlying tools for deployment and runtime",
+    "backend_desc": "The core design philosophy of the backend is to maintain simplicity and high efficiency, and separate business logic from data processing into different layers as much as possible to improve maintainability.",
+
+    "tool_image_alt": "toolslist"
   }
 }

@@ -236,7 +236,7 @@ fetchAuthorsList()
       <div v-if="isAddNewAuthor" class="flex flex-col gap-2">
 
         <div class="flex flex-col gap-2">
-          <label for="name">{{ t('universal.illustration.name') }}</label>
+          <label for="name">{{ t('admin.illustration.author.authorName') }}</label>
           <IconField>
             <InputIcon class="pi pi-user"></InputIcon>
             <InputText autofocus variant="outlined" size="small" id="name" placeholder="なつき"
@@ -245,7 +245,7 @@ fetchAuthorsList()
         </div>
 
         <div class="flex flex-col gap-2">
-          <label for="name">{{ t('universal.illustration.name') }}</label>
+          <label for="name">{{ t('admin.illustration.author.homeLink') }}</label>
           <IconField>
             <InputIcon class="pi pi-link"></InputIcon>
             <InputText autofocus variant="outlined" size="small" id="name" placeholder="https://www.pixiv.net/users/xxxxxxxx"
@@ -373,7 +373,7 @@ fetchAuthorsList()
             position="top" :modal="true"
             :draggable="false">
       <div class="flex flex-col gap-2">
-        <label for="link">{{ t('universal.illustration.author') }}</label>
+        <label for="link">{{ t('admin.illustration.author.authorName') }}</label>
         <IconField>
           <InputIcon class="pi pi-user"></InputIcon>
           <InputText autofocus size="small" id="link" v-model="newAuthorName"
@@ -383,7 +383,7 @@ fetchAuthorsList()
           />
         </IconField>
 
-        <label for="authorLink">{{ t('universal.illustration.link') }}</label>
+        <label for="authorLink">{{ t('admin.illustration.author.homeLink') }}</label>
         <IconField>
           <InputIcon class="pi pi-link"></InputIcon>
           <InputText size="small" id="authorLink" v-model="newAuthorLink"

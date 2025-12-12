@@ -48,7 +48,13 @@ const buildMenu = () => {
         },
         {
           label: 'layout.sponsor',
-          icon: 'pi pi-gift'
+          icon: 'pi pi-gift',
+          route: '/sponsor'
+        },
+        {
+          label: 'layout.details',
+          icon: 'pi pi-wrench',
+          route: '/details'
         }
       ]
     },

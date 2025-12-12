@@ -266,9 +266,9 @@ fetchTagsList()
       <div v-if="isAddNewTag" class="flex flex-col gap-2">
 
         <div class="flex flex-col gap-2">
-          <label for="name">{{ t('universal.illustration.name') }}</label>
+          <label for="name">{{ t('admin.illustration.tag.newTagName') }}</label>
           <IconField>
-            <InputIcon class="pi pi-user"></InputIcon>
+            <InputIcon class="pi pi-hashtag"></InputIcon>
             <InputText autofocus variant="outlined" size="small" id="name" placeholder="なつき"
                        v-model="newTagAddName" class="w-full"/>
           </IconField>

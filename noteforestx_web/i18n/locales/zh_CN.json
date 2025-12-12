@@ -10,6 +10,7 @@
     "knowledgeMgr": "文章管理",
     "illustrationMgr": "插画管理",
     "sponsor": "赞助",
+    "details": "技術實現",
     "changLang": "修改语言"
   },
   "appMenu": {
@@ -64,7 +65,7 @@
     "illustration": {
       "editIllustrationMeta": "編輯插畫集信息，支持更新插畫集名稱、描述、來源、是否限制型(NSFW)、標籤、作者。部分功能請善用搜索。",
       "createIllustrationTitle": "添加新的插畫",
-      "createIllustrationSubtitle": "新的插畫將直接加入對用戶可見的插畫列表中",
+      "createIllustrationSubtitle": "在該頁面以向插畫庫中創建新的插畫集，新的插畫將直接加入對用戶可見的插畫列表中，如果設置了NSFW將對某些用戶不可見。",
       "selectTags": "選擇Tags",
       "imageUploadedTitle": "點擊以上傳文件",
       "noImageUploaded": "上傳前請核對文件名、圖片格式以及順序，第一張圖片將作為插畫集的封面。",
@@ -80,7 +81,7 @@
       "toggleCreateMode": "切換到新建模式",
       "esc": "關閉當前窗口",
       "tag": {
-        "newTagName": "x",
+        "newTagName": "Tag名稱",
         "copySuccess": "複製到剪貼板成功 {text}",
         "copyFailure": "複製錯誤 {msg}",
         "tagNameNotValid": "標籤名不合法或重名，請檢查後重試一次。",
@@ -90,18 +91,45 @@
         "deleteTagConflict": "該Tag有連結到插畫集，不能刪除。",
         "noTagsSatisfied": "沒有找到符合的標籤？",
         "noAuthorSatisfied": "沒有找到符合的作者？",
-        "authorAdded" : "新的Tag添加成功",
+        "authorAdded": "新的Tag添加成功",
         "tagNameConflict": "遇到衝突，該Tag是否已經存在？"
       },
       "author": {
-      "editTagNameHint": "*僅更新作者名稱，所關聯的所有作品都將被修改。",
+        "editTagNameHint": "*僅更新作者名稱，所關聯的所有作品都將被修改。",
         "deleteTagSuccessHint": "刪除成功",
         "editSuccess": "編輯成功",
         "noAuthorSatisfied": "沒有找到符合的標籤？",
         "authorNameConflict": "遇到冲突，该作者是否已经存存在？",
         "authorAdded": "添加作者成功",
-        "emptySearchHint": "至少一個關鍵詞進入新建作者步驟。"
+        "emptySearchHint": "至少一個關鍵詞進入新建作者步驟。",
+        "authorName": "作者名",
+        "homeLink": "主頁鏈接"
       }
     }
+  },
+  "details": {
+    "open_source": "開源",
+    "open_source_desc": "項目開源在 Github 上",
+    "open_source_link": "https://github.com/kanned1079/NoteForestX",
+    "background_title": "背景與目標",
+    "background_desc": "本博客的目的是記錄日常學習、技術分享與項目經驗。我希望透過這個項目實踐全棧開發、系統設計與 DevOps 部署中涉及的技術。在該博客的舊版本中，部分功能設計較為簡陋，因此在全新的 NoteForest X 版本中，修復了舊版存在的 Bug，並擴展了一些新的功能。",
+    "tech_stack": "技術棧",
+    "frontend_title": "前端部分",
+    "frontend_list_1": "Nuxt4 —— 用於提供 SSR / SSG 能力",
+    "frontend_list_2": "Vue3 + TypeScript —— 主體開發框架與語言",
+    "frontend_list_3": "Vite —— 作為高效的構建工具",
+    "frontend_list_4": "PrimeVue —— 主要組件庫",
+    "frontend_list_5": "md-editor-v3 —— 用於 Markdown 文本編輯與渲染",
+    "frontend_list_6": "GSAP pinia tailwindcss flag-icons —— 動畫和圖標庫等",
+    "frontend_desc": "選擇 Vue 的原因是其輕量、高效且生態完善，同時我本人長期使用 Vue，對其開發方式十分熟悉。",
+    "backend_title": "後端部分",
+    "backend_list_1": "Golang —— 高性能、簡潔的主體後端語言",
+    "backend_list_2": "GIN 自定義 REST API —— 提供文章、插畫集、使用者系統的數據接口",
+    "backend_list_3": "Redis —— 用於緩存、存儲會話資料與加速查詢",
+    "backend_list_4": "MySQL/MariaDB —— 文章、插畫對應路徑的持久性存儲",
+    "backend_list_5": "Anubis —— 輕量級的Web AI 防火牆實用程序",
+    "backend_list_6": "Docker + Nginx + pm2 —— 部署和運行階段的底層工具",
+    "backend_desc": "後端的設計理念主要是保持簡潔與高效，並且盡可能將邏輯與資料分幾層處理，提升可維護性。",
+    "tool_image_alt": "toolslist"
   }
 }
