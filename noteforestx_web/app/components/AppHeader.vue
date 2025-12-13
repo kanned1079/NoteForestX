@@ -151,7 +151,7 @@ const onSearchBtnClicked = () => themeStore.searchDialog.show = true
 </script>
 
 <template>
-  <div class="p-3 flex-row flex justify-between items-center">
+  <div class="p-1 flex-row flex justify-between items-center" style="backdrop-filter: blur(20px)">
     <div class="ml-0">
       <Button
           size="medium"

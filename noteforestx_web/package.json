@@ -22,7 +22,7 @@
     "flag-icons": "^7.5.0",
     "gsap": "^3.13.0",
     "lucide-vue-next": "^0.545.0",
-    "nuxt": "^4.1.2",
+    "nuxt": "^4.2.2",
     "pinia": "^3.0.3",
     "pinia-plugin-persistedstate": "^4.5.0",
     "primeicons": "^7.0.0",

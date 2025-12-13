@@ -7,10 +7,15 @@ import {ArrowDownOutline, ArrowUpOutline, ReturnDownBackOutline} from "@vicons/i
 import SearchIllustrationInput from "~/components/SearchIllustrationInput.vue";
 import InputIcon from "primevue/inputicon";
 import IconField from "primevue/iconfield";
+import { Keyboard } from 'lucide-vue-next';
+
 import dayjs from 'dayjs';
 
 const themeStore = useThemeStore();
 const {t} = useI18n();
+
+// todo
+const blocked = ref<boolean>(true)
 
 const searchTitle = ref<string>("")
 const isValid = ref<boolean>(true)
@@ -143,10 +148,9 @@ onBeforeUnmount(() => {
       </template>
     </PageHeader>
 
-<!--    <div class="flex flex-row justify-start space-x-2">-->
-<!--      <Button raised variant="text" size="small" label="搜尋文章" icon="pi pi-search"/>-->
-<!--      <Button size="small" label="Profile" icon="pi pi-user"/>-->
-<!--    </div>-->
+    <div class="flex flex-row justify-start space-x-2">
+      <Button size="small" label="Profile" icon="pi pi-user" @click="blocked = true"/>
+    </div>
 
     <Dialog
         v-model:visible="themeStore.searchDialog.show"
@@ -253,6 +257,71 @@ onBeforeUnmount(() => {
     </Dialog>
 
   </div>
+
+  <Mask :modelValue="blocked" :close="() => {blocked = false}" closeable >
+    <template #rt>
+      <div>
+        <Button size="small" severity="secondary" icon="pi pi-times" aria-label="Cancel" class="opacity-80" />
+
+      </div>
+    </template>
+
+    <template #lb>
+      <div class="max-w-[320px] m-4">
+        <div class="flex flex-row justify-start items-center space-x-2 mb-3 ">
+          <Keyboard />
+          <p class="text-xl font-semibold">TIP: Shortcuts</p>
+        </div>
+        <p class="opacity-80 font-light mb-6">Navigate the site with ease using keyboard shortcuts.</p>
+
+        <div class="flex flex-row justify-between items-center">
+            <p class="text-sm">Open Quick Access</p>
+            <span>
+              <Kbd keyLabel="Q" size="sm" />
+
+            </span>
+        </div>
+
+        <Divider class="mt-2 mb-1" />
+        <div class="flex flex-row justify-between items-center">
+          <p class="text-sm">Close Quick Access</p>
+          <span class="font-mono">
+              <Kbd keyLabel="Q" size="sm" />
+              /
+              <Kbd keyLabel="Esc" size="sm" />
+
+            </span>
+        </div>
+        <Divider class="mt-2 mb-1" />
+
+        <div class="flex flex-row justify-between items-center">
+          <p class="text-sm">Open Quick Access</p>
+          <span>
+              <Kbd keyLabel="Cmd" size="sm" />
+              +
+              <Kbd keyLabel="Q" size="sm" />
+
+            </span>
+        </div>
+        <Divider class="mt-2 mb-1" />
+
+        <div class="flex flex-row justify-between items-center">
+          <p class="text-sm">Open Quick Access</p>
+          <span>
+              <Kbd keyLabel="Cmd" size="sm" />
+              +
+              <Kbd keyLabel="Q" size="sm" />
+
+            </span>
+        </div>
+        <Divider class="mt-2 mb-1" />
+
+
+
+      </div>
+    </template>
+  </Mask>
+
 </template>
 
 <style scoped>

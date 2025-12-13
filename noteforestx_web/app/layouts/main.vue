@@ -6,44 +6,61 @@ import { ref, onMounted } from "vue"
 
 const showBanner = ref<boolean>(false)
 
+const bannerHeight = 32   // WelcomeBanner 展开高度
+const headerHeight = 64   // AppHeader 高度
+
 const expandUpper = () => {
   showBanner.value = !showBanner.value
+  // headerHeight.value = headerRef.value?.offsetHeight
+  // bannerHeight.value = bannerRef.value?.offsetHeight
 }
 </script>
 
 <template>
   <div class="relative">
-    <!-- 使用可复用折叠动画组件 -->
-<!--    <ClientOnly>-->
-
-<!--      <CollapseTransition v-model:show="showBanner" :duration="400">-->
-<!--&lt;!&ndash;        <WelcomeBanner @close="closeBanner" />&ndash;&gt;-->
-<!--        <div class="w-full h-[3vh] bg-cyan-500"></div>-->
-<!--      </CollapseTransition>-->
-<!--    </ClientOnly>-->
-
-
-<!--    <CollapseTransition v-model:show="showBanner" :duration="0.5" appear>-->
-<!--      <div class="w-full h-[3vh] bg-cyan-500 flex items-center justify-center text-white">-->
-<!--        Welcome to Kaneko’s Blog 🚀-->
-<!--      </div>-->
-<!--    </CollapseTransition>-->
-
+    <!-- Banner -->
     <WelcomeBanner :expand="expandUpper" />
 
-
-    <!-- 内容随 banner 展开平滑下移 -->
+    <!-- 固定 Header，但根据 Banner 高度下移 -->
     <div
-        class="transition-all duration-500 ease-in-out"
-        :style="{ transform: showBanner ? 'translateY(2.5vh)' : 'translateY(0)' }"
+        class="fixed left-0 right-0 z-50 transition-all duration-500 ease-in-out"
+        :style="{ top: showBanner ? bannerHeight + 'px' : '0px' }"
     >
       <AppHeader />
+    </div>
+
+    <!-- 页面内容，同样下移，避免被 Header 覆盖 -->
+    <div
+        class="transition-all duration-500 ease-in-out"
+        :style="{
+        paddingTop: showBanner
+          ? bannerHeight + headerHeight + 'px'
+          : headerHeight + 'px'
+      }"
+    >
       <Toast />
       <ConfirmDialog />
       <slot />
     </div>
   </div>
 </template>
+
+<!--<template>-->
+<!--  <div class="relative">-->
+
+<!--    <WelcomeBanner :expand="expandUpper" />-->
+
+<!--    <div-->
+<!--        class="transition-all duration-500 ease-in-out"-->
+<!--        :style="{ transform: showBanner ? 'translateY(2.5vh)' : 'translateY(0)' }"-->
+<!--    >-->
+<!--      <AppHeader />-->
+<!--      <Toast />-->
+<!--      <ConfirmDialog />-->
+<!--      <slot />-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</template>-->
 
 <style scoped>
 /* 无需额外样式，过渡动画已在 CollapseTransition 内控制 */

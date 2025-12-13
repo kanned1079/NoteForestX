@@ -33,17 +33,13 @@ const currentPath = route.path;
 
 <template>
   <div>
+    <div
+        class="fixed left-0 right-0 z-50 transition-all duration-500 ease-in-out"
 
-<!--    <div v-if="showBanner" class="p-1 flex flex-row justify-between bg-gray-600 text-white items-center">-->
-<!--        <div></div>-->
-<!--      <div class="text-sm">Kaneko's blog, hello u my friend ~</div>-->
-<!--      <div class="underline text-sm opacity-60 pr-2">-->
-<!--        Close-->
-<!--      </div>-->
-<!--    </div>-->
-
-    <AppHeader />
-    <div class="mx-auto w-full max-w-[1680px] px-4 sm:px-6 md:px-8 lg:px-12">
+    >
+      <AppHeader />
+    </div>
+    <div class="mx-auto w-full max-w-[1680px] px-4 sm:px-6 md:px-8 lg:px-12 pt-16">
       <Toast />
       <ConfirmDialog />
       <slot />
