@@ -33,7 +33,7 @@ const initConfetti = () => {
 const fireConfetti = () => {
   if (!confettiInstance) return;
 
-  const count = 1600; // 基础粒子数量
+  const count = 600; // 基础粒子数量
   const defaults = {
     origin: {y: 1.4}, // 从页面底部发射
     gravity: 3, // 模拟自然重力

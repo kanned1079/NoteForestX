@@ -18,7 +18,7 @@
     "@vicons/utils": "^0.1.4",
     "@vueuse/motion": "^3.0.3",
     "canvas-confetti": "^1.9.4",
-    "dayjs": "^1.11.18",
+    "dayjs": "^1.11.19",
     "flag-icons": "^7.5.0",
     "gsap": "^3.13.0",
     "lucide-vue-next": "^0.545.0",

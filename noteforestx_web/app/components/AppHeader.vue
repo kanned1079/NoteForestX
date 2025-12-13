@@ -39,7 +39,8 @@ const buildMenu = () => {
         // },
         {
           label: 'layout.knowledgeLib',
-          icon: 'pi pi-book'
+          icon: 'pi pi-book',
+          route: '/article'
         },
         {
           label: 'layout.illustrationLib',
