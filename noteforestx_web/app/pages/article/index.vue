@@ -22,14 +22,14 @@ const searchHistory = ref<{
 }[]>([])
 
 const lastSearchTitle = ref<string>("")
-const handleSearch = async () => {
+const handleSearch = async (id?: number) => {
   let trimSearchTitle = searchTitle.value.trim()
   if (trimSearchTitle == lastSearchTitle.value || trimSearchTitle == "") {
+    // TODO
     return isValid.value = false
   }
-  if (searchHistory.value.length >= 5) {
-    searchHistory.value.pop()  // 删除数组最后一个元素
-  }
+  if (id) searchHistory.value = searchHistory.value.filter(item => item.id !== id)
+  if (searchHistory.value.length >= 5) searchHistory.value.pop()  // 删除数组最后一个元素
   lastSearchTitle.value = trimSearchTitle
   let nowTime = Date.now()
   if (searchHistory.value[0]) searchHistory.value[0].active = false
@@ -39,6 +39,7 @@ const handleSearch = async () => {
     title: trimSearchTitle,
     searched_at: dayjs(nowTime).format("YYYY/MM/DD HH:mm:ss")
   })
+
   localStorage.setItem('articleSearchHistory', JSON.stringify(searchHistory.value))
   // ...
 
@@ -81,6 +82,18 @@ const handleKeyDown = (e: KeyboardEvent) => {
   }
 }
 
+const handleCmdKeyDown = (e: KeyboardEvent) => {
+  const isMac = navigator.platform.toUpperCase().includes('MAC')
+
+  if (
+      (isMac && e.metaKey && e.key.toLowerCase() === 'k') ||
+      (!isMac && e.ctrlKey && e.key.toLowerCase() === 'k')
+  ) {
+    e.preventDefault() // 阻止浏览器默认行为
+    themeStore.searchDialog.show = true
+  }
+}
+
 const refreshSearch = () => {
   if (searchHistory.value.length === 0) {
     searchTitle.value = ""
@@ -110,11 +123,12 @@ onMounted(() => {
   if (savedHistory) {
     searchHistory.value = JSON.parse(savedHistory)
   }
-
+  window.addEventListener("keydown", handleCmdKeyDown)
 })
 
-onUnmounted(() => {
+onBeforeUnmount(() => {
   themeStore.showHeaderSearchBtn = false
+  window.removeEventListener("keydown", handleCmdKeyDown)
 })
 
 </script>
@@ -129,10 +143,10 @@ onUnmounted(() => {
       </template>
     </PageHeader>
 
-    <div class="flex flex-row justify-start space-x-2">
-      <Button raised variant="text" size="small" label="搜尋文章" icon="pi pi-search"/>
-      <Button size="small" label="Profile" icon="pi pi-user"/>
-    </div>
+<!--    <div class="flex flex-row justify-start space-x-2">-->
+<!--      <Button raised variant="text" size="small" label="搜尋文章" icon="pi pi-search"/>-->
+<!--      <Button size="small" label="Profile" icon="pi pi-user"/>-->
+<!--    </div>-->
 
     <Dialog
         v-model:visible="themeStore.searchDialog.show"
@@ -159,7 +173,7 @@ onUnmounted(() => {
               @input="() => {isValid = !!searchTitle.trim()}"
               autofocus
               :invalid="!isValid"
-              @keyup.enter="handleSearch"
+              @keyup.enter="handleSearch()"
           />
         </IconField>
         <div v-if="searchHistory.length > 0" class="mt-2 mb-2 flex flex-row justify-between items-center">
@@ -174,6 +188,7 @@ onUnmounted(() => {
         <div v-for="i in searchHistory"
              class="transition ease-in-out duration-150 flex items-center justify-between gap-3 p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 mb-2"
              :class="{'bg-gray-200 dark:bg-gray-800': i.active}"
+             @click="searchTitle = i.title; handleSearch(i.id)"
         >
           <!-- 左侧图标 -->
           <div class="flex-shrink-0">
@@ -206,7 +221,7 @@ onUnmounted(() => {
               </Icon>
             </template>
           </Tag>
-          <span>to select</span>
+          <span>to search</span>
           <Tag class="ml-2" severity="secondary">
             <template #icon>
               <Icon>
