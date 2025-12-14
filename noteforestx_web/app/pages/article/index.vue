@@ -272,10 +272,10 @@ onBeforeUnmount(() => {
           <Keyboard />
           <p class="text-xl font-semibold">TIP: Shortcuts</p>
         </div>
-        <p class="opacity-80 font-light mb-6">Navigate the site with ease using keyboard shortcuts.</p>
+        <p class="opacity-80 font-light text-sm mb-6">Navigate the site with ease using keyboard shortcuts.</p>
 
         <div class="flex flex-row justify-between items-center">
-            <p class="text-sm">Open Quick Access</p>
+            <p class="text-sm font-extralight">Open Quick Access</p>
             <span>
               <Kbd keyLabel="Q" size="sm" />
 

@@ -7,12 +7,19 @@ import {useRouter} from 'vue-router';
 import {TicketSharp} from "@vicons/ionicons5"
 import useUserStore from "../store/userStore";
 import useThemeStore from "../store/themeStore";
+import {Keyboard} from "lucide-vue-next";
+import ShortcutsDefault from "~/components/ShortcutsDefault.vue";
+import ChangeLanguage from "~/components/ChangeLanguage.vue";
+import {languageList} from "~/types/language"
 
+import { useTemplateRef } from 'vue'
 
 const {t, setLocale} = useI18n()
 const router = useRouter();
 const userStore = useUserStore()
 const themeStore = useThemeStore()
+
+const blocked = ref<boolean>(false)
 
 const showLoginModal = ref<boolean>(false)
 const onClickProfileButton = () => {
@@ -21,6 +28,8 @@ const onClickProfileButton = () => {
     showLoginModal.value = true
   }
 }
+
+const langChangeCompRef = useTemplateRef('langBtnRef')
 
 const buildMenu = () => {
   const items: any[] = [
@@ -56,6 +65,11 @@ const buildMenu = () => {
           label: 'layout.details',
           icon: 'pi pi-wrench',
           route: '/details'
+        },
+        {
+          label: 'Its My Duty',
+          icon: 'pi pi-wrench',
+          route: '/its-my-duty'
         }
       ]
     },
@@ -65,7 +79,11 @@ const buildMenu = () => {
         {
           label: 'layout.changLang',
           icon: 'pi pi-language',
-          route: '/config/language'
+          command: () => {
+            blocked.value = true
+            // langChangeCompRef.value?.openMenu()
+            setTimeout(() => langChangeCompRef.value?.openMenu(), 1500)
+          }
         }
       ]
     }
@@ -148,10 +166,34 @@ const getUserName = computed(() => {
 
 const onSearchBtnClicked = () => themeStore.searchDialog.show = true
 
+function onKeydown(e: KeyboardEvent) {
+  // 忽略输入框中的按键，避免干扰输入
+  const target = e.target as HTMLElement
+  if (target?.tagName === 'INPUT' || target?.tagName === 'TEXTAREA') {
+    return
+  }
+
+  if (e.key === 'q' || e.key === 'Q') {
+    blocked.value = !blocked.value
+  }
+
+  if (e.key === 'Escape' && blocked.value) {
+    blocked.value = false
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('keydown', onKeydown)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('keydown', onKeydown)
+})
+
 </script>
 
 <template>
-  <div class="p-1 flex-row flex justify-between items-center" style="backdrop-filter: blur(20px)">
+  <div class="p-3 flex-row flex justify-between items-center" style="backdrop-filter: blur(20px)">
     <div class="ml-0">
       <Button
           size="medium"
@@ -238,6 +280,48 @@ const onSearchBtnClicked = () => themeStore.searchDialog.show = true
     <LoginForm/>
   </Dialog>
 
+  <Mask :modelValue="blocked" :close="() => {blocked = false}" closeable >
+    <template #rt>
+      <div class="max-w-[320px] min-w-[300px]">
+
+        <div class="text-right mb-6">
+          <Button size="small" severity="secondary" icon="pi pi-times" aria-label="Cancel" class="opacity-80" @click="blocked = false" />
+        </div>
+
+        <div class="flex flex-row justify-start items-center space-x-2 mb-3">
+          <div class="flex flex-col w-full">
+            <p class="text-xl font-semibold mb-4">Action Center</p>
+
+            <!-- 按钮容器：占满宽度 -->
+            <div class="flex flex-row w-full space-x-4">
+
+              <ChangeLanguage ref="langBtnRef" />
+              <Button
+                  class="h-20 flex-1 bg-[rgba(255,255,255,0.7)] dark:bg-gray-800 dark:text-gray-200 text-sm rounded-xl"
+                  variant="text"
+              >
+                Focus
+              </Button>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+      </div>
+    </template>
+
+    <template #lb>
+      <div class="max-w-[320px]">
+
+        <ShortcutsDefault />
+
+      </div>
+    </template>
+
+  </Mask>
 
 </template>
 

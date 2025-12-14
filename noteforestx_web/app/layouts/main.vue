@@ -43,6 +43,9 @@ const expandUpper = () => {
       <slot />
     </div>
   </div>
+
+  <Mask ></Mask>
+
 </template>
 
 <!--<template>-->
