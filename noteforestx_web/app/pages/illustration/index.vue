@@ -9,6 +9,7 @@ import {useI18n} from "vue-i18n";
 import PageHeader from "../../components/PageHeader.vue";
 import IllustrationItemPreview from "../../components/IllustrationItemPreview.vue";
 import useThemeStore from "../../store/themeStore";
+import useShortcutsStore from "~/store/shortcutsStore";
 import type {Illustration} from "../../types/illustration";
 import {Icon} from '@vicons/utils'
 import {
@@ -21,6 +22,7 @@ const config = useRuntimeConfig()
 
 const {t} = useI18n()
 const themeStore = useThemeStore()
+const shortcutsStore = useShortcutsStore()
 const illustrationList = ref<Illustration[]>([])
 
 const page = ref<number>(1)
@@ -145,6 +147,18 @@ onBeforeUnmount(() => {
 
 onUnmounted(() => {
   themeStore.showHeaderSearchBtn = false
+  shortcutsStore.clear()
+})
+
+onBeforeMount(() => {
+  shortcutsStore.register([
+    {
+      label: "打开搜寻窗口",
+      keyLabels: ['Cmd', 'K'],
+      pressType: 'and'
+    }
+  ])
+  console.log(shortcutsStore.customShortcuts.length)
 })
 
 onMounted(() => {
@@ -152,6 +166,9 @@ onMounted(() => {
   window.addEventListener("keydown", keyDownHandler)
 
   themeStore.searchDialog.show = true
+
+
+
 })
 
 </script>

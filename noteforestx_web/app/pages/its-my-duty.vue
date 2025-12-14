@@ -2,7 +2,7 @@
 import { useScrollFadeIn } from '~/composables/useScrollFadeIn'
 
 useScrollFadeIn({
-  selector: '.animate-card',
+  selector: '.animate-card-its-my-duty',
   y: 60,
   stagger: 0.15
 })
@@ -16,16 +16,16 @@ useScrollFadeIn({
 
 
     <div class="space-y-3 mt-10 mb-10 text-center">
-      <p class="text-3xl font-semibold animate-card">「 為什麼？ 」</p>
-      <p class="opacity-80 animate-card">Why ?</p>
-      <p class="text-3xl font-bold mt-6 animate-card">因為這是我的職責</p>
-      <p class="opacity-80 animate-card">Because this is my duty.</p>
+      <p class="text-3xl font-semibold animate-card-its-my-duty">「 為什麼？ 」</p>
+      <p class="opacity-80 animate-card-its-my-duty">Why ?</p>
+      <p class="text-3xl font-bold mt-6 animate-card-its-my-duty">因為這是我的職責</p>
+      <p class="opacity-80 animate-card-its-my-duty">Because this is my duty.</p>
     </div>
-    <div class="a4-paper animate-card">
+    <div class="a4-paper animate-card-its-my-duty">
       <slot />
     </div>
 
-    <p class="mt-10 animate-card">A4 Plain Paper</p>
+    <p class="mt-10 animate-card-its-my-duty">A4 Plain Paper</p>
 
   </div>
 </template>

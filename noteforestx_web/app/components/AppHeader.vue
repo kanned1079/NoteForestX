@@ -11,6 +11,9 @@ import {Keyboard} from "lucide-vue-next";
 import ShortcutsDefault from "~/components/ShortcutsDefault.vue";
 import ChangeLanguage from "~/components/ChangeLanguage.vue";
 import {languageList} from "~/types/language"
+import ActionArea from '~/components/ActionArea.vue'
+import { useScrollFadeIn } from '~/composables/useScrollFadeIn'
+
 
 import { useTemplateRef } from 'vue'
 
@@ -18,6 +21,7 @@ const {t, setLocale} = useI18n()
 const router = useRouter();
 const userStore = useUserStore()
 const themeStore = useThemeStore()
+
 
 const blocked = ref<boolean>(false)
 
@@ -29,7 +33,15 @@ const onClickProfileButton = () => {
   }
 }
 
-const langChangeCompRef = useTemplateRef('langBtnRef')
+
+const actionAreaRefItem = useTemplateRef('actionAreaRef')
+
+const showLangSelector = () => {
+  blocked.value = true
+  // langChangeCompRef.value?.openMenu()
+  // setTimeout(() => langChangeCompRef.value?.openMenu(), 500)
+  actionAreaRefItem.value?.showLangSelector()
+}
 
 const buildMenu = () => {
   const items: any[] = [
@@ -79,11 +91,7 @@ const buildMenu = () => {
         {
           label: 'layout.changLang',
           icon: 'pi pi-language',
-          command: () => {
-            blocked.value = true
-            // langChangeCompRef.value?.openMenu()
-            setTimeout(() => langChangeCompRef.value?.openMenu(), 1500)
-          }
+          command: () => showLangSelector()
         }
       ]
     }
@@ -177,6 +185,8 @@ function onKeydown(e: KeyboardEvent) {
     blocked.value = !blocked.value
   }
 
+  if (e.key.toLowerCase() === 'l') showLangSelector()
+
   if (e.key === 'Escape' && blocked.value) {
     blocked.value = false
   }
@@ -193,7 +203,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="p-3 flex-row flex justify-between items-center" style="backdrop-filter: blur(20px)">
+  <div class="p-3 flex-row flex justify-between items-center" style="backdrop-filter: blur(1px)">
     <div class="ml-0">
       <Button
           size="medium"
@@ -282,35 +292,10 @@ onBeforeUnmount(() => {
 
   <Mask :modelValue="blocked" :close="() => {blocked = false}" closeable >
     <template #rt>
-      <div class="max-w-[320px] min-w-[300px]">
-
-        <div class="text-right mb-6">
-          <Button size="small" severity="secondary" icon="pi pi-times" aria-label="Cancel" class="opacity-80" @click="blocked = false" />
-        </div>
-
-        <div class="flex flex-row justify-start items-center space-x-2 mb-3">
-          <div class="flex flex-col w-full">
-            <p class="text-xl font-semibold mb-4">Action Center</p>
-
-            <!-- 按钮容器：占满宽度 -->
-            <div class="flex flex-row w-full space-x-4">
-
-              <ChangeLanguage ref="langBtnRef" />
-              <Button
-                  class="h-20 flex-1 bg-[rgba(255,255,255,0.7)] dark:bg-gray-800 dark:text-gray-200 text-sm rounded-xl"
-                  variant="text"
-              >
-                Focus
-              </Button>
-            </div>
-          </div>
-        </div>
-
-
-
-
-
+      <div class="text-right mb-6">
+        <Button size="small" severity="secondary" icon="pi pi-times" aria-label="Cancel" class="opacity-80" @click="blocked = false" />
       </div>
+      <ActionArea ref="actionAreaRef" />
     </template>
 
     <template #lb>

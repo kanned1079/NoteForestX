@@ -26,7 +26,13 @@ const toggleMenu = (event: Event) => {
 
 const langButton = useTemplateRef('langBtn')
 
-const openMenu = () => langButton.value?.$el.click()
+const openMenu = () => {
+  setTimeout(() => langButton.value?.$el.click(), 1000)
+
+}
+
+
+
 
 defineExpose({
   openMenu

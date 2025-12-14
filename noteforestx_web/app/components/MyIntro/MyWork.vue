@@ -1,33 +1,16 @@
 <script setup lang="ts">
-import { onMounted, nextTick } from 'vue'
 import Ulli from "~/components/Ulli.vue"
 import SkillRepresent from "~/components/SkillRepresent.vue"
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useScrollFadeIn } from "~/composables/useScrollFadeIn"
 
-gsap.registerPlugin(ScrollTrigger)
-
-onMounted(async () => {
-  await nextTick()
-  const elements = document.querySelectorAll<HTMLElement>('.animate-card')
-  elements.forEach((el, i) => {
-    gsap.fromTo(
-        el,
-        { autoAlpha: 0, y: 50 },
-        {
-          autoAlpha: 1,
-          y: 0,
-          duration: 1,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 85%',
-            toggleActions: 'play none none reverse'
-          },
-          delay: i * 0.1
-        }
-    )
-  })
+useScrollFadeIn({
+  selector: '.animate-card-mywork',
+  direction: 'up',      // 默认其实可以不写
+  y: 50,
+  duration: 1,
+  stagger: 0.1,
+  start: 'top 85%',
+  toggleActions: 'play none none reverse'
 })
 </script>
 
@@ -45,12 +28,12 @@ onMounted(async () => {
 <!--      <Divider class="mt-6 mb-6" />-->
 
       <!-- 简介 -->
-      <div class="animate-card mb-6">
+      <div class="animate-card-mywork mb-6">
         <p>我從事網頁開發已有約九年，嘗試過多種程式語言與技術堆疊，涵蓋後端與前端開發。雖然網頁開發領域廣泛，但我對前端開發與 UI/UX 設計特別感興趣並專注其中。</p>
       </div>
 
       <!-- App Developer -->
-      <div class="animate-card mb-6">
+      <div class="animate-card-mywork mb-6">
         <p class="text-3xl font-bold mt-5 mb-4">應用程式開發者</p>
         <p class="mt-2 mb-2">我喜歡創造乾淨、極簡、美觀且具有價值的作品，當然也要易於使用。</p>
         <p class="mt-2 mb-2">我特別享受製作富有 UI 元件的網站，包括：</p>
@@ -62,12 +45,12 @@ onMounted(async () => {
         <Ulli value="以及其他" />
       </div>
 
-      <div class="animate-card mb-6">
+      <div class="animate-card-mywork mb-6">
         <p class="mt-2 mb-2">但我仍然喜歡創建簡單的網頁，例如登陸頁面。在網站製作過程中，我最熟悉使用的工具有哪些呢？</p>
       </div>
 
       <!-- 技術棧 -->
-      <div class="animate-card mb-6">
+      <div class="animate-card-mywork mb-6">
         <p class="text-2xl font-bold mt-5 mb-4">Vue 與 Nuxt.js 搭配 TypeScript</p>
         <p class="mt-2 mb-2 text-slate-800 dark:text-slate-400">
           單頁網站是我的專長，而 <span class="font-bold">Vue.js</span> 就像我的魔法棒。我已經使用它多年，創作的作品越來越好看。
@@ -77,14 +60,14 @@ onMounted(async () => {
         </p>
       </div>
 
-      <div class="animate-card mb-6">
+      <div class="animate-card-mywork mb-6">
         <p class="text-2xl font-bold mt-5 mb-4">Golang 與 Nest.js</p>
         <p class="mt-2 mb-2 text-slate-800 dark:text-slate-400">
           我用它們構建可擴展、高效能的後端服務，從 API 設計到資料操作皆涵蓋。起初專注於後端開發，但後來我意識到 CLI 無法滿足所有需求，因此開始學習 GUI 開發。
         </p>
       </div>
 
-      <div class="animate-card mb-6">
+      <div class="animate-card-mywork mb-6">
         <p class="text-3xl font-bold mt-5 mb-4">運維經驗</p>
         <p class="mt-2 mb-2">
           最初源於對 IT 行業的濃厚興趣，很早就接觸 Linux，經過幾年的學習，目前已經使用虛擬化與 Linux 部署了多個服務，包括但不限於邊緣計算服務、檔案目錄程式、個人 Blog、Zabbix 監控、SoftEtherVPN 等。
@@ -94,7 +77,7 @@ onMounted(async () => {
 <!--      <Divider class="mt-10 mb-10 animate-card" />-->
 
       <!-- Detail and Summary -->
-      <div class="animate-card mb-6">
+      <div class="animate-card-mywork mb-6">
         <p class="text-3xl font-bold mt-5 mb-4">細節與摘要</p>
         <p class="mt-2 mb-2">我使用標籤呈現所有資料以便閱讀。底部橫線指示使用頻率，例如：</p>
         <div class="flex flex-wrap gap-2 justify-start">
@@ -104,7 +87,7 @@ onMounted(async () => {
       </div>
 
       <!-- Programming Languages -->
-      <div class="animate-card mb-6">
+      <div class="animate-card-mywork mb-6">
         <p class="text-2xl font-bold mt-5 mb-4">程式語言</p>
         <div class="flex flex-wrap gap-2 justify-start">
           <SkillRepresent value="TypeScript" :percent="100" />
@@ -116,7 +99,7 @@ onMounted(async () => {
       </div>
 
       <!-- Technologies -->
-      <div class="animate-card mb-6">
+      <div class="animate-card-mywork mb-6">
         <p class="text-2xl font-bold mt-5 mb-4">技術與工具</p>
         <div class="flex flex-wrap gap-2 justify-start">
           <SkillRepresent value="Tailwind CSS" :percent="90" />
@@ -139,7 +122,7 @@ onMounted(async () => {
       </div>
 
       <!-- Softwares and Tools -->
-      <div class="animate-card mb-6">
+      <div class="animate-card-mywork mb-6">
         <p class="text-2xl font-bold mt-5 mb-4">軟體與工具</p>
         <div class="flex flex-wrap gap-2 justify-start">
           <SkillRepresent value="JetBrains IntelliJ IDEA" :percent="95" />
@@ -158,7 +141,5 @@ onMounted(async () => {
 
 
 <style scoped>
-.animate-card {
-  opacity: 0;
-}
+
 </style>
