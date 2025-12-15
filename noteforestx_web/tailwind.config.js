@@ -1,8 +1,13 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [],
+  content: [
+    './src/**/*.{html,js,ts,vue}',  // 确保你的文件路径被正确扫描
+  ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['"Poppins"', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+      },
       colors: {
         kanna: {
           DEFAULT: "#4f7da6",
@@ -17,9 +22,8 @@ export default {
           800: "#283b4e",
           900: "#1d2937",
         }
-      }
+      },
     },
   },
   plugins: [],
 }
-

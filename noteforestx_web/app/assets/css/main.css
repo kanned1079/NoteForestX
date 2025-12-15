@@ -1,7 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* 在 global.css 或 tailwind.css 中引入 */
 /*:root {*/
 /*    --body-bg-light: #f9fafc;*/
 /*    --body-bg-dark: #1f1f1f;*/
@@ -18,6 +21,10 @@
 /*}*/
 
 
-:root {
-    --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-}
+/*:root {*/
+/*    --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;*/
+/*}*/
+
+/*body {*/
+/*    font-family: var(--font-sans);*/
+/*}*/

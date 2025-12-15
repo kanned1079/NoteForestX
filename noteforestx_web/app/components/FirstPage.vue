@@ -8,10 +8,22 @@
       <!-- 中心文字 -->
       <div
           ref="textRef"
-          class="absolute inset-0 flex flex-col justify-center items-center z-20 px-6 leading-relaxed text-xl md:text-2xl font-mono dark:text-slate-100 text-slate-900"
+          class="absolute inset-0 flex flex-col justify-center items-start z-20 px-6 leading-relaxed text-xl md:text-2xl dark:text-slate-100 text-slate-900"
       >
-        <div class="space-y-2 text-start transform -translate-y-1/6">
-          <div>I never wished for an easy life.</div>
+
+        <div class="space-y-2">
+          <div class="text-3xl font-normal">Hi</div>
+          <div class="text-6xl font-bold  ">I'm <span class="text-[#007bff]">kanned1079</span>,</div>
+
+          <div>A <span class="font-bold">FullStack Developer</span> who loves intuitive,</div>
+          <div>clean and modern UI design.</div>
+        </div>
+
+        <div class="space-y-2 text-start transform -translate-y-1/6 text-xl">
+
+
+
+          <div class="mt-10">I never wished for an easy life.</div>
           <div>I am the light itself ✨ —</div>
           <div>seated as the mountain,</div>
           <div>painting the world with the ink of spring.</div>

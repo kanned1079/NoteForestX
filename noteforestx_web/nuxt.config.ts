@@ -1,5 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import {fileURLToPath, URL} from 'node:url'
+// import {fileURLToPath, URL} from 'node:url'
 import Aura from '@primeuix/themes/aura';
 // import ToastService from 'primevue/toastservice';
 // import {MyPreset} from "./app/plugins/MyPresetTheme";
