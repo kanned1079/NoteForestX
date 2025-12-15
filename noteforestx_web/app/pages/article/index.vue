@@ -15,7 +15,7 @@ const themeStore = useThemeStore();
 const {t} = useI18n();
 
 // todo
-const blocked = ref<boolean>(true)
+const blocked = ref<boolean>(false)
 
 const searchTitle = ref<string>("")
 const isValid = ref<boolean>(true)

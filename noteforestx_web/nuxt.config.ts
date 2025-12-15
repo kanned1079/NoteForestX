@@ -271,14 +271,15 @@ export default defineNuxtConfig({
     compatibilityDate: '2025-07-15',
     devtools: {enabled: true},
     modules: [
-        '@pinia/nuxt',
-        'pinia-plugin-persistedstate/nuxt',
-        '@primevue/nuxt-module',
-        '@nuxt/icon',
-        '@nuxtjs/i18n',
-        '@nuxtjs/tailwindcss',
-        '@primevue/nuxt-module',
-        '@vueuse/motion/nuxt'
+      '@pinia/nuxt',
+      'pinia-plugin-persistedstate/nuxt',
+      '@primevue/nuxt-module',
+      '@nuxt/icon',
+      '@nuxtjs/i18n',
+      '@nuxtjs/tailwindcss',
+      '@primevue/nuxt-module',
+      '@vueuse/motion/nuxt',
+      '@tresjs/nuxt'
     ],
     primevue: {
         options: {

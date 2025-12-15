@@ -3,7 +3,7 @@ import {ref, computed} from "vue";
 import {updateSurfacePalette} from '@primeuix/themes';
 import {useI18n} from "vue-i18n";
 import {Icon} from '@vicons/utils'
-import {useRouter} from 'vue-router';
+import {useRouter, useRoute} from 'vue-router';
 import {TicketSharp} from "@vicons/ionicons5"
 import useUserStore from "../store/userStore";
 import useThemeStore from "../store/themeStore";
@@ -18,6 +18,7 @@ import { useScrollFadeIn } from '~/composables/useScrollFadeIn'
 import { useTemplateRef } from 'vue'
 
 const {t, setLocale} = useI18n()
+const route = useRoute()
 const router = useRouter();
 const userStore = useUserStore()
 const themeStore = useThemeStore()
@@ -186,6 +187,26 @@ function onKeydown(e: KeyboardEvent) {
   }
 
   if (e.key.toLowerCase() === 'l') showLangSelector()
+
+  if (e.key.toLowerCase() === 'h') {
+    navigateTo("/")
+    blocked.value = false
+  }
+
+  if (e.key.toLowerCase() === 'a') {
+    navigateTo("/article")
+    blocked.value = false
+  }
+
+  if (e.key.toLowerCase() === 'i') {
+    navigateTo("/illustration")
+    blocked.value = false
+  }
+
+  if (e.key.toLowerCase() === 'd') {
+    navigateTo("/its-my-duty")
+    blocked.value = false
+  }
 
   if (e.key === 'Escape' && blocked.value) {
     blocked.value = false

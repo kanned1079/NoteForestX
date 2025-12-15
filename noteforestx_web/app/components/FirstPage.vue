@@ -2,38 +2,87 @@
   <client-only>
     <div class="meteor-root relative w-full overflow-hidden index-root">
       <BackgroundGrid />
-      <!-- 流星容器 -->
-      <div ref="containerRef" class="meteor-container absolute inset-0 pointer-events-none"></div>
 
-      <!-- 中心文字 -->
+      <!-- 流星容器 -->
+      <div
+          ref="containerRef"
+          class="meteor-container absolute inset-0 pointer-events-none"
+      ></div>
+
+      <!-- 中央内容区域（1200px 居中） -->
       <div
           ref="textRef"
-          class="absolute inset-0 flex flex-col justify-center items-start z-20 px-6 leading-relaxed text-xl md:text-2xl dark:text-slate-100 text-slate-900"
+          class="absolute inset-0 z-20 flex items-center justify-center px-4"
       >
+        <div class="w-full max-w-[1200px] flex items-center">
+          <!-- 左侧：文字内容 -->
+          <div class="w-full md:w-1/2 text-slate-900 dark:text-slate-100">
+            <div class="opacity-90">
+              <p class="text-2xl sm:text-3xl md:text-4xl animated-card-firstpage">
+                hi !
+              </p>
 
-        <div class="space-y-2">
-          <div class="text-3xl font-normal">Hi</div>
-          <div class="text-6xl font-bold  ">I'm <span class="text-[#007bff]">kanned1079</span>,</div>
+              <p
+                  class="font-bold animated-card-firstpage
+                       text-4xl sm:text-5xl md:text-6xl lg:text-7xl"
+              >
+                I'm <span class="text-[#1e88a8] underline">kanned1079</span>,
+              </p>
 
-          <div>A <span class="font-bold">FullStack Developer</span> who loves intuitive,</div>
-          <div>clean and modern UI design.</div>
-        </div>
+              <div class="mt-6 text-base sm:text-lg animated-card-firstpage">
+                a <span class="font-bold">FullStack Developer</span> who loves intuitive,
+              </div>
+              <div class="text-base sm:text-lg animated-card-firstpage">
+                clean and modern UI design.
+              </div>
+            </div>
 
-        <div class="space-y-2 text-start transform -translate-y-1/6 text-xl">
+            <div class="space-y-2 mt-4 text-sm sm:text-base animated-card-firstpage">
+              <div class="mt-10">I never wished for an easy life.</div>
+              <div>I am the light itself ✨ —</div>
+              <div>seated as the mountain,</div>
+              <div>painting the world with the ink of spring.</div>
+            </div>
+          </div>
+
+          <!-- 右侧：桌面端显示 -->
+          <div class="hidden md:flex w-1/2 justify-center items-center">
+            <!-- 预留区域：Logo / 插画 / 动画 -->
+<!--            <div-->
+<!--                class="w-64 h-64 lg:w-80 lg:h-80-->
+<!--                     rounded-2xl-->
+<!--                     border border-dashed border-slate-400/40-->
+<!--                     flex items-center justify-center-->
+<!--                     text-slate-400"-->
+<!--            >-->
+<!--              Logo / Visual-->
+<!--            </div>-->
+
+            <div class="hidden md:flex w-1/2 justify-center items-center">
+              <div class="w-80 h-80 lg:w-96 lg:h-96">
+                <ClientOnly>
+                  <RightVisual />
+
+                </ClientOnly>
+              </div>
+            </div>
 
 
-
-          <div class="mt-10">I never wished for an easy life.</div>
-          <div>I am the light itself ✨ —</div>
-          <div>seated as the mountain,</div>
-          <div>painting the world with the ink of spring.</div>
+          </div>
         </div>
       </div>
 
       <!-- Scroll Down 提示 -->
-      <div ref="scrollRef" class="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 z-20 opacity-0">
+      <div
+          ref="scrollRef"
+          class="absolute bottom-6 left-1/2 transform -translate-x-1/2
+               flex flex-col items-center gap-2 z-20 opacity-0"
+      >
         <span class="text-xl font-normal">Scroll down to know more.</span>
-        <span class="h-8 w-8 bg-primary text-primary-contrast rounded-full inline-flex items-center justify-center">
+        <span
+            class="h-8 w-8 bg-primary text-primary-contrast
+                 rounded-full inline-flex items-center justify-center"
+        >
           <i class="mt-2 opacity-70 pi pi-arrow-down" />
         </span>
       </div>
@@ -43,12 +92,22 @@
 
 <script setup lang="ts">
 import { ref, onMounted, nextTick, onBeforeUnmount } from 'vue'
+import {useScrollFadeIn} from "~/composables/useScrollFadeIn";
 
 const containerRef = ref<HTMLElement | null>(null)
 const textRef = ref<HTMLElement | null>(null)
 const scrollRef = ref<HTMLElement | null>(null)
 let resizeHandler: (() => void) | null = null
 let meteorInterval: number | null = null
+
+useScrollFadeIn({
+  selector: '.animated-card-firstpage',
+  direction: 'up',
+  x: 600,
+  stagger: 0.2,
+  duration: 0.6,
+  start: 'top 90%'
+})
 
 onMounted(async () => {
   await nextTick()
@@ -60,14 +119,14 @@ onMounted(async () => {
   // ------------------------
   // 文字动画
   // ------------------------
-  if (textRef.value) {
-    const lines = textRef.value.querySelectorAll('div > div')
-    gsap.fromTo(
-        lines,
-        { y: 20, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, ease: 'power2.out', stagger: 0.15 }
-    )
-  }
+  // if (textRef.value) {
+  //   const lines = textRef.value.querySelectorAll('div > div')
+  //   gsap.fromTo(
+  //       lines,
+  //       { y: 20, opacity: 0 },
+  //       { y: 0, opacity: 1, duration: 1, ease: 'power2.out', stagger: 0.15 }
+  //   )
+  // }
 
   // Scroll Down 延迟出现
   if (scrollRef.value) {
@@ -157,7 +216,7 @@ onBeforeUnmount(() => {
 
 <style>
 .index-root {
-  height: 80vh;
+  height: 72vh;
 }
 
 .meteor {

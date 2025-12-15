@@ -9,12 +9,12 @@ definePageMeta({
 
 <template>
 <div class="">
-  <ClientOnly>
-    <FirstPage />
+<!--  <ClientOnly>-->
+  <FirstPage />
   <MyIntroduction />
-    <AboutMe />
+  <AboutMe />
 
-  </ClientOnly>
+<!--  </ClientOnly>-->
 
 
 </div>
