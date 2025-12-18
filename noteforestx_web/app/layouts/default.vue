@@ -3,6 +3,7 @@ import { ref, onBeforeMount, onMounted } from "vue"
 import AppHeader from "../components/AppHeader.vue"
 import { useRoute } from 'vue-router';
 import { useI18n } from "vue-i18n"
+import AppFooter from "~/components/AppFooter.vue";
 const { locale } = useI18n()
 const route = useRoute();
 const currentPath = route.path;
@@ -44,6 +45,9 @@ const currentPath = route.path;
       <ConfirmDialog />
       <slot />
     </div>
+
+    <AppFooter />
+
   </div>
 </template>
 

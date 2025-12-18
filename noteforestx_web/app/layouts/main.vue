@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue"
+import AppFooter from "~/components/AppFooter.vue";
 // import AppHeader from "../components/AppHeader.vue"
 // import WelcomeBanner from "../components/WelcomeBanner.vue"
 // import CollapseTransition from "../components/CollapseTransition.vue" // ✅ 新增导入
@@ -7,7 +8,7 @@ import { ref, onMounted } from "vue"
 const showBanner = ref<boolean>(false)
 
 const bannerHeight = 32   // WelcomeBanner 展开高度
-const headerHeight = 52   // AppHeader 高度
+const headerHeight = 62   // AppHeader 高度
 
 const expandUpper = () => {
   showBanner.value = !showBanner.value
@@ -42,6 +43,9 @@ const expandUpper = () => {
       <ConfirmDialog />
       <slot />
     </div>
+
+    <AppFooter />
+
   </div>
 
 

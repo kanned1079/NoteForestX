@@ -16,7 +16,7 @@ useScrollFadeIn({
 
 <template>
   <div class="flex justify-center">
-    <div class="relative max-w-[980px] container z-10 px-8 pt-20 text-slate-800 dark:text-slate-100">
+    <div class="relative max-w-[1000px] container z-10 px-8 pt-20 text-slate-800 dark:text-slate-100">
 
       <!-- 🌟 作品标题 -->
       <div class="mb-6">
@@ -108,6 +108,7 @@ useScrollFadeIn({
           <SkillRepresent value="MaterialUI" :percent="30" />
           <SkillRepresent value="Vue" :percent="90" />
           <SkillRepresent value="Nuxt.js" :percent="80" />
+          <SkillRepresent value="Electron" :percent="10" />
           <SkillRepresent value="pinia" :percent="90" />
           <SkillRepresent value="React" :percent="30" />
           <SkillRepresent value="GIN" :percent="100" />

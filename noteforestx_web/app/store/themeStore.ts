@@ -14,9 +14,15 @@ const useThemeStore = defineStore('themeStore', () => {
         type: ""
     })
 
+    const workTab = ref<'0' | '1'>('0')
+    const setWorkTab = (value: '0' | '1') => workTab.value = value
+
     return {
         showHeaderSearchBtn,
         searchDialog,
+        workTab,
+        setWorkTab
+
     }
 
 }, {

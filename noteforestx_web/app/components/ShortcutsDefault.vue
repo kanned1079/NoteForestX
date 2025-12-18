@@ -14,7 +14,8 @@ const containerRef = ref<HTMLElement | null>(null)
     x: 200,
     stagger: 0.1,
     duration: 0.6,
-    start: 'top 90%'
+    start: 'top 90%',
+    useScrollTrigger: false
   })
 </script>
 

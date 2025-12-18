@@ -2,7 +2,10 @@
 import { ref, onMounted, nextTick, onBeforeUnmount } from 'vue'
 import { useScrollFadeIn } from '~/composables/useScrollFadeIn'
 import murasame_ciallo from '~/assets/imgs/murasame_ciallo.jpg'
+import useThemeStore from "~/store/themeStore";
+import ProgrammingLangIcons from "~/components/ProgrammingLangIcons.vue";
 
+const themeStore = useThemeStore()
 const containerRef = ref<HTMLElement | null>(null)
 const textRef = ref<HTMLElement | null>(null)
 const scrollRef = ref<HTMLElement | null>(null)
@@ -36,6 +39,14 @@ const MAX_DURATION = 3.5
 // ⚠️ 注意：不要在顶层访问 window
 let W = 0
 let H = 0
+
+const onClickWorkBtn = (code: '0' | '1') => {
+  themeStore.setWorkTab(code)
+  const targetSelector = '#work-section'
+
+  const el = document.querySelector(targetSelector)
+  if (el) el.scrollIntoView({ behavior: 'smooth' })
+}
 
 onMounted(async () => {
   // -------- SSR 安全点 --------
@@ -170,41 +181,58 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="meteor-root relative w-full h-screen overflow-hidden index-root">
-    <!-- 背景 -->
-    <BackgroundGrid :withFade="false" :withGradient="false" />
+  <div
+      class="
+      meteor-root
+      relative w-full overflow-hidden index-root
+      min-h-[60vh]
+      md:min-h-[70vh]
+      max-h-[90vh]
+    "
+  >
+    <!-- ================= 背景 ================= -->
+    <BackgroundGrid :withFade="true" :withGradient="false" />
 
     <!-- 流星容器 -->
     <div
         ref="containerRef"
         class="meteor-container absolute inset-0 pointer-events-none"
-    ></div>
+    />
 
-    <!-- ================= 中央内容区域 ================= -->
-    <!-- 高度 = 100% - 底部 Scroll 区域高度 (6rem) -->
+    <!-- ================= 主内容 ================= -->
     <div
         ref="textRef"
-        class="absolute top-0 left-0 right-0
-             h-[calc(100%-6rem)]
-             z-20 flex items-center justify-center px-4"
+        class="
+        absolute inset-0
+        z-20
+        flex items-start justify-center
+        px-4
+        pt-24 md:pt-28
+      "
     >
-      <div class="w-full max-w-[1200px] flex items-center">
+      <div
+          class="
+          w-full max-w-[1200px]
+          flex items-center
+          translate-y-[-3vh]
+        "
+      >
         <!-- 左侧：文字 -->
-        <!-- 左侧：文字 -->
-        <div class="w-full md:w-1/2 flex justify-center text-slate-900 dark:text-slate-100">
+        <div
+            class="w-full md:w-1/2 flex justify-center text-slate-900 dark:text-slate-100"
+        >
           <div class="w-full max-w-md">
-            <div class="opacity-90  animated-card-firstpage">
+            <!-- 标题 -->
+            <div class="opacity-90 animated-card-firstpage">
               <p class="text-2xl sm:text-3xl md:text-4xl">
                 hi !
               </p>
 
-              <p
-                  class="font-bold text-4xl sm:text-5xl md:text-5xl lg:text-5xl"
-              >
+              <p class="font-bold text-4xl sm:text-5xl md:text-5xl">
                 I'm <span class="text-[#1e88a8] underline">kanned1079</span>,
               </p>
 
-              <div class="mt-6 text-base sm:text-lg ">
+              <div class="mt-6 text-base sm:text-lg">
                 a <span class="font-bold">FullStack Developer</span> who loves intuitive,
               </div>
               <div class="text-base sm:text-lg">
@@ -212,73 +240,87 @@ onMounted(async () => {
               </div>
             </div>
 
-            <div class="space-y-2 mt-10 text-sm sm:text-base animated-card-firstpage">
-              <div>I never wished for an easy life.</div>
-              <div>I am the light itself ✨ —</div>
-              <div>seated as the mountain,</div>
-              <div>painting the world with the ink of spring.</div>
-            </div>
-
-            <div>
-              <button class="button">
-                Button
+            <!-- 按钮区 -->
+            <div
+                class="mt-8 flex flex-row items-center gap-3 animated-card-firstpage"
+            >
+              <button
+                  class="button h-9 border border-transparent dark:border-gray-500"
+                  @click="onClickWorkBtn('1')"
+              >
+                Get In Touch
               </button>
+
+              <StarOnGithub link="https://github.com/kanned1079" />
             </div>
 
+            <!-- 技术栈 -->
+            <div class="mt-14 animated-card-firstpage">
+              <p class="text-sm opacity-80 mb-2">
+                current favorite tech stack / tools:
+              </p>
+              <ProgrammingLangIcons />
+            </div>
           </div>
         </div>
 
         <!-- 右侧：视觉（桌面端） -->
-        <div class="hidden md:flex flex-1 justify-center items-center animated-card-firstpage">
+        <div
+            class="
+            hidden md:flex
+            flex-1
+            justify-center items-center
+            animated-card-firstpage
+          "
+        >
           <div
               class="
-      aspect-[4/3]
-      w-[420px]
-      lg:w-[520px]
-      xl:w-[620px]
-      2xl:w-[700px]
-      flex items-center justify-center
-    "
+              aspect-[4/3]
+              w-[420px]
+              lg:w-[520px]
+              xl:w-[620px]
+              2xl:w-[700px]
+              flex items-center justify-center
+            "
           >
             <VisualPhoto class="w-full h-full object-contain" />
           </div>
         </div>
-
-
       </div>
     </div>
 
-    <!-- ================= 底部 Scroll 提示 ================= -->
-    <!-- 固定高度：h-24 = 6rem -->
+    <!-- ================= Scroll 提示 ================= -->
     <div
         ref="scrollRef"
         :class="[
-    'absolute bottom-0 left-0 w-full h-24 flex flex-col items-center justify-center gap-2 z-20',
-    'transition-all duration-700 ease-out', showScroll
-      ? 'opacity-90 translate-y-0'
-      : 'opacity-0 translate-y-4'
-  ]"
+        'absolute bottom-4 left-0 w-full',
+        'flex flex-col items-center justify-center gap-2 z-20',
+        'transition-all duration-700 ease-out',
+        showScroll
+          ? 'opacity-90 translate-y-0'
+          : 'opacity-0 translate-y-3'
+      ]"
     >
-  <span class="text-xl font-medium">
-    Scroll down to know more.
-  </span>
+      <span class="text-sm md:text-base font-medium opacity-80">
+        Scroll down to know more
+      </span>
 
       <span
-          class="h-8 w-8 bg-primary text-primary-contrast
-           rounded-full inline-flex items-center justify-center
-           animate-bounce"
+          class="
+          h-8 w-8
+          bg-primary text-primary-contrast
+          rounded-full
+          inline-flex items-center justify-center
+          animate-bounce
+        "
       >
-    <i class="pi pi-arrow-down" />
-  </span>
+        <i class="pi pi-arrow-down" />
+      </span>
     </div>
   </div>
 </template>
 
 <style>
-.index-root {
-  height: 90vh
-}
-
 .meteor {
   position: absolute;
   width: 3px;
@@ -310,13 +352,16 @@ onMounted(async () => {
 /* From Uiverse.io by zjssun */
 .button {
   position: relative;
-  padding: 10px 22px;
   border-radius: 6px;
+  height: 36px;
+  padding: 0 10px;
   border: none;
   color: #fff;
   cursor: pointer;
   background-color: #7d2ae8;
+  font-weight: bold;
   transition: all 0.2s ease;
+  font-size: 0.75rem;
 }
 
 .button:active {

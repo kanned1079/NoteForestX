@@ -14,6 +14,7 @@ export interface ScrollFadeInOptions {
     start?: string
     toggleActions?: string
     direction?: 'up' | 'down' | 'left' | 'right'
+    useScrollTrigger?: boolean // ✅ 新增参数，是否启用 ScrollTrigger
 }
 
 export function useScrollFadeIn(options: ScrollFadeInOptions = {}) {
@@ -26,16 +27,16 @@ export function useScrollFadeIn(options: ScrollFadeInOptions = {}) {
         stagger = 0.1,
         start = 'top 85%',
         toggleActions = 'play none none reverse',
-        direction = 'up'
+        direction = 'up',
+        useScrollTrigger = true // 默认启用
     } = options
 
-    // ✅ 只记录当前 composable 创建的 triggers
     const triggers: ScrollTrigger[] = []
 
     onMounted(async () => {
         await nextTick()
 
-        if (!registered) {
+        if (useScrollTrigger && !registered) {
             gsap.registerPlugin(ScrollTrigger)
             registered = true
         }
@@ -48,14 +49,10 @@ export function useScrollFadeIn(options: ScrollFadeInOptions = {}) {
                 autoAlpha: 1,
                 duration,
                 ease,
-                delay: i * stagger,
-                scrollTrigger: {
-                    trigger: el,
-                    start,
-                    toggleActions
-                }
+                delay: i * stagger
             }
 
+            // 方向处理
             switch (direction) {
                 case 'up':
                     fromVars.y = y
@@ -75,17 +72,24 @@ export function useScrollFadeIn(options: ScrollFadeInOptions = {}) {
                     break
             }
 
+            // ✅ 如果启用 ScrollTrigger
+            if (useScrollTrigger) {
+                toVars.scrollTrigger = {
+                    trigger: el,
+                    start,
+                    toggleActions
+                }
+            }
+
             const tween = gsap.fromTo(el, fromVars, toVars)
 
-            // ✅ 拿到这个 tween 对应的 ScrollTrigger
-            if (tween.scrollTrigger) {
+            if (useScrollTrigger && tween.scrollTrigger) {
                 triggers.push(tween.scrollTrigger)
             }
         })
     })
 
     onBeforeUnmount(() => {
-        // ✅ 只 kill 自己的
         triggers.forEach(t => t.kill())
         triggers.length = 0
     })

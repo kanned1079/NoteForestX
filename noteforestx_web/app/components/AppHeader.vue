@@ -17,7 +17,7 @@ import { useScrollFadeIn } from '~/composables/useScrollFadeIn'
 
 import { useTemplateRef } from 'vue'
 
-const {t, setLocale} = useI18n()
+const {t, setLocale, locale} = useI18n()
 const route = useRoute()
 const router = useRouter();
 const userStore = useUserStore()
@@ -213,6 +213,19 @@ function onKeydown(e: KeyboardEvent) {
   }
 }
 
+const onClickWorkBtn = (code: '0' | '1' | '2') => {
+  if (code === '2')  {
+    const designEl = document.querySelector('#work-design')
+    if (designEl) designEl.scrollIntoView({ behavior: 'smooth' })
+  } else {
+    themeStore.setWorkTab(code)
+    const el = document.querySelector('#work-section')
+    if (el) el.scrollIntoView({ behavior: 'smooth' })
+  }
+
+
+}
+
 onMounted(() => {
   window.addEventListener('keydown', onKeydown)
 })
@@ -225,25 +238,26 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="p-3 flex-row flex justify-between items-center" style="backdrop-filter: blur(1px)">
-    <div class="ml-0">
+    <div class="ml-1 flex flex-row items-center">
       <Button
           size="medium"
-          label="NoteForest X"
           severity="secondary"
           variant="text"
           aria-haspopup="true"
           aria-controls="app_menu"
           @click="toggleAppMenu"
-
-          class="p-0"
+          class="p-1 mr-4"
       >
-        <template #icon>
-          <Icon>
-            <TicketSharp/>
-          </Icon>
+        <template #default>
+          <div class="text-xl font-semibold flex flex-row items-center space-x-2">
+            <Icon class="text-[#7234e9] dark:text-[#8257f2]">
+              <TicketSharp/>
+            </Icon>
+            <p class="text-[#7234e9] dark:text-[#8257f2]">NoteForest <span class="font-mono">X</span></p>
+          </div>
         </template>
       </Button>
-      <Menu ref="appMenu" id="app_menu" :model="itemsMenu" class="w-full md:min-w-60 md:max-w-max mt-2" :popup="true">
+      <Menu ref="appMenu" id="app_menu" :model="itemsMenu" style="margin-top: 10px" class="w-full md:min-w-60 md:max-w-max mt-2" :popup="true">
         <template #start>
 
         </template>
@@ -273,6 +287,19 @@ onBeforeUnmount(() => {
           </button>
         </template>
       </Menu>
+
+      <Button
+          size="medium"
+          severity="secondary"
+          variant="text"
+          aria-haspopup="true"
+          aria-controls="app_menu"
+          class="p-1 mr-2"
+          v-for="i in [{label: '设计', code: '2'}, {label: '技能&工具', code: '0'}, {label: '聯繫我', code: '1'}]"
+          @click="onClickWorkBtn(i.code as '0' | '1' | '2')"
+      >
+        <p class="text-base font-base">{{ i.label }}</p>
+      </Button>
 
     </div>
 
