@@ -43,7 +43,7 @@ defineExpose({
   <!-- 🌐 当前语言按钮（卡片版） -->
   <Button
       ref="langBtn"
-      class="h-20 flex-1 bg-[rgba(255,255,255,0.7)] dark:bg-gray-800 dark:text-gray-200 text-sm rounded-xl"
+      class=" flex-1 bg-[rgba(255,255,255,0.7)] dark:bg-gray-800 dark:text-gray-200 text-sm rounded-xl"
       variant="text"
       type="button"
       @click="toggleMenu"
@@ -51,7 +51,7 @@ defineExpose({
       aria-controls="language_menu"
   >
     <div class="h-full w-full flex flex-col justify-between items-start">
-      <i class="pi pi-language text-xl opacity-80"></i>
+<!--      <i class="pi pi-language text-xl opacity-80"></i>-->
 
       <div class="text-base flex items-center">
         <span

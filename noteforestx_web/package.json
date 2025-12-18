@@ -15,8 +15,6 @@
     "@nuxtjs/tailwindcss": "^6.14.0",
     "@pinia/nuxt": "^0.11.2",
     "@primeuix/themes": "^1.2.3",
-    "@tresjs/cientos": "^5.2.0",
-    "@tresjs/nuxt": "5.1.2",
     "@vicons/utils": "^0.1.4",
     "@vueuse/motion": "^3.0.3",
     "canvas-confetti": "^1.9.4",

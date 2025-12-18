@@ -1,222 +1,282 @@
-<template>
-  <client-only>
-    <div class="meteor-root relative w-full overflow-hidden index-root">
-      <BackgroundGrid />
-
-      <!-- 流星容器 -->
-      <div
-          ref="containerRef"
-          class="meteor-container absolute inset-0 pointer-events-none"
-      ></div>
-
-      <!-- 中央内容区域（1200px 居中） -->
-      <div
-          ref="textRef"
-          class="absolute inset-0 z-20 flex items-center justify-center px-4"
-      >
-        <div class="w-full max-w-[1200px] flex items-center">
-          <!-- 左侧：文字内容 -->
-          <div class="w-full md:w-1/2 text-slate-900 dark:text-slate-100">
-            <div class="opacity-90">
-              <p class="text-2xl sm:text-3xl md:text-4xl animated-card-firstpage">
-                hi !
-              </p>
-
-              <p
-                  class="font-bold animated-card-firstpage
-                       text-4xl sm:text-5xl md:text-6xl lg:text-7xl"
-              >
-                I'm <span class="text-[#1e88a8] underline">kanned1079</span>,
-              </p>
-
-              <div class="mt-6 text-base sm:text-lg animated-card-firstpage">
-                a <span class="font-bold">FullStack Developer</span> who loves intuitive,
-              </div>
-              <div class="text-base sm:text-lg animated-card-firstpage">
-                clean and modern UI design.
-              </div>
-            </div>
-
-            <div class="space-y-2 mt-4 text-sm sm:text-base animated-card-firstpage">
-              <div class="mt-10">I never wished for an easy life.</div>
-              <div>I am the light itself ✨ —</div>
-              <div>seated as the mountain,</div>
-              <div>painting the world with the ink of spring.</div>
-            </div>
-          </div>
-
-          <!-- 右侧：桌面端显示 -->
-          <div class="hidden md:flex w-1/2 justify-center items-center">
-            <!-- 预留区域：Logo / 插画 / 动画 -->
-<!--            <div-->
-<!--                class="w-64 h-64 lg:w-80 lg:h-80-->
-<!--                     rounded-2xl-->
-<!--                     border border-dashed border-slate-400/40-->
-<!--                     flex items-center justify-center-->
-<!--                     text-slate-400"-->
-<!--            >-->
-<!--              Logo / Visual-->
-<!--            </div>-->
-
-            <div class="hidden md:flex w-1/2 justify-center items-center">
-              <div class="w-80 h-80 lg:w-96 lg:h-96">
-                <ClientOnly>
-                  <RightVisual />
-
-                </ClientOnly>
-              </div>
-            </div>
-
-
-          </div>
-        </div>
-      </div>
-
-      <!-- Scroll Down 提示 -->
-      <div
-          ref="scrollRef"
-          class="absolute bottom-6 left-1/2 transform -translate-x-1/2
-               flex flex-col items-center gap-2 z-20 opacity-0"
-      >
-        <span class="text-xl font-normal">Scroll down to know more.</span>
-        <span
-            class="h-8 w-8 bg-primary text-primary-contrast
-                 rounded-full inline-flex items-center justify-center"
-        >
-          <i class="mt-2 opacity-70 pi pi-arrow-down" />
-        </span>
-      </div>
-    </div>
-  </client-only>
-</template>
-
 <script setup lang="ts">
 import { ref, onMounted, nextTick, onBeforeUnmount } from 'vue'
-import {useScrollFadeIn} from "~/composables/useScrollFadeIn";
+import { useScrollFadeIn } from '~/composables/useScrollFadeIn'
+import murasame_ciallo from '~/assets/imgs/murasame_ciallo.jpg'
 
 const containerRef = ref<HTMLElement | null>(null)
 const textRef = ref<HTMLElement | null>(null)
 const scrollRef = ref<HTMLElement | null>(null)
+
+const showScroll = ref(false)
+
 let resizeHandler: (() => void) | null = null
 let meteorInterval: number | null = null
 
+// =======================
+// 滚动进入动画
+// =======================
 useScrollFadeIn({
   selector: '.animated-card-firstpage',
   direction: 'up',
-  x: 600,
-  stagger: 0.2,
-  duration: 0.6,
+  x: 100,
+  stagger: 0.1,
+  duration: 0.4,
   start: 'top 90%'
 })
 
+// =======================
+// 流星参数
+// =======================
+const METEOR_COUNT = 5
+const MIN_LENGTH = 120
+const MAX_LENGTH = 480
+const MIN_DURATION = 1.5
+const MAX_DURATION = 3.5
+
+// ⚠️ 注意：不要在顶层访问 window
+let W = 0
+let H = 0
+
 onMounted(async () => {
+  // -------- SSR 安全点 --------
+  W = window.innerWidth
+  H = window.innerHeight
+
+  showScroll.value = true
+
   await nextTick()
   const container = containerRef.value
   if (!container) return
 
   const { gsap } = await import('gsap')
 
-  // ------------------------
-  // 文字动画
-  // ------------------------
-  // if (textRef.value) {
-  //   const lines = textRef.value.querySelectorAll('div > div')
-  //   gsap.fromTo(
-  //       lines,
-  //       { y: 20, opacity: 0 },
-  //       { y: 0, opacity: 1, duration: 1, ease: 'power2.out', stagger: 0.15 }
-  //   )
-  // }
-
+  // =======================
   // Scroll Down 延迟出现
+  // =======================
   if (scrollRef.value) {
-    gsap.to(scrollRef.value, { opacity: 1, y: 0, duration: 1, ease: 'power2.out', delay: 2 })
+    gsap.fromTo(
+        scrollRef.value,
+        { opacity: 0, y: 12 },
+        { opacity: 1, y: 0, duration: 1, ease: 'power2.out', delay: 2 }
+    )
   }
 
-  // ------------------------
-  // 流星动画（循环生成）
-  // ------------------------
-  const METEOR_COUNT = 5
-  const MIN_LENGTH = 120
-  const MAX_LENGTH = 480
-  const MIN_DURATION = 1.5
-  const MAX_DURATION = 3.5
-
-  let W = window.innerWidth
-  let H = window.innerHeight
+  // =======================
+  // Resize
+  // =======================
   resizeHandler = () => {
     W = window.innerWidth
     H = window.innerHeight
   }
   window.addEventListener('resize', resizeHandler)
 
+  // =======================
+  // 创建流星
+  // =======================
   const createMeteor = () => {
     if (!container) return
+
     const meteor = document.createElement('div')
     meteor.className = 'meteor'
+
     const len = MIN_LENGTH + Math.random() * (MAX_LENGTH - MIN_LENGTH)
     meteor.style.height = `${len}px`
     container.appendChild(meteor)
 
     const startX = Math.random() * W
     const startY = Math.random() * (H * 0.5)
+
     const angleDeg = 40 + Math.random() * 10
     const rad = (180 - angleDeg) * (Math.PI / 180)
     const travel = W * (0.5 + Math.random() * 0.5)
+
     const endX = startX + Math.cos(rad) * travel
     const endY = startY + Math.sin(rad) * travel
-    const rotateDeg = (Math.atan2(endY - startY, endX - startX) * 180) / Math.PI - 90
-    const finalOpacity = 0.4 + Math.random() * 0.6
-    const duration = MIN_DURATION + Math.random() * (MAX_DURATION - MIN_DURATION)
+
+    const rotateDeg =
+        (Math.atan2(endY - startY, endX - startX) * 180) / Math.PI - 90
+
+    const duration =
+        MIN_DURATION + Math.random() * (MAX_DURATION - MIN_DURATION)
 
     gsap.set(meteor, {
       x: startX,
       y: startY,
       rotate: rotateDeg,
       transformOrigin: '0 0',
-      opacity: 0,
-      visibility: 'visible'
+      opacity: 0
     })
 
-    // 流星移动动画
     gsap.to(meteor, {
       x: endX,
       y: endY,
-      opacity: finalOpacity,
+      opacity: 0.8,
       duration,
       ease: 'power2.out',
       onComplete: () => {
-        // 移动结束后淡出动画
         gsap.to(meteor, {
           opacity: 0,
           duration: 0.5,
-          ease: 'power1.out',
           onComplete: () => meteor.remove()
         })
       }
     })
   }
 
-  // 初始生成几个流星
+  // =======================
+  // 流星控制（关键）
+  // =======================
+  const startMeteor = () => {
+    if (meteorInterval !== null) return
+    meteorInterval = window.setInterval(createMeteor, 800)
+  }
+
+  const stopMeteor = () => {
+    if (meteorInterval !== null) {
+      clearInterval(meteorInterval)
+      meteorInterval = null
+    }
+  }
+
+  // 初始生成
   for (let i = 0; i < METEOR_COUNT; i++) {
     setTimeout(createMeteor, i * 400)
   }
 
-  // 循环生成流星
-  meteorInterval = window.setInterval(() => {
-    createMeteor()
-  }, 800) // 每隔 0.8 秒生成一颗
-})
+  startMeteor()
 
-onBeforeUnmount(() => {
-  if (resizeHandler) window.removeEventListener('resize', resizeHandler)
-  if (meteorInterval) clearInterval(meteorInterval)
+  // =======================
+  // 页面可见性控制
+  // =======================
+  const handleVisibilityChange = () => {
+    if (document.hidden) {
+      stopMeteor()
+    } else {
+      startMeteor()
+    }
+  }
+
+  document.addEventListener('visibilitychange', handleVisibilityChange)
+
+  // =======================
+  // 卸载清理
+  // =======================
+  onBeforeUnmount(() => {
+    stopMeteor()
+    if (resizeHandler) window.removeEventListener('resize', resizeHandler)
+    document.removeEventListener('visibilitychange', handleVisibilityChange)
+  })
 })
 </script>
 
+<template>
+  <div class="meteor-root relative w-full h-screen overflow-hidden index-root">
+    <!-- 背景 -->
+    <BackgroundGrid :withFade="false" :withGradient="false" />
+
+    <!-- 流星容器 -->
+    <div
+        ref="containerRef"
+        class="meteor-container absolute inset-0 pointer-events-none"
+    ></div>
+
+    <!-- ================= 中央内容区域 ================= -->
+    <!-- 高度 = 100% - 底部 Scroll 区域高度 (6rem) -->
+    <div
+        ref="textRef"
+        class="absolute top-0 left-0 right-0
+             h-[calc(100%-6rem)]
+             z-20 flex items-center justify-center px-4"
+    >
+      <div class="w-full max-w-[1200px] flex items-center">
+        <!-- 左侧：文字 -->
+        <!-- 左侧：文字 -->
+        <div class="w-full md:w-1/2 flex justify-center text-slate-900 dark:text-slate-100">
+          <div class="w-full max-w-md">
+            <div class="opacity-90  animated-card-firstpage">
+              <p class="text-2xl sm:text-3xl md:text-4xl">
+                hi !
+              </p>
+
+              <p
+                  class="font-bold text-4xl sm:text-5xl md:text-5xl lg:text-5xl"
+              >
+                I'm <span class="text-[#1e88a8] underline">kanned1079</span>,
+              </p>
+
+              <div class="mt-6 text-base sm:text-lg ">
+                a <span class="font-bold">FullStack Developer</span> who loves intuitive,
+              </div>
+              <div class="text-base sm:text-lg">
+                clean and modern UI design.
+              </div>
+            </div>
+
+            <div class="space-y-2 mt-10 text-sm sm:text-base animated-card-firstpage">
+              <div>I never wished for an easy life.</div>
+              <div>I am the light itself ✨ —</div>
+              <div>seated as the mountain,</div>
+              <div>painting the world with the ink of spring.</div>
+            </div>
+
+            <div>
+              <button class="button">
+                Button
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- 右侧：视觉（桌面端） -->
+        <div class="hidden md:flex flex-1 justify-center items-center animated-card-firstpage">
+          <div
+              class="
+      aspect-[4/3]
+      w-[420px]
+      lg:w-[520px]
+      xl:w-[620px]
+      2xl:w-[700px]
+      flex items-center justify-center
+    "
+          >
+            <VisualPhoto class="w-full h-full object-contain" />
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+
+    <!-- ================= 底部 Scroll 提示 ================= -->
+    <!-- 固定高度：h-24 = 6rem -->
+    <div
+        ref="scrollRef"
+        :class="[
+    'absolute bottom-0 left-0 w-full h-24 flex flex-col items-center justify-center gap-2 z-20',
+    'transition-all duration-700 ease-out', showScroll
+      ? 'opacity-90 translate-y-0'
+      : 'opacity-0 translate-y-4'
+  ]"
+    >
+  <span class="text-xl font-medium">
+    Scroll down to know more.
+  </span>
+
+      <span
+          class="h-8 w-8 bg-primary text-primary-contrast
+           rounded-full inline-flex items-center justify-center
+           animate-bounce"
+      >
+    <i class="pi pi-arrow-down" />
+  </span>
+    </div>
+  </div>
+</template>
+
 <style>
 .index-root {
-  height: 72vh;
+  height: 90vh
 }
 
 .meteor {
@@ -245,4 +305,101 @@ onBeforeUnmount(() => {
     --meteor-glow-color: rgba(255,215,0,0.8);
   }
 }
+
+
+/* From Uiverse.io by zjssun */
+.button {
+  position: relative;
+  padding: 10px 22px;
+  border-radius: 6px;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  background-color: #7d2ae8;
+  transition: all 0.2s ease;
+}
+
+.button:active {
+  transform: scale(0.96);
+}
+
+.button:before,
+.button:after {
+  position: absolute;
+  content: "";
+  width: 150%;
+  left: 50%;
+  height: 100%;
+  transform: translateX(-50%);
+  z-index: -1000;
+  background-repeat: no-repeat;
+}
+
+.button:hover:before {
+  top: -70%;
+  background-image: radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+  radial-gradient(circle, transparent 20%, #7d2ae8 20%, transparent 30%),
+  radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+  radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+  radial-gradient(circle, transparent 10%, #7d2ae8 15%, transparent 20%),
+  radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+  radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+  radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+  radial-gradient(circle, #7d2ae8 20%, transparent 20%);
+  background-size: 10% 10%, 20% 20%, 15% 15%, 20% 20%, 18% 18%, 10% 10%, 15% 15%,
+  10% 10%, 18% 18%;
+  background-position: 50% 120%;
+  animation: greentopBubbles 0.6s ease;
+}
+
+@keyframes greentopBubbles {
+  0% {
+    background-position: 5% 90%, 10% 90%, 10% 90%, 15% 90%, 25% 90%, 25% 90%,
+    40% 90%, 55% 90%, 70% 90%;
+  }
+
+  50% {
+    background-position: 0% 80%, 0% 20%, 10% 40%, 20% 0%, 30% 30%, 22% 50%,
+    50% 50%, 65% 20%, 90% 30%;
+  }
+
+  100% {
+    background-position: 0% 70%, 0% 10%, 10% 30%, 20% -10%, 30% 20%, 22% 40%,
+    50% 40%, 65% 10%, 90% 20%;
+    background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+  }
+}
+
+.button:hover::after {
+  bottom: -70%;
+  background-image: radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+  radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+  radial-gradient(circle, transparent 10%, #7d2ae8 15%, transparent 20%),
+  radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+  radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+  radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+  radial-gradient(circle, #7d2ae8 20%, transparent 20%);
+  background-size: 15% 15%, 20% 20%, 18% 18%, 20% 20%, 15% 15%, 20% 20%, 18% 18%;
+  background-position: 50% 0%;
+  animation: greenbottomBubbles 0.6s ease;
+}
+
+@keyframes greenbottomBubbles {
+  0% {
+    background-position: 10% -10%, 30% 10%, 55% -10%, 70% -10%, 85% -10%,
+    70% -10%, 70% 0%;
+  }
+
+  50% {
+    background-position: 0% 80%, 20% 80%, 45% 60%, 60% 100%, 75% 70%, 95% 60%,
+    105% 0%;
+  }
+
+  100% {
+    background-position: 0% 90%, 20% 90%, 45% 70%, 60% 110%, 75% 80%, 95% 70%,
+    110% 10%;
+    background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+  }
+}
+
 </style>

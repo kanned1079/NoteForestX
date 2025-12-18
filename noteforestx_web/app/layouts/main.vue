@@ -7,7 +7,7 @@ import { ref, onMounted } from "vue"
 const showBanner = ref<boolean>(false)
 
 const bannerHeight = 32   // WelcomeBanner 展开高度
-const headerHeight = 64   // AppHeader 高度
+const headerHeight = 52   // AppHeader 高度
 
 const expandUpper = () => {
   showBanner.value = !showBanner.value
@@ -44,7 +44,6 @@ const expandUpper = () => {
     </div>
   </div>
 
-  <Mask ></Mask>
 
 </template>
 

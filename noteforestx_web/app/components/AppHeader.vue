@@ -234,6 +234,8 @@ onBeforeUnmount(() => {
           aria-haspopup="true"
           aria-controls="app_menu"
           @click="toggleAppMenu"
+
+          class="p-0"
       >
         <template #icon>
           <Icon>

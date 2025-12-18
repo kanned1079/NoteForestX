@@ -277,9 +277,7 @@ export default defineNuxtConfig({
       '@nuxt/icon',
       '@nuxtjs/i18n',
       '@nuxtjs/tailwindcss',
-      '@primevue/nuxt-module',
       '@vueuse/motion/nuxt',
-      '@tresjs/nuxt'
     ],
     primevue: {
         options: {
