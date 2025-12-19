@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Kbd from "~/components/Kbd.vue"
+import Kbd from "~/components/MyIntro/Kbd.vue"
 
 const props = defineProps<{
   label: string

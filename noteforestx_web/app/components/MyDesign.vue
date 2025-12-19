@@ -2,6 +2,10 @@
 
 import MyCard from "~/components/RedesignedComponents/MyCard.vue";
 import {useScrollFadeIn} from "~/composables/useScrollFadeIn";
+import ColorSelector from "~/components/MyIntro/ColorSelector.vue";
+
+
+const currentCardId = ref<number>(0)
 
 const designSteps = [
   {
@@ -44,7 +48,7 @@ useScrollFadeIn({
 
 
     <div class="flex justify-center">
-      <div class="relative max-w-[1200px] container z-10 px-8 pt-20 text-slate-800 dark:text-slate-100">
+      <div class="relative max-w-[1000px] container px-4 z-10 pt-20 text-slate-800 dark:text-slate-100">
 
 
         <div class="space-y-3">
@@ -63,6 +67,7 @@ useScrollFadeIn({
                 :padding="12"
                 class="mb-3"
                 hoverable
+                @click="currentCardId = i.id"
             >
               <p class="text-lg font-semibold mb-2">{{ i.title }}</p>
               <p class="text-sm font-light">{{ i.content }}</p>
@@ -70,18 +75,20 @@ useScrollFadeIn({
           </div>
 
           <!-- 右 -->
-          <div class="w-full md:w-1/2 flex justify-center items-center animated-card-my-design">
-            <SampleDesignedCard />
+          <div class="w-full md:w-1/2 flex flex-col justify-center items-center ">
+            <SampleDesignedCard class="animated-card-my-design" />
+
+<!--            <ColorSelector class="animated-card-my-design" />-->
           </div>
         </div>
 
-        <div class="space-y-3 animated-card-my-design">
+        <div class="space-y-3 mt-8q animated-card-my-design">
           <p class="text-xl font-semibold text-[#3261e4] dark:text-[#4f77e6]">講究細節</p>
           <p class="text-4xl font-semibold">擁有敏銳的細節洞察能力</p>
           <p class="text-sm">著重操作便捷性、使用者介面一致性，並持續優化使用者體驗</p>
         </div>
 
-        <div class="space-y-3 mt-6 animated-card-my-design">
+        <div class="space-y-3 mt-10 animated-card-my-design">
           <p class="text-xl font-semibold text-[#3261e4] dark:text-[#4f77e6]">美觀且高效</p>
           <p class="text-4xl font-semibold">程式碼簡潔易懂且性能優化</p>
           <p class="text-sm">撰寫乾淨整潔的程式碼為首要原則，同時兼顧最大限度的效能優化</p>

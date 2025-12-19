@@ -17,7 +17,7 @@ definePageMeta({
   <MyDesign />
   <MyIntroduction />
 
-  <AboutMe />
+<!--  <AboutMe />-->
 
 
 </div>

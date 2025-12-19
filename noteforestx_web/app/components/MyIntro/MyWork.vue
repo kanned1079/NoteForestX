@@ -16,7 +16,11 @@ useScrollFadeIn({
 
 <template>
   <div class="flex justify-center">
-    <div class="relative max-w-[1000px] container z-10 px-8 pt-20 text-slate-800 dark:text-slate-100">
+    <div class="relative max-w-[1000px] container z-10 px-4 pt-20 text-slate-800 dark:text-slate-100">
+
+<!--      <Button variant="text" class="mt-4 mb-4" label="技能 & 工具" icon="pi pi-wrench" />-->
+
+<!--      <p class="mb-4 underline">轉到 <span class="font-bold">技能 & 工具</span> <span class="pi pi-wrench"></span> </p>-->
 
       <!-- 🌟 作品标题 -->
       <div class="mb-6">

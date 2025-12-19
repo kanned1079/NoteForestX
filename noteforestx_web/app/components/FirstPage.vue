@@ -134,9 +134,6 @@ onMounted(async () => {
     })
   }
 
-  // =======================
-  // 流星控制（关键）
-  // =======================
   const startMeteor = () => {
     if (meteorInterval !== null) return
     meteorInterval = window.setInterval(createMeteor, 800)
@@ -156,9 +153,6 @@ onMounted(async () => {
 
   startMeteor()
 
-  // =======================
-  // 页面可见性控制
-  // =======================
   const handleVisibilityChange = () => {
     if (document.hidden) {
       stopMeteor()
@@ -169,9 +163,6 @@ onMounted(async () => {
 
   document.addEventListener('visibilitychange', handleVisibilityChange)
 
-  // =======================
-  // 卸载清理
-  // =======================
   onBeforeUnmount(() => {
     stopMeteor()
     if (resizeHandler) window.removeEventListener('resize', resizeHandler)
@@ -182,13 +173,7 @@ onMounted(async () => {
 
 <template>
   <div
-      class="
-      meteor-root
-      relative w-full overflow-hidden index-root
-      min-h-[60vh]
-      md:min-h-[70vh]
-      max-h-[90vh]
-    "
+      class="meteor-root relative w-full overflow-hidden index-root pt-[100px]"
   >
     <!-- ================= 背景 ================= -->
     <BackgroundGrid :withFade="true" :withGradient="false" />
@@ -203,19 +188,17 @@ onMounted(async () => {
     <div
         ref="textRef"
         class="
-        absolute inset-0
-        z-20
-        flex items-start justify-center
-        px-4
-        pt-24 md:pt-28
-      "
+    relative
+    z-20
+    flex justify-center
+    px-4
+  "
     >
       <div
           class="
-          w-full max-w-[1200px]
-          flex items-center
-          translate-y-[-3vh]
-        "
+    w-full max-w-[1200px]
+    flex items-center
+  "
       >
         <!-- 左侧：文字 -->
         <div
@@ -292,14 +275,7 @@ onMounted(async () => {
     <!-- ================= Scroll 提示 ================= -->
     <div
         ref="scrollRef"
-        :class="[
-        'absolute bottom-4 left-0 w-full',
-        'flex flex-col items-center justify-center gap-2 z-20',
-        'transition-all duration-700 ease-out',
-        showScroll
-          ? 'opacity-90 translate-y-0'
-          : 'opacity-0 translate-y-3'
-      ]"
+        class="mt-20 w-full flex flex-col items-center justify-center gap-2 z-20 transition-all duration-700 ease-out"
     >
       <span class="text-sm md:text-base font-medium opacity-80">
         Scroll down to know more

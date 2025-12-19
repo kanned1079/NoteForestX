@@ -174,7 +174,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="p-4">
+  <div class="">
     <PageHeader :title="t('layout.illustrationLib')"
                 subtitle="在这里所有收藏的插画项目将会以它们的创建时间进行排序，此处显示的为预览图，如您需要获取原图请点击目标插画进入二级菜单。"/>
     <Message class="mb-5" severity="warn">部分图片带有Limit属性，需要管理员来赋予您权限才可以进行查看。</Message>

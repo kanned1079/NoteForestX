@@ -8,12 +8,14 @@ const props = withDefaults(
       withGradient?: boolean
       gradientColor?: string
       offsetTop?: number
+      flipVertical?: boolean   // ✅ 新增
     }>(),
     {
       withFade: true,
       withGradient: true,
       gradientColor: '',
-      offsetTop: 0
+      offsetTop: 0,
+      flipVertical: false
     }
 )
 
@@ -48,7 +50,13 @@ const gradientStyle = computed(() => {
 </script>
 
 <template>
-  <div class="background-grid absolute inset-0 pointer-events-none z-0" :style="{ top: offsetTop + 'px' }">
+  <div
+      class="background-grid absolute inset-0 pointer-events-none z-0"
+      :style="{
+    top: offsetTop + 'px',
+    transform: flipVertical ? 'rotate(180deg)' : undefined
+  }"
+  >
     <!-- 渐变层 -->
     <div
         v-if="withGradient"
@@ -66,6 +74,11 @@ const gradientStyle = computed(() => {
 </template>
 
 <style scoped>
+
+.background-grid {
+  transform-origin: center;
+}
+
 .background-grid {
   position: absolute;
   inset: 0;

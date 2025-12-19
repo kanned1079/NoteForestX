@@ -8,7 +8,7 @@ import AppFooter from "~/components/AppFooter.vue";
 const showBanner = ref<boolean>(false)
 
 const bannerHeight = 32   // WelcomeBanner 展开高度
-const headerHeight = 62   // AppHeader 高度
+const headerHeight = 0   // AppHeader 高度
 
 const expandUpper = () => {
   showBanner.value = !showBanner.value

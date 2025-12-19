@@ -10,6 +10,7 @@ const themeStore = useThemeStore()
 <template>
   <section class="relative">
     <BackgroundGrid />
+
     <!-- 内容层 -->
     <div class="relative z-10" id="work-section">
       <MyWork v-if="themeStore.workTab==='0'" />

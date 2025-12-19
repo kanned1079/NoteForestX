@@ -295,7 +295,7 @@ onBeforeUnmount(() => {
           aria-haspopup="true"
           aria-controls="app_menu"
           class="p-1 mr-2"
-          v-for="i in [{label: '设计', code: '2'}, {label: '技能&工具', code: '0'}, {label: '聯繫我', code: '1'}]"
+          v-for="i in [ {label: '技能&工具', code: '0'}, {label: '聯繫我', code: '1'}]"
           @click="onClickWorkBtn(i.code as '0' | '1' | '2')"
       >
         <p class="text-base font-base">{{ i.label }}</p>

@@ -22,7 +22,7 @@ import {openInNewTab} from "~/composables/useOpenNewTab";
 
 <template>
   <div class="flex justify-center">
-    <div class="relative max-w-[1000px] container z-10 px-8 pt-20 text-slate-800 dark:text-slate-100">
+    <div class="relative max-w-[1000px] container z-10 px-4 pt-20 text-slate-800 dark:text-slate-100">
 
       <!-- 🌟 页面标题 -->
       <div class="mb-6">
