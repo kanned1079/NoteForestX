@@ -12,6 +12,30 @@ import { Keyboard } from 'lucide-vue-next';
 import dayjs from 'dayjs';
 import WidthTest from "~/components/RedesignedComponents/WidthTest.vue";
 import type {Article} from "~/types/article";
+import {useScrollFadeIn} from "~/composables/useScrollFadeIn";
+
+useScrollFadeIn({
+  selector: '.animate-card-article-index',
+  // y: 60,
+  // duration: 0.6,
+  // stagger: 0.15
+  direction: 'up',
+  x: 200,
+  stagger: 0.1,
+  duration: 0.4,
+  start: 'top 90%',
+  useScrollTrigger: false
+})
+
+// useScrollFadeIn({
+//   selector: '.animate-card-article-index-i',
+//   direction: 'right',
+//   x: 100,
+//   stagger: 0.1,
+//   duration: 0.4,
+//   start: 'right 90%',
+//   useScrollTrigger: false
+// })
 
 const themeStore = useThemeStore();
 const {t} = useI18n();
@@ -161,7 +185,7 @@ const articleList = ref<Article[]>([
   },
   {
     id: '1a2b3c4d-0000-0000-0000-000000000003',
-    slug: 'css-tricks',
+    // slug: 'css-tricks',
     title: '基于Vue3+SpringBoot的签到系统的设计与实现',
     top: false,
     status: 'published',
@@ -175,7 +199,12 @@ const articleList = ref<Article[]>([
   },
 ])
 
-const toDetails = (id: string) => navigateTo({path: `/article/${id}`})
+for (let i = 0; i < 3; i++) {
+  let copy = articleList.value
+  articleList.value = [...articleList.value, ...copy]
+}
+
+const toDetails = (article: Article) => navigateTo({path: `/article/${article.id}/${article.slug || 'empty-slug'}`})
 
 // -------------------------------------------------------------------
 
@@ -200,7 +229,7 @@ onBeforeUnmount(() => {
 
     <div class="max-w-[900px] container">
 
-      <PageHeader title="文章">
+      <PageHeader title="文章" class="mb-8 animate-card-article-index">
         <template #subtitle>
           <p>
             文章列表按照更新順序由新到舊排序，<span class="font-mono px-1 rounded">Meta+K</span> 可調出搜索框搜索對應的文章。
@@ -216,7 +245,7 @@ onBeforeUnmount(() => {
 
       <div v-else class="mb-10">
 
-        <div class="space-y-4">
+        <div class="space-y-4 animate-card-article-index">
           <div
               v-for="i in articleList"
               :key="i.id"
@@ -230,7 +259,7 @@ onBeforeUnmount(() => {
                <span class="absolute left-0 w-2 h-2 bg-red-600 dark:bg-blue-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                ></span>
                 <span
-                    @click="toDetails(i.id)"
+                    @click="toDetails(i)"
                     class="ml-2 relative after:block after:absolute after:h-[1px] after:bg-red-600 after:dark:dark:bg-blue-400 after:bottom-0 after:left-0 after:w-0 group-hover:after:w-full after:transition-all after:duration-200 after:ease-in-out transform transition-transform duration-200 ease-in-out group-hover:translate-x-2.5">{{ i.title }}</span>
             </span>
             </div>
@@ -245,7 +274,7 @@ onBeforeUnmount(() => {
         </div>
 
         <MyPaginationBar
-            class="mt-10"
+            class="mt-10 animate-card-article-index"
             v-model:page="page"
             v-model:size="size"
             :total="total"
@@ -431,6 +460,5 @@ onBeforeUnmount(() => {
 
 </template>
 
-<style scoped>
-
+<style>
 </style>

@@ -1,79 +1,46 @@
 <script setup lang="ts">
-import { ref, onBeforeMount, onMounted } from "vue"
-import AppHeader from "../components/AppHeader.vue"
-import { useRoute } from 'vue-router';
+import { useRoute } from 'vue-router'
 import { useI18n } from "vue-i18n"
-import AppFooter from "~/components/AppFooter.vue";
-const { locale } = useI18n()
-const route = useRoute();
-const currentPath = route.path;
+import AppHeader from "../components/AppHeader.vue"
+import AppFooter from "~/components/AppFooter.vue"
 
-// const showBanner = ref(false)
-//
-// onBeforeMount(() => {
-//   const closed = localStorage.getItem("bannerClosed")
-//   if (closed === "true") {
-//     showBanner.value = false
-//   }
-// })
-//
-// onMounted(() => {
-//   console.log(currentPath, locale.value)
-//   if (!localStorage.getItem("bannerClosed") && currentPath === `/${locale.value}`) {
-//     setTimeout(() => {
-//       showBanner.value = true
-//     }, 1000)
-//   }
-// })
-//
-// const closeBanner = () => {
-//   showBanner.value = false
-//   localStorage.setItem("bannerClosed", "true")
-// }
+const { locale } = useI18n()
+const route = useRoute()
 </script>
 
 <template>
-  <div>
-    <div
-        class="fixed left-0 right-0 z-50 transition-all duration-500 ease-in-out"
+  <div class="min-h-screen bg-surface-ground relative">
 
-    >
+    <!-- Header（固定） -->
+    <div class="fixed left-0 right-0 z-50">
       <AppHeader />
     </div>
-    <div class="mx-auto w-full max-w-[1600px] px-4 sm:px-6 md:px-8 lg:px-12">
-      <BackgroundGrid :withFade="true" :withGradient="true" />
-      <Toast />
-      <ConfirmDialog />
-      <div class="pt-[60px]"></div>
-      <slot />
+
+    <!-- 页面主体（相对定位，隔离背景） -->
+    <div
+        class="
+        relative
+        mx-auto
+        w-full
+        max-w-[1600px]
+        px-4 sm:px-6 md:px-8 lg:px-12
+      "
+    >
+      <!-- 🌈 背景层 -->
+      <BackgroundGrid
+          class="absolute inset-0 z-0"
+          :withFade="true"
+          :withGradient="true"
+      />
+
+      <!-- 🧱 内容层（关键） -->
+      <div class="relative z-10 pt-[60px]">
+        <Toast />
+        <ConfirmDialog />
+        <slot />
+      </div>
     </div>
 
-<!--    <AppFooter />-->
-
+    <!-- <AppFooter /> -->
   </div>
 </template>
-
-<style scoped>
-.fade-slide-enter-active,
-.fade-slide-leave-active {
-  transition: all 0.5s ease;
-}
-
-.fade-slide-enter-from {
-  opacity: 0;
-  transform: translateY(-20px);
-}
-.fade-slide-enter-to {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.fade-slide-leave-from {
-  opacity: 1;
-  transform: translateY(0);
-}
-.fade-slide-leave-to {
-  opacity: 0;
-  transform: translateY(-20px);
-}
-</style>

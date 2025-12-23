@@ -19,6 +19,20 @@ export type ArticleTag = {
 }
 
 export type ArticleStatus =
-    | 'draft'
-    | 'published'
-    | 'hidden'
+    | 'draft' // 顯示為 <Tag severity="warn" value="draft"></Tag>
+    | 'published' // <Tag severity="success" value="published"></Tag>
+    | 'hidden' // <Tag severity="secondary" value="hidden"></Tag>
+
+
+export type NewTag = {
+    id?: string
+    name?: string
+}
+
+export type NewArticle = {
+    title: string
+    slug?: string
+    status: ArticleStatus
+    content: string
+    tags: NewTag[]
+}

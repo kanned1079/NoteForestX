@@ -28,3 +28,32 @@
 /*body {*/
 /*    font-family: var(--font-sans);*/
 /*}*/
+
+/*!* 整个 DataTable 背景透明 *!*/
+/*.p-datatable,*/
+/*.p-datatable .p-datatable-wrapper,*/
+/*.p-datatable table {*/
+/*    background-color: transparent !important;*/
+/*}*/
+
+/*!* 表头透明 *!*/
+/*.p-datatable thead th {*/
+/*    background-color: transparent !important;*/
+/*    border-bottom: none !important;*/
+/*}*/
+
+/*!* 表体单元格透明 *!*/
+/*.p-datatable tbody td {*/
+/*    background-color: transparent !important;*/
+/*    border-bottom: none !important;*/
+/*}*/
+
+/*!* hover 交互效果可以保留 *!*/
+/*.p-datatable tbody tr:hover {*/
+/*    background-color: rgba(0,0,0,0.03);*/
+/*}*/
+
+/*!* 深色模式 *!*/
+/*.dark .p-datatable tbody tr:hover {*/
+/*    background-color: rgba(255,255,255,0.06);*/
+/*}*/

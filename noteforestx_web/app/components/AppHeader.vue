@@ -25,6 +25,7 @@ const themeStore = useThemeStore()
 
 
 const blocked = ref<boolean>(false)
+// const showAff = computed<boolean>(() => )
 
 const showLoginModal = ref<boolean>(false)
 const onClickProfileButton = () => {
@@ -289,6 +290,7 @@ onBeforeUnmount(() => {
       </Menu>
 
       <Button
+          v-if="themeStore.showLeftIntroBtn"
           size="medium"
           severity="secondary"
           variant="text"
@@ -334,6 +336,45 @@ onBeforeUnmount(() => {
           outlined
       />
     </div>
+
+    <div class="mr-3 flex flex-row gap-3" v-if="themeStore.showEditMetaBtn">
+      <Button
+          class="h-8 px-3 flex items-center gap-2"
+          icon="pi pi-search"
+          severity="primary"
+          outlined
+          size="small"
+          :label="`Search`"
+          @click="themeStore.setShowEditMetaDialog(true)"
+      >
+        <template #default>
+          <span class="flex items-center gap-1">
+            <i class="pi pi-search text-xs"></i>
+          <span>編輯Meta</span>
+          <span class="px-2 py-0.5 text-xs font-light ">⌘+K</span>
+          </span>
+        </template>
+      </Button>
+
+      <Button
+          class="h-8 px-3 flex items-center gap-2"
+          icon="pi pi-save"
+          severity="primary"
+          outlined
+          size="small"
+          :label="`Search`"
+          @click="themeStore.setShowEditMetaDialog(true)"
+      >
+        <template #default>
+          <span class="flex items-center gap-1">
+            <i class="pi pi-search text-xs"></i>
+          <span>Save</span>
+          <span class="px-2 py-0.5 text-xs font-light ">⌘+S</span>
+          </span>
+        </template>
+      </Button>
+    </div>
+
   </div>
 
   <Dialog v-model:visible="showLoginModal" :show-header="false" modals :style="null">

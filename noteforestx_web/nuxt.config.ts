@@ -127,7 +127,7 @@ const MyPreset = definePreset(Aura, {
                 formField: {
                     hoverBorderColor: '#4f7da6',
                     background: '#ffffff',
-                }
+                },
             },
             dark: {
                 0: '#ffffff',
@@ -164,7 +164,6 @@ const MyPreset = definePreset(Aura, {
                 },
                 card: {
                     background: '#141414'
-
                 }
             }
         },

@@ -4,6 +4,7 @@ import { useScrollFadeIn } from '~/composables/useScrollFadeIn'
 import murasame_ciallo from '~/assets/imgs/murasame_ciallo.jpg'
 import useThemeStore from "~/store/themeStore";
 import ProgrammingLangIcons from "~/components/ProgrammingLangIcons.vue";
+import VisualPhoto from "~/components/VisualPhoto.vue"
 
 const themeStore = useThemeStore()
 const containerRef = ref<HTMLElement | null>(null)
