@@ -8,9 +8,12 @@ import {useRoute} from 'vue-router'
 import type {Illustration} from "~/types/illustration";
 import {useToast} from "primevue/usetoast";
 import useThemeStore from "~/store/themeStore";
+import useActionStore from "~/store/actionStore";
 import {CircleArrowOutUpLeft, Command} from "lucide-vue-next";
+import {useScrollFadeIn} from "~/composables/useScrollFadeIn";
 
 const themeStore = useThemeStore();
+const actionStore = useActionStore()
 const toast = useToast()
 const { isDarkMode } = useDarkMode()
 const route = useRoute()
@@ -21,6 +24,15 @@ const editArticle = ref<NewArticle>({
   status: 'draft',
   content: '',
   tags: [] // 每个对象是 {id?: string, name?: string} 如果存在的就直接放入id不需要name 如果是新增的放入id和name id就是'new'就行
+
+})
+
+useScrollFadeIn({
+  selector: '.animate-card-article-edit-id',
+  y: 60,
+  duration: 0.6,
+  stagger: 0.15,
+  useScrollTrigger: false
 })
 
 
@@ -40,19 +52,19 @@ const fetchTags = async (tagName?: string) => {
       tagSearchRes.value = res.tags
     } else {
       // 没有搜索到结果就显示新增
-      tagSearchRes.value = [{ id: 'new', name: keyword }]
+      // tagSearchRes.value = [{ id: 'new', name: keyword }]
+      toast.add({
+        severity: "warn",
+        summary: "警告",
+        detail: `没有搜索结果 可以尝试新增`,
+        life: 4500,
+      })
     }
   } catch (err: any) {
     toast.add({ severity: 'error', summary: '加载失败', detail: `${err}`, life: 4500 })
+  } finally {
+    tagSearchRes.value.push({ id: 'new', name: keyword })
   }
-  // todo
-
-  tagSearchRes.value = [...tagSearchRes.value, ...[
-    {id: '00001000010000100001', name: '技术'},
-    {id: '00002000020000200002', name: '红茶'},
-    {id: '00003000030000300003', name: '美式咖啡'},
-  ]]
-  tagSearchRes.value.push({ id: 'new', name: keyword })
 }
 
 const selectTagItem = (option: any) => {
@@ -93,12 +105,43 @@ const fetchArticleById = async (id: string) => {
   console.log(`load article by id ${id}`)
   try {
     const res = await $fetch<{
-      article: Article | null,
-      message: string
+      id: string,
+      message: string,
+      article: Article | null
     }>(`/api/admin/article/${id}`, {
       method: "GET"
     })
     if (res.article) editArticle.value = res.article
+  } catch (err: any) {
+    toast.add({
+      severity: "error",
+      summary: "加载失败 请返回重试",
+      detail: `${err}`,
+      life: 4500,
+    })
+  }
+}
+
+const saveArticle = async () => {
+  console.log(`save article by id ${articleId}`)
+  try {
+    const res = await $fetch<{
+      id: string,
+      message: string,
+    }>(`/api/admin/article/${articleId}`, {
+      method: "PUT",
+      body: {
+        ...editArticle.value
+      }
+    })
+    // if (res.article) editArticle.value = res.article
+    console.log(res)
+    toast.add({
+      severity: "success",
+      summary: "成功",
+      detail: `文章保存成功`,
+      life: 4500,
+    })
 
   } catch (err: any) {
     toast.add({
@@ -110,9 +153,17 @@ const fetchArticleById = async (id: string) => {
   }
 }
 
+watch(() => actionStore.triggerArticleSave, (newVal: boolean) => {
+  if (newVal) {
+    actionStore.resetTriggerArticleSave()
+    saveArticle()
+  }
+})
+
+if (articleId !== 'new' && articleId) fetchArticleById(articleId as string)
+
 onBeforeMount(() => {
   themeStore.setShowEditMetaBtn(true)
-  if (articleId !== 'new' && articleId) fetchArticleById(articleId as string)
 })
 
 onMounted(() => {
@@ -126,7 +177,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="mt-4 pb-10">
+  <div class="mt-4 pb-10 animate-card-article-edit-id">
 
     <!-- 页面头 -->
     <PageHeader
@@ -164,6 +215,7 @@ onBeforeUnmount(() => {
       :header="'編輯Meta'"
       :style="{ width: '50rem' }"
       :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
+      class="pb-4"
   >
 
     <div class="space-y-4">
@@ -174,15 +226,6 @@ onBeforeUnmount(() => {
           <InputIcon class="pi pi-file-edit"></InputIcon>
           <InputText autofocus variant="outlined" size="small" id="name" placeholder="Why we use Nuxt.js"
                      v-model="editArticle.title" class="w-full"/>
-        </IconField>
-      </div>
-
-      <div class="flex flex-col gap-2">
-        <label for="name">{{ 'Slug (可选)' }}</label>
-        <IconField>
-          <InputIcon class="pi pi-thumbtack"></InputIcon>
-          <InputText autofocus variant="outlined" size="small" id="name" placeholder="why-we-use-nuxtjs"
-                     v-model="editArticle.slug" class="w-full"/>
         </IconField>
       </div>
 
@@ -212,14 +255,35 @@ onBeforeUnmount(() => {
             icon="pi pi-hashtag"
             :severity="i.id==='new'?'warn':'primary'"
             size="small"
-            class="text-xs font-normal hover:underline"
+            class="text-xs font-normal hover:underline font-mono"
             :value="i.name"
             @click="deleteTag(i)"
         ></Tag>
-        </div>
 
+        <Tag
+            v-if="editArticle.tags.length === 0"
+            class="text-xs font-semibold"
+            icon="pi pi-exclamation-triangle" severity="danger" value="还没有选择标签"></Tag>
+        </div>
     </div>
 
+    <div class="flex flex-col gap-2 mt-4">
+      <label for="name">{{ 'Slug (可选)' }}</label>
+      <IconField>
+        <InputIcon class="pi pi-thumbtack"></InputIcon>
+        <InputText autofocus variant="outlined" size="small" id="name" placeholder="why-we-use-nuxtjs"
+                   v-model="editArticle.slug" class="w-full"/>
+      </IconField>
+    </div>
+
+    <div class="flex flex-col gap-2 mt-4">
+      <label for="name">{{ '头部图片 (可选)' }}</label>
+      <IconField>
+        <InputIcon class="pi pi-image"></InputIcon>
+        <InputText autofocus variant="outlined" size="small" id="name" placeholder="https://example.com/d/img.jpg"
+                   v-model="editArticle.image_url" class="w-full"/>
+      </IconField>
+    </div>
 
 
 

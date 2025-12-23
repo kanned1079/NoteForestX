@@ -7,6 +7,7 @@ import {useRouter, useRoute} from 'vue-router';
 import {TicketSharp} from "@vicons/ionicons5"
 import useUserStore from "../store/userStore";
 import useThemeStore from "../store/themeStore";
+import useActionStore from "~/store/actionStore";
 import {Keyboard} from "lucide-vue-next";
 import ShortcutsDefault from "~/components/ShortcutsDefault.vue";
 import ChangeLanguage from "~/components/ChangeLanguage.vue";
@@ -22,6 +23,7 @@ const route = useRoute()
 const router = useRouter();
 const userStore = useUserStore()
 const themeStore = useThemeStore()
+const actionStore = useActionStore()
 
 
 const blocked = ref<boolean>(false)
@@ -363,7 +365,7 @@ onBeforeUnmount(() => {
           outlined
           size="small"
           :label="`Search`"
-          @click="themeStore.setShowEditMetaDialog(true)"
+          @click="actionStore.fireTriggerArticleSave(null)"
       >
         <template #default>
           <span class="flex items-center gap-1">

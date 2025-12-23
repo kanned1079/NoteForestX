@@ -19,10 +19,21 @@ export type ArticleTag = {
 }
 
 export type ArticleStatus =
-    | 'draft' // 顯示為 <Tag severity="warn" value="draft"></Tag>
-    | 'published' // <Tag severity="success" value="published"></Tag>
-    | 'hidden' // <Tag severity="secondary" value="hidden"></Tag>
+    | 'draft'
+    | 'published'
+    | 'hidden'
 
+export const ARTICLE_STATUS_FLOW: ArticleStatus[] = [
+    'draft',
+    'published',
+    'hidden',
+]
+
+export const NEXT_ARTICLE_STATUS_MAP: Record<ArticleStatus, ArticleStatus> = {
+    draft: 'published',
+    published: 'hidden',
+    hidden: 'draft',
+}
 
 export type NewTag = {
     id?: string
@@ -35,4 +46,5 @@ export type NewArticle = {
     status: ArticleStatus
     content: string
     tags: NewTag[]
+    image_url?: string
 }

@@ -244,7 +244,6 @@ onBeforeUnmount(() => {
       </div>
 
       <div v-else class="mb-10">
-
         <div class="space-y-4 animate-card-article-index">
           <div
               v-for="i in articleList"

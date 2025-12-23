@@ -93,6 +93,10 @@ const justifyClass = computed(() => {
   height: 2rem;
 }
 
+.p-paginator {
+  background-color: rgba(0,0,0,0.0);
+}
+
 :root {
   --p-select-padding-y: 0.25rem;
   --p-select-padding-x: 0.75rem;

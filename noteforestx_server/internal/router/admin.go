@@ -1,9 +1,10 @@
 package router
 
 import (
-	"github.com/gin-gonic/gin"
 	"noteforestx_server/internal/dao"
 	"noteforestx_server/internal/services/admin"
+
+	"github.com/gin-gonic/gin"
 )
 
 func (this *RouterInstance) RegisterAdminRoutes(v1 *gin.RouterGroup) {
@@ -21,9 +22,9 @@ func (this *RouterInstance) RegisterAdminRoutes(v1 *gin.RouterGroup) {
 	//adminRouter.DELETE("document/:id", adminService.RemoveDocumentById)
 
 	//adminRouter.GET("/illustration", adminService.GetIllustrationList)
-	adminRouter.PUT("illustration/:id", adminService.UpdateIllustrationById)
-	adminRouter.POST("illustration", adminService.AddNewIllustration)
-	adminRouter.DELETE("illustration/:id", adminService.RemoveIllustrationById)
+	adminRouter.PUT("/illustration/:id", adminService.UpdateIllustrationById)
+	adminRouter.POST("/illustration", adminService.AddNewIllustration)
+	adminRouter.DELETE("/illustration/:id", adminService.RemoveIllustrationById)
 
 	/*
 		{
@@ -49,15 +50,23 @@ func (this *RouterInstance) RegisterAdminRoutes(v1 *gin.RouterGroup) {
 	*/
 
 	adminRouter.GET("/illustration_tag", adminService.GetIllustrationTagList)
-	adminRouter.GET("illustration_tag/:id", adminService.GetIllustrationTagById)
-	adminRouter.PUT("illustration_tag/:id", adminService.UpdateIllustrationTagById)
-	adminRouter.POST("illustration_tag", adminService.AddNewIllustrationTag)
-	adminRouter.DELETE("illustration_tag/:id", adminService.RemoveIllustrationTagById)
+	adminRouter.GET("/illustration_tag/:id", adminService.GetIllustrationTagById)
+	adminRouter.PUT("/illustration_tag/:id", adminService.UpdateIllustrationTagById)
+	adminRouter.POST("/illustration_tag", adminService.AddNewIllustrationTag)
+	adminRouter.DELETE("/illustration_tag/:id", adminService.RemoveIllustrationTagById)
 
 	// sample c76f9e88-d35a-445e-8832-cf4bca4b633d
-	adminRouter.GET("illustration_author", adminService.GetIllustrationAuthorList)
-	adminRouter.POST("illustration_author", adminService.AddNewIllustrationAuthor)
-	adminRouter.PUT("illustration_author/:id", adminService.UpdateIllustrationAuthorById)
-	adminRouter.DELETE("illustration_author/:id", adminService.RemoveIllustrationAuthorById)
+	adminRouter.GET("/illustration_author", adminService.GetIllustrationAuthorList)
+	adminRouter.POST("/illustration_author", adminService.AddNewIllustrationAuthor)
+	adminRouter.PUT("/illustration_author/:id", adminService.UpdateIllustrationAuthorById)
+	adminRouter.DELETE("/illustration_author/:id", adminService.RemoveIllustrationAuthorById)
+
+	adminRouter.GET("/tag", adminService.GetTagsSearchList)
+
+	adminRouter.GET("/article/:id", adminService.GetArticleById)
+	adminRouter.GET("/article", adminService.GetArticleList)
+	adminRouter.POST("/article", adminService.AddArticle)
+	adminRouter.PUT("/article/:id", adminService.UpdateArticleById)
+	adminRouter.PATCH("/article/:id", adminService.PatchArticleById)
 
 }

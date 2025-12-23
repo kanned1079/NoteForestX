@@ -21,13 +21,20 @@
   margin: 0;
 }
 
-/* 定义动画 */
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s ease;
+.slide-fade-enter-active {
+  transition: all 250ms ease;
 }
-.fade-enter-from,
-.fade-leave-to {
+
+.slide-fade-leave-active {
+  transition: all 250ms ease;
+}
+
+.slide-fade-enter-from {
+  transform: translateY(10px);
+  opacity: 0;
+}
+
+.slide-fade-leave-to {
   opacity: 0;
 }
 

@@ -16,6 +16,13 @@ const route = useRoute()
       <AppHeader />
     </div>
 
+    <!-- 🌈 背景层 -->
+    <BackgroundGrid
+        class="absolute inset-0 z-0"
+        :withFade="true"
+        :withGradient="true"
+    />
+
     <!-- 页面主体（相对定位，隔离背景） -->
     <div
         class="
@@ -26,12 +33,7 @@ const route = useRoute()
         px-4 sm:px-6 md:px-8 lg:px-12
       "
     >
-      <!-- 🌈 背景层 -->
-      <BackgroundGrid
-          class="absolute inset-0 z-0"
-          :withFade="true"
-          :withGradient="true"
-      />
+
 
       <!-- 🧱 内容层（关键） -->
       <div class="relative z-10 pt-[60px]">

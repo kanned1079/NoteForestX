@@ -51,6 +51,8 @@ func (this *DaoInstance) dropAllTables() {
 		{"illustration_authors", &models.IllustrationAuthor{}},
 		{"users", &models.User{}},
 		{"documents", &models.Document{}},
+		{"article", &models.Article{}},
+		{"article_tag", &models.ArticleTag{}},
 	}
 
 	for _, t := range tables {
@@ -73,6 +75,8 @@ func (this *DaoInstance) runMigrate() {
 		&models.Illustration{},           // Illustration 必须在前
 		&models.IllustrationImage{},      // 依赖 Illustration
 		&models.IllustrationTagMapping{}, // 依赖 Illustration & Tag
+		&models.Article{},
+		&models.ArticleTag{},
 	); err != nil {
 		this.logger.PrintError("auto migrate tables failed: ", err)
 		os.Exit(1)
