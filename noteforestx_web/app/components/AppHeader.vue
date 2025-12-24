@@ -17,6 +17,7 @@ import { useScrollFadeIn } from '~/composables/useScrollFadeIn'
 
 
 import { useTemplateRef } from 'vue'
+import Kbd from "~/components/MyIntro/Kbd.vue";
 
 const {t, setLocale, locale} = useI18n()
 const route = useRoute()
@@ -376,6 +377,27 @@ onBeforeUnmount(() => {
         </template>
       </Button>
     </div>
+
+    <div class="mr-3 flex flex-row gap-3" v-if="themeStore.showCatalog">
+      <Button
+          class="h-8 px-3 flex items-center gap-2"
+          icon="pi pi-search"
+          severity="primary"
+          outlined
+          size="small"
+          :label="`Search`"
+          @click="actionStore.fireTriggerShowCatalog(null)"
+      >
+        <template #default>
+          <span class="flex items-center gap-1">
+            <i class="pi pi-align-left text-xs"></i>
+          <span>显示目录</span>
+          <span class="px-2 py-0.5 text-xs font-light font-mono"> / </span>
+          </span>
+        </template>
+      </Button>
+      </div>
+
 
   </div>
 

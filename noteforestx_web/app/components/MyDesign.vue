@@ -1,34 +1,37 @@
 <script setup lang="ts">
-
+import { useI18n } from "vue-i18n";
 import MyCard from "~/components/RedesignedComponents/MyCard.vue";
-import {useScrollFadeIn} from "~/composables/useScrollFadeIn";
+import { useScrollFadeIn } from "~/composables/useScrollFadeIn";
 import ColorSelector from "~/components/MyIntro/ColorSelector.vue";
+import { ref } from "vue"; // 仅保留必要的 ref 导入
 
+const { t } = useI18n();
 
-const currentCardId = ref<number>(0)
+const currentCardId = ref<number>(0);
 
+// 恢复你熟悉的原始数组写法，将中文替换为 t() 翻译函数调用
 const designSteps = [
   {
     id: 0,
-    title: "字體設計",
-    content: "挑選字體類型、字號大小與字重粗細。"
+    title: t("my_design.step0_title"), // 对应国际化配置中的键
+    content: t("my_design.step0_content")
   },
   {
     id: 1,
-    title: "間距配置",
-    content: "調整元素位置，並為元素之間設定適當間距。"
+    title: t("my_design.step1_title"),
+    content: t("my_design.step1_content")
   },
   {
     id: 2,
-    title: "色彩選用",
-    content: "挑選具備充足對比度的色彩調色體系。"
+    title: t("my_design.step2_title"),
+    content: t("my_design.step2_content")
   },
   {
     id: 3,
-    title: "視覺效果",
-    content: "添加邊框、陰影、圓角等視覺效果。"
+    title: t("my_design.step3_title"),
+    content: t("my_design.step3_content")
   },
-]
+];
 
 useScrollFadeIn({
   selector: '.animated-card-my-design',
@@ -46,19 +49,23 @@ useScrollFadeIn({
     <!-- 背景下移 20px -->
     <BackgroundGrid :offsetTop="140" />
 
-
     <div class="flex justify-center">
       <div class="relative max-w-[1000px] container px-4 z-10 pt-20 text-slate-800 dark:text-slate-100">
-
-
         <div class="space-y-3">
-          <p class="text-xl font-semibold text-[#3261e4] dark:text-[#4f77e6]">簡潔 & 直觀</p>
-          <p class="text-4xl font-semibold">引人注目、現代簡約的設計。</p>
-          <p class="text-sm">保持使用者介面簡潔現代，同時不影響使用者體驗。</p>
+          <!-- 其他文案也用 t() 调用 -->
+          <p class="text-xl font-semibold text-[#3261e4] dark:text-[#4f77e6]">
+            {{ t("my_design.section1_tag") }}
+          </p>
+          <p class="text-4xl font-semibold">
+            {{ t("my_design.section1_title") }}
+          </p>
+          <p class="text-sm">
+            {{ t("my_design.section1_desc") }}
+          </p>
         </div>
 
         <div class="flex w-full mt-10 min-h-[400px] animated-card-my-design">
-          <!-- 左 -->
+          <!-- 左：沿用原有的 v-for 遍历 -->
           <div class="hidden md:block w-1/2">
             <MyCard
                 v-for="i in designSteps"
@@ -77,27 +84,36 @@ useScrollFadeIn({
           <!-- 右 -->
           <div class="w-full md:w-1/2 flex flex-col justify-center items-center ">
             <SampleDesignedCard class="animated-card-my-design" />
-
-<!--            <ColorSelector class="animated-card-my-design" />-->
+            <!--            <ColorSelector class="animated-card-my-design" />-->
           </div>
         </div>
 
-        <div class="space-y-3 mt-8q animated-card-my-design">
-          <p class="text-xl font-semibold text-[#3261e4] dark:text-[#4f77e6]">講究細節</p>
-          <p class="text-4xl font-semibold">擁有敏銳的細節洞察能力</p>
-          <p class="text-sm">著重操作便捷性、使用者介面一致性，並持續優化使用者體驗</p>
+        <div class="space-y-3 mt-8 animated-card-my-design"> <!-- 修正笔误 mt-8q -> mt-8 -->
+          <p class="text-xl font-semibold text-[#3261e4] dark:text-[#4f77e6]">
+            {{ t("my_design.section2_tag") }}
+          </p>
+          <p class="text-4xl font-semibold">
+            {{ t("my_design.section2_title") }}
+          </p>
+          <p class="text-sm">
+            {{ t("my_design.section2_desc") }}
+          </p>
         </div>
 
         <div class="space-y-3 mt-10 animated-card-my-design">
-          <p class="text-xl font-semibold text-[#3261e4] dark:text-[#4f77e6]">美觀且高效</p>
-          <p class="text-4xl font-semibold">程式碼簡潔易懂且性能優化</p>
-          <p class="text-sm">撰寫乾淨整潔的程式碼為首要原則，同時兼顧最大限度的效能優化</p>
+          <p class="text-xl font-semibold text-[#3261e4] dark:text-[#4f77e6]">
+            {{ t("my_design.section3_tag") }}
+          </p>
+          <p class="text-4xl font-semibold">
+            {{ t("my_design.section3_title") }}
+          </p>
+          <p class="text-sm">
+            {{ t("my_design.section3_desc") }}
+          </p>
         </div>
 
       </div>
     </div>
-
-
   </div>
 </template>
 
@@ -106,8 +122,7 @@ useScrollFadeIn({
 
 }
 
---p-card-body-padding {
+:deep(.p-card-body) { /* 修正样式穿透，确保生效 */
   padding: 12px !important;
 }
-
 </style>

@@ -3,7 +3,9 @@ import ChangeLanguage from "~/components/ChangeLanguage.vue"
 import { useScrollFadeIn } from "~/composables/useScrollFadeIn"
 import {defineExpose, useTemplateRef} from "vue";
 import ColorModeToggle from "~/components/ColorModeToggle.vue";
+import useThemeStore from "~/store/themeStore";
 
+const themeStore = useThemeStore()
 const langChangeCompRef = useTemplateRef('langBtnRef')
 
 const showLangSelector = () => {
@@ -42,7 +44,15 @@ defineExpose({
         </div>
 
         <p class="text-xl font-semibold mb-4 mt-8 animate-card">Message</p>
-        <p class="text-sm font-light opacity-80 animate-card">Sorry, There's no message for u. lol</p>
+        <p
+            v-if="themeStore.actionCenterMsgs.length===0"
+            class="text-sm font-light opacity-80 animate-card">Sorry, There's no message for u. lol</p>
+        <p
+            v-for="i in themeStore.actionCenterMsgs"
+            :key="i"
+            class="text-sm font-light opacity-80 animate-card mb-2">
+          {{ i }}
+        </p>
 
       </div>
     </div>

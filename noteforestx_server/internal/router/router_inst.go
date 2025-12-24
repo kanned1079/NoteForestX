@@ -1,10 +1,11 @@
 package router
 
 import (
-	"github.com/gin-gonic/gin"
 	"noteforestx_server/internal/middlewares"
 	"noteforestx_server/utils"
 	"os"
+
+	"github.com/gin-gonic/gin"
 )
 
 type RouterInstance struct {
@@ -34,6 +35,7 @@ func (this *RouterInstance) RegisterApiServices() {
 	this.RegisterAdminRoutes(v1)
 	this.RegisterUserRoutes(v1)
 	this.RegisterIllustrationRoutes(v1)
+	this.RegisterArticleRoutes(v1)
 
 }
 

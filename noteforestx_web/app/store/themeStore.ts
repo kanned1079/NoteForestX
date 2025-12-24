@@ -25,6 +25,11 @@ const useThemeStore = defineStore('themeStore', () => {
     const showEditMetaDialog = ref<boolean>(false)
     const setShowEditMetaDialog = (val: boolean) => showEditMetaDialog.value = val
 
+    const showCatalog = ref<boolean>(false)
+    const setShowCatalog = (val: boolean) => showCatalog.value = val
+
+    const actionCenterMsgs = ref<string[]>([])
+
     return {
         showHeaderSearchBtn,
         searchDialog,
@@ -36,6 +41,9 @@ const useThemeStore = defineStore('themeStore', () => {
         setShowEditMetaBtn,
         showEditMetaDialog,
         setShowEditMetaDialog,
+        showCatalog,
+        setShowCatalog,
+        actionCenterMsgs
     }
 
 }, {

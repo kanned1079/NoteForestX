@@ -285,6 +285,7 @@ onBeforeUnmount(() => {
               :value="articleList"
               tableStyle="min-width: 80rem"
               class="datatable-transparent"
+              size="small"
           >
 
             <template #empty>
@@ -355,16 +356,16 @@ onBeforeUnmount(() => {
               <template #body="{ data }">
                 <div class="flex gap-3">
                   <i
-                      class="pi pi-pencil cursor-pointer opacity-70 hover:opacity-100"
+                      class="pi pi-pencil cursor-pointer opacity-80 hover:opacity-100"
                       @click="editArticle(data.id)"
                   />
                   <i
-                      :class="data.top?['text-blue-600']:['opacity-90']"
-                      class="pi pi-paperclip cursor-pointer opacity-70 hover:opacity-100"
+                      :class="data.top?['text-blue-600']:[]"
+                      class="pi pi-paperclip cursor-pointer opacity-80 hover:opacity-100"
                       @click="updateArticleStatus(data.id, 'top', !data.top)"
                   />
                   <i
-                      class="pi pi-trash cursor-pointer text-red-500 opacity-70 hover:opacity-100"
+                      class="pi pi-trash cursor-pointer text-red-500 opacity-80 hover:opacity-100"
                       @click="deleteArticle(data.id)"
                   />
                 </div>

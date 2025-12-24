@@ -4,7 +4,7 @@ import '~/assets/css/md-style.css'
 import PageHeader from "~/components/PageHeader.vue";
 import type {Article, ArticleTag, NewArticle, NewTag} from "~/types/article";
 import {useDarkMode} from '~/composables/useDarkMode'
-import {useRoute} from 'vue-router'
+import {useRoute, useRouter} from 'vue-router'
 import type {Illustration} from "~/types/illustration";
 import {useToast} from "primevue/usetoast";
 import useThemeStore from "~/store/themeStore";
@@ -16,6 +16,7 @@ const themeStore = useThemeStore();
 const actionStore = useActionStore()
 const toast = useToast()
 const { isDarkMode } = useDarkMode()
+const router = useRouter()
 const route = useRoute()
 const articleId = route.params.id;
 
@@ -122,6 +123,40 @@ const fetchArticleById = async (id: string) => {
   }
 }
 
+const routerBackIn = (waitMs: number) => {
+  setTimeout(() => router.back(), waitMs)
+}
+
+const saveNewArticle = async () => {
+  console.log('saveNewArticle be called')
+  try {
+    const res = await $fetch<{
+      id: string,
+      message: string,
+    }>(`/api/admin/article`, {
+      method: "POST",
+      body: {
+        ...editArticle.value
+      }
+    })
+    toast.add({
+      severity: "success",
+      summary: "成功",
+      detail: `文章保存成功`,
+      life: 4500,
+    })
+  } catch (err: any) {
+    toast.add({
+      severity: "error",
+      summary: "加载失败",
+      detail: `${err}`,
+      life: 4500,
+    })
+  } finally {
+    routerBackIn(1000)
+  }
+}
+
 const saveArticle = async () => {
   console.log(`save article by id ${articleId}`)
   try {
@@ -134,8 +169,6 @@ const saveArticle = async () => {
         ...editArticle.value
       }
     })
-    // if (res.article) editArticle.value = res.article
-    console.log(res)
     toast.add({
       severity: "success",
       summary: "成功",
@@ -150,13 +183,16 @@ const saveArticle = async () => {
       detail: `${err}`,
       life: 4500,
     })
+  } finally {
+    routerBackIn(1000)
   }
 }
 
 watch(() => actionStore.triggerArticleSave, (newVal: boolean) => {
   if (newVal) {
     actionStore.resetTriggerArticleSave()
-    saveArticle()
+    if (articleId === 'new') return saveNewArticle()
+    else return  saveArticle()
   }
 })
 
@@ -177,7 +213,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="mt-4 pb-10 animate-card-article-edit-id">
+  <div class="mt-4 pb-10 animate-card-article-edit-id" style="z-index: 1000">
 
     <!-- 页面头 -->
     <PageHeader
@@ -202,7 +238,7 @@ onBeforeUnmount(() => {
     </div>
 
 
-    <MdEditor class="z-50" v-model="editArticle.content" :theme="isDarkMode?'dark':undefined"  />
+    <MdEditor class="z-50" v-model="editArticle.content" :theme="isDarkMode?'dark':undefined" :preview-theme="'github'"  />
 
   </div>
 

@@ -19,7 +19,7 @@ onMounted(() => {
   <div class="mt-4 pb-60">
     <div class="container mx-auto max-w-[980px] px-4 space-y-6">
       <section class="space-y-2">
-        <h2 class="text-xl font-bold opacity-90">{{ t('details.open_source') }}</h2>
+        <h2 class="text-4xl font-bold opacity-90">{{ t('details.open_source') }}</h2>
         <p>
           {{ t('details.open_source_desc') }}
           &nbsp;

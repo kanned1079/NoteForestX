@@ -9,38 +9,35 @@ const route = useRoute()
 </script>
 
 <template>
-  <div class="min-h-screen bg-surface-ground relative">
+  <div class="min-h-screen bg-surface-ground">
 
-    <!-- Header（固定） -->
-    <div class="fixed left-0 right-0 z-50">
-      <AppHeader />
+    <!-- Header 占位区（关键！） -->
+    <div class="h-[60px]">
+      <div class="fixed left-0 right-0 top-0 z-50 h-[60px]">
+        <AppHeader />
+      </div>
     </div>
 
-    <!-- 🌈 背景层 -->
+    <!-- 背景层（不影响滚动） -->
     <BackgroundGrid
-        class="absolute inset-0 z-0"
+        class="fixed inset-0 -z-10"
         :withFade="true"
         :withGradient="true"
     />
 
-    <!-- 页面主体（相对定位，隔离背景） -->
+    <!-- 页面主体 -->
     <div
         class="
-        relative
         mx-auto
         w-full
         max-w-[1600px]
         px-4 sm:px-6 md:px-8 lg:px-12
+        overflow-visible
       "
     >
-
-
-      <!-- 🧱 内容层（关键） -->
-      <div class="relative z-10 pt-[60px]">
-        <Toast />
-        <ConfirmDialog />
-        <slot />
-      </div>
+      <Toast />
+      <ConfirmDialog />
+      <slot />
     </div>
 
     <!-- <AppFooter /> -->

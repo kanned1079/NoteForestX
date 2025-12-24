@@ -19,12 +19,28 @@ const useActionStore = defineStore('actionStore', () => {
         triggerArticleSavePayload.value = null
     }
 
+    const triggerShowCatalog = ref<boolean>(false)
+    const triggerShowCatalogPayload = ref<any>(null)
+
+    const fireTriggerShowCatalog = (data?: any) => {
+        triggerShowCatalogPayload.value = data
+        triggerShowCatalog.value = true
+    }
+
+    const resetTriggerShowCatalog = () => {
+        triggerShowCatalog.value = false
+        triggerShowCatalogPayload.value = null
+    }
 
 
     return {
         triggerArticleSave,
         fireTriggerArticleSave,
-        resetTriggerArticleSave
+        resetTriggerArticleSave,
+        triggerShowCatalog,
+        fireTriggerShowCatalog,
+        triggerShowCatalogPayload,
+        resetTriggerShowCatalog
     }
 
 }, {

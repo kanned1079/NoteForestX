@@ -8,7 +8,7 @@ import SearchIllustrationInput from "~/components/SearchIllustrationInput.vue";
 import InputIcon from "primevue/inputicon";
 import IconField from "primevue/iconfield";
 import { Keyboard } from 'lucide-vue-next';
-
+import {useToast} from "primevue/usetoast";
 import dayjs from 'dayjs';
 import WidthTest from "~/components/RedesignedComponents/WidthTest.vue";
 import type {Article} from "~/types/article";
@@ -37,6 +37,7 @@ useScrollFadeIn({
 //   useScrollTrigger: false
 // })
 
+const toast = useToast()
 const themeStore = useThemeStore();
 const {t} = useI18n();
 
@@ -151,62 +152,54 @@ const onSearchDialogClose = () => {
 // -------------------------------------------------------------------
 
 const page = ref<number>(1)
-const size = ref<number>(10)
+const size = ref<number>(30)
 const total = ref<number>(1)
 
-const articleList = ref<Article[]>([
-  {
-    id: '1a2b3c4d-0000-0000-0000-000000000001',
-    slug: 'hello-world',
-    title: 'QEMU虚拟机定义',
-    top: true,
-    status: 'published',
-    content: `# Hello World\nThis is a test article in Markdown format.`,
-    tags: [
-      { id: 'tag-001', name: 'JavaScript', code: 'js' },
-      { id: 'tag-002', name: 'Vue', code: 'vue' },
-    ],
-    created_at: '2025-12-19T10:00:00Z',
-    updated_at: '2025-12-19T12:00:00Z',
-  },
-  {
-    id: '1a2b3c4d-0000-0000-0000-000000000002',
-    slug: 'learning-go',
-    title: '揭示并绕过中国防火长城基于SNI的QUIC封锁机制',
-    top: false,
-    status: 'draft',
-    content: `# Go Basics\nThis is a draft article about Go programming language.`,
-    tags: [
-      { id: 'tag-003', name: 'Go', code: 'go' },
-      { id: 'tag-004', name: 'Backend', code: 'backend' },
-    ],
-    created_at: '2025-12-18T09:30:00Z',
-    updated_at: '2025-12-18T10:45:00Z',
-  },
-  {
-    id: '1a2b3c4d-0000-0000-0000-000000000003',
-    // slug: 'css-tricks',
-    title: '基于Vue3+SpringBoot的签到系统的设计与实现',
-    top: false,
-    status: 'published',
-    content: `# CSS Tricks\nSome useful tips and tricks for CSS.`,
-    tags: [
-      { id: 'tag-005', name: 'CSS', code: 'css' },
-      { id: 'tag-006', name: 'Frontend', code: 'frontend' },
-    ],
-    created_at: '2025-12-17T14:00:00Z',
-    updated_at: '2025-12-17T16:20:00Z',
-  },
-])
+const articleList = ref<Article[]>([])
 
-for (let i = 0; i < 3; i++) {
-  let copy = articleList.value
-  articleList.value = [...articleList.value, ...copy]
+// for (let i = 0; i < 3; i++) {
+//   let copy = articleList.value
+//   articleList.value = [...articleList.value, ...copy]
+// }
+
+const loading = ref<boolean>(false)
+const errMsg = ref<any>()
+const fetchArticleList = async () => {
+  loading.value = true
+  try {
+    const data = await $fetch<{
+      page: number
+      size: number
+      total: number
+      list: Article[]
+    }>("/api/article", {
+      method: "GET",
+      query: {
+        page: page.value,
+        size: size.value,
+        // ...searchQuery.value,
+      },
+    })
+    articleList.value = data.list
+    total.value = data.total
+  } catch (err: any) {
+    errMsg.value = err
+    toast.add({
+      severity: "error",
+      summary: "加载失败",
+      detail: `${err}`,
+      life: 4000,
+    })
+  } finally {
+    loading.value = false
+  }
 }
 
 const toDetails = (article: Article) => navigateTo({path: `/article/${article.id}/${article.slug || 'empty-slug'}`})
 
 // -------------------------------------------------------------------
+
+fetchArticleList()
 
 onMounted(() => {
   themeStore.showHeaderSearchBtn = true
@@ -237,55 +230,59 @@ onBeforeUnmount(() => {
         </template>
       </PageHeader>
 
-      <!--    主體部分開始-->
-
-      <div v-if="articleList.length===0">
-        <Message severity="warn">文章列表為空或查詢不到對應的文章</Message>
-      </div>
-
-      <div v-else class="mb-10">
-        <div class="space-y-4 animate-card-article-index">
-          <div
-              v-for="i in articleList"
-              :key="i.id"
-              class="flex flex-row justify-between items-center"
-          >
-            <div class="space-x-4 flex items-center">
+      <transition name="slide-fade">
+        <div class="mb-10" v-if="!loading && articleList.length > 0">
+          <div class="space-y-4">
+            <div
+                v-for="i in articleList"
+                :key="i.id"
+                class="flex flex-row justify-between items-center"
+            >
+              <div class="space-x-4 flex items-center">
             <span class="text-sm opacity-60">
              {{ dayjs(i.created_at).format("YYYY-MM-DD") }}
             </span>
-              <span class="relative flex items-center group cursor-pointer select-none">
+                <span class="relative flex items-center group cursor-pointer select-none">
                <span class="absolute left-0 w-2 h-2 bg-red-600 dark:bg-blue-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                ></span>
                 <span
                     @click="toDetails(i)"
                     class="ml-2 relative after:block after:absolute after:h-[1px] after:bg-red-600 after:dark:dark:bg-blue-400 after:bottom-0 after:left-0 after:w-0 group-hover:after:w-full after:transition-all after:duration-200 after:ease-in-out transform transition-transform duration-200 ease-in-out group-hover:translate-x-2.5">{{ i.title }}</span>
             </span>
-            </div>
-            <div class="space-x-2 opacity-60">
+              </div>
+              <div class="space-x-2 opacity-60">
           <span
               class="text-sm hover:underline"
               v-for="tag in i.tags"
               :key="tag.id"
           >{{ `#${tag.name}` }}</span>
+              </div>
             </div>
           </div>
+
+          <MyPaginationBar
+              class="mt-10 animate-card-article-index"
+              v-model:page="page"
+              v-model:size="size"
+              :total="total"
+              :fetchData="fetchArticleList"
+          />
         </div>
+        <div v-else>
+          <Message severity="warn">文章列表為空或查詢不到對應的文章</Message>
+        </div>
+      </transition>
 
-        <MyPaginationBar
-            class="mt-10 animate-card-article-index"
-            v-model:page="page"
-            v-model:size="size"
-            :total="total"
-            :fetchData="() => {}"
-        />
+      <transition name="slide-fade">
+        <div v-if="errMsg" class="mt-4">
+          <Message severity="error">查询时遇到错误 {{ errMsg }}</Message>
+        </div>
+      </transition>
 
 
-      </div>
+
+
     </div>
-
-
-
 <!--    主體部分結束-->
   </div>
 
