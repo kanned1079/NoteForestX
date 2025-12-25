@@ -1,9 +1,16 @@
 <script setup lang="ts">
 import {useI18n} from "vue-i18n";
 import toolslist from "~/assets/imgs/toolslistshort.png"
+import {useScrollFadeIn} from "~/composables/useScrollFadeIn";
 
 const {t} = useI18n()
 const showRibbon = ref<boolean>(false)
+
+useScrollFadeIn({
+  selector: '.animate-card-details',
+  y: 60,
+  stagger: 0.15
+})
 
 onMounted(() => {
   setTimeout(() => {
@@ -18,7 +25,7 @@ onMounted(() => {
   </ClientOnly>
   <div class="mt-4 pb-60">
     <div class="container mx-auto max-w-[980px] px-4 space-y-6">
-      <section class="space-y-2">
+      <section class="space-y-2 animate-card-details">
         <h2 class="text-4xl font-bold opacity-90">{{ t('details.open_source') }}</h2>
         <p>
           {{ t('details.open_source_desc') }}
@@ -33,13 +40,13 @@ onMounted(() => {
       </section>
 
       <!-- 背景與目標 -->
-      <section class="space-y-2">
+      <section class="space-y-2 animate-card-details">
         <h2 class="text-xl font-bold opacity-90">{{ t('details.background_title') }}</h2>
         <p>{{ t('details.background_desc') }}</p>
       </section>
 
       <!-- 技術棧 -->
-      <section class="space-y-4">
+      <section class="space-y-4 animate-card-details">
         <h2 class="text-xl font-bold opacity-90">{{ t('details.tech_stack') }}</h2>
 
         <!-- 前端部分 -->
@@ -74,7 +81,7 @@ onMounted(() => {
           <p>{{ t('details.backend_desc') }}</p>
         </div>
       </section>
-      <img :src="toolslist" :alt="t('details.tool_image_alt')" class="max-w-[800px] w-full h-auto text-left" />
+      <img :src="toolslist" :alt="t('details.tool_image_alt')" class="max-w-[800px] w-full h-auto text-left animate-card-details" />
     </div>
   </div>
 </template>

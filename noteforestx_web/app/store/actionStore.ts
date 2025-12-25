@@ -34,13 +34,24 @@ const useActionStore = defineStore('actionStore', () => {
 
     const triggerSearchArticle = ref<boolean>(false)
 
-    const fireTriggerSearchArticle = (data?: any) => {
+    const fireTriggerSearchArticle = () => {
         triggerSearchArticle.value = true
     }
 
     const resetTriggerSearchArticle = () => {
         triggerSearchArticle.value = false
     }
+
+    const triggerCommitNewIllustration= ref<boolean>(false)
+
+    const fireTriggerCommitNewIllustration = () => {
+        triggerCommitNewIllustration.value = true
+    }
+
+    const resetTriggerCommitNewIllustration = () => {
+        triggerCommitNewIllustration.value = false
+    }
+
 
 
     return {
@@ -53,7 +64,10 @@ const useActionStore = defineStore('actionStore', () => {
         resetTriggerShowCatalog,
         triggerSearchArticle,
         fireTriggerSearchArticle,
-        resetTriggerSearchArticle
+        resetTriggerSearchArticle,
+        triggerCommitNewIllustration,
+        fireTriggerCommitNewIllustration,
+        resetTriggerCommitNewIllustration
     }
 
 }, {

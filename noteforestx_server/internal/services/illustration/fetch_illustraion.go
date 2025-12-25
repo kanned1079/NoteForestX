@@ -101,6 +101,38 @@ func (this *IllustrationService) GetIllAuthorsSearchResult(ctx *gin.Context) {
 	})
 }
 
+func (this *IllustrationService) GetIllustrationById(ctx *gin.Context) {
+	// 1. 获取 URL 参数 id
+	illustrationID := ctx.Param("id")
+	if illustrationID == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"message": "missing illustration id"})
+		return
+	}
+
+	// 2. 查询单个插画
+	var illustration models.Illustration
+	db := this.Db.Model(&models.Illustration{}).
+		Preload("Author").
+		Preload("Tags").
+		Preload("Images", func(tx *gorm.DB) *gorm.DB {
+			return tx.Order("`order` ASC") // 可按需要排序
+		})
+
+	if err := db.First(&illustration, "id = ?", illustrationID).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			ctx.JSON(http.StatusNotFound, gin.H{"message": "illustration not found"})
+			return
+		}
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "query failed: " + err.Error()})
+		return
+	}
+
+	// 3. 返回结果
+	ctx.JSON(http.StatusOK, gin.H{
+		"illustration": illustration,
+	})
+}
+
 // GetIllustrationList GET:/api/v1/illustration?page=&size=&search_as=&search_content=&sort=&show_limited=
 func (this *IllustrationService) GetIllustrationList(ctx *gin.Context) {
 	var paraReq dto.GetIllustrationListRequestDto

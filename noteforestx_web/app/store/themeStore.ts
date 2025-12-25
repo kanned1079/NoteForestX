@@ -28,6 +28,9 @@ const useThemeStore = defineStore('themeStore', () => {
     const showCatalog = ref<boolean>(false)
     const setShowCatalog = (val: boolean) => showCatalog.value = val
 
+    const showCommitIllustrationBtn = ref<boolean>(false)
+    const setShowCommitIllustrationBtn = (val: boolean) => showCommitIllustrationBtn.value = val
+
     const actionCenterMsgs = ref<string[]>([])
 
     return {
@@ -43,7 +46,9 @@ const useThemeStore = defineStore('themeStore', () => {
         setShowEditMetaDialog,
         showCatalog,
         setShowCatalog,
-        actionCenterMsgs
+        actionCenterMsgs,
+        showCommitIllustrationBtn,
+        setShowCommitIllustrationBtn
     }
 
 }, {

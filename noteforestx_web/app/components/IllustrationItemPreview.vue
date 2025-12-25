@@ -5,12 +5,15 @@ const { locale } = useI18n();
 const config = useRuntimeConfig();
 const props = defineProps<{
   illustration: Illustration;
+  admin?: boolean
 }>();
 
 const onClickIllItem = (id: string) => {
-  navigateTo({
-    path: `/${locale.value}/illustration/${id}`,
-  });
+  if (!props.admin) {
+    navigateTo({
+      path: `/${locale.value}/illustration/${id}`,
+    });
+  }
 };
 
 const openNewTab = (url: string) => {
@@ -33,7 +36,7 @@ const openNewTab = (url: string) => {
           v-if="props.illustration?.images?.length"
           :src="`${config.public.apiBase}/api/v1/illustration/file/${props.illustration?.images[0].file_path}?size=small`"
           alt="blur-background"
-          class="absolute inset-0 w-full h-full object-cover scale-110 filter blur-sm brightness-100 opacity-30"
+          class="absolute inset-0 w-full h-full object-cover scale-110 filter blur-sm brightness-100 opacity-80"
       />
 
       <!-- 前景正常插画 -->

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import {useI18n} from "vue-i18n";
 import { ref, onMounted, nextTick, onBeforeUnmount } from 'vue'
 import { useScrollFadeIn } from '~/composables/useScrollFadeIn'
 import murasame_ciallo from '~/assets/imgs/murasame_ciallo.jpg'
@@ -7,6 +8,7 @@ import ProgrammingLangIcons from "~/components/ProgrammingLangIcons.vue";
 import VisualPhoto from "~/components/VisualPhoto.vue"
 import dayjs from "dayjs";
 
+const {t} = useI18n();
 const themeStore = useThemeStore()
 const containerRef = ref<HTMLElement | null>(null)
 const textRef = ref<HTMLElement | null>(null)
@@ -210,19 +212,36 @@ onMounted(async () => {
             <!-- 标题 -->
             <div class="opacity-90 animated-card-firstpage">
               <p class="text-2xl sm:text-3xl md:text-4xl">
-                hi !
+                hi ! ✌️
               </p>
 
+<!--              <p class="font-bold text-4xl sm:text-5xl md:text-5xl">-->
+<!--                I'm <span class="text-[#1e88a8] underline">kanned1079</span>,-->
+<!--              </p>-->
+
+<!--              <div class="mt-6 text-base sm:text-lg">-->
+<!--                a <span class="font-bold">FullStack Developer</span> who loves intuitive,-->
+<!--              </div>-->
+<!--              <div class="text-base sm:text-lg">-->
+<!--                clean and modern UI design.-->
+<!--              </div>-->
+
               <p class="font-bold text-4xl sm:text-5xl md:text-5xl">
-                I'm <span class="text-[#1e88a8] underline">kanned1079</span>,
+                <i18n-t keypath="home.intro_title" tag="span">
+                  <template #name>
+                    <span class="text-[#1e88a8] underline">kanned1079</span>
+                  </template>
+                </i18n-t>
               </p>
 
               <div class="mt-6 text-base sm:text-lg">
-                a <span class="font-bold">FullStack Developer</span> who loves intuitive,
+                <i18n-t keypath="home.intro_desc" tag="span">
+                  <template #role>
+                    <span class="font-bold">{{ t('home.fullstack_developer') }}</span>
+                  </template>
+                </i18n-t>
               </div>
-              <div class="text-base sm:text-lg">
-                clean and modern UI design.
-              </div>
+
             </div>
 
             <!-- 按钮区 -->
@@ -233,7 +252,7 @@ onMounted(async () => {
                   class="button h-9 border border-transparent dark:border-gray-500"
                   @click="onClickWorkBtn('1')"
               >
-                Get In Touch
+                {{ t('home.get_in_touch') }}
               </button>
 
               <StarOnGithub link="https://github.com/kanned1079" />
@@ -241,8 +260,11 @@ onMounted(async () => {
 
             <!-- 技术栈 -->
             <div class="mt-14 animated-card-firstpage">
+<!--              <p class="text-sm opacity-80 mb-2">-->
+<!--                current favorite tech stack / tools:-->
+<!--              </p>-->
               <p class="text-sm opacity-80 mb-2">
-                current favorite tech stack / tools:
+                {{ t('home.favorite_stack') }}
               </p>
               <ProgrammingLangIcons />
             </div>
@@ -280,9 +302,12 @@ onMounted(async () => {
         ref="scrollRef"
         class="mt-20 w-full flex flex-col items-center justify-center gap-2 z-20 transition-all duration-700 ease-out"
     >
+<!--      <span class="text-sm md:text-base font-medium opacity-80">-->
+<!--        Scroll down to know more-->
+<!--      </span>-->
       <span class="text-sm md:text-base font-medium opacity-80">
-        Scroll down to know more
-      </span>
+  {{ t('home.scroll_down') }}
+</span>
 
       <span
           class="

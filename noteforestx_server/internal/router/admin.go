@@ -3,14 +3,43 @@ package router
 import (
 	"noteforestx_server/internal/dao"
 	"noteforestx_server/internal/services/admin"
+	"noteforestx_server/internal/services/illustration"
 
 	"github.com/gin-gonic/gin"
 )
+
+/*
+	{
+	            "id": "190d874d-2744-4cef-ae68-2dbf1628e7e2",
+	            "name": "オリジナル10000users入り",
+	        },
+	        {
+	            "id": "e5b09780-771f-4112-bec9-528255091da9",
+	            "name": "夏服",
+	        },
+	        {
+	            "id": "c149c73e-771a-443e-9f70-ea6045cc07a6",
+	            "name": "カメラ女子",
+	        },
+	        {
+	            "id": "57d70b5a-83bd-46b0-b913-9bfd642e46ce",
+	            "name": "花と女の子",
+	        },
+	        {
+	            "id": "cc9f849c-4170-4be1-9518-beb4492613a0",
+	            "name": "女の子",
+	        }
+*/
 
 func (this *RouterInstance) RegisterAdminRoutes(v1 *gin.RouterGroup) {
 	//adminRouter := v1.Group("/admin", middlewares.RequireRole("admin"))
 	adminRouter := v1.Group("/admin")
 	var adminService = &admin.AdminService{
+		Db:  dao.ExistingDbDaoInst.DbDao,
+		Rdb: dao.ExistingDbDaoInst.RdbDao,
+	}
+
+	var illustratonService = &illustration.IllustrationService{
 		Db:  dao.ExistingDbDaoInst.DbDao,
 		Rdb: dao.ExistingDbDaoInst.RdbDao,
 	}
@@ -21,33 +50,11 @@ func (this *RouterInstance) RegisterAdminRoutes(v1 *gin.RouterGroup) {
 	//adminRouter.POST("document", adminService.AddNewDocument)
 	//adminRouter.DELETE("document/:id", adminService.RemoveDocumentById)
 
+	adminRouter.GET("/illustration/:id", illustratonService.GetIllustrationById)
 	//adminRouter.GET("/illustration", adminService.GetIllustrationList)
 	adminRouter.PUT("/illustration/:id", adminService.UpdateIllustrationById)
 	adminRouter.POST("/illustration", adminService.AddNewIllustration)
 	adminRouter.DELETE("/illustration/:id", adminService.RemoveIllustrationById)
-
-	/*
-		{
-		            "id": "190d874d-2744-4cef-ae68-2dbf1628e7e2",
-		            "name": "オリジナル10000users入り",
-		        },
-		        {
-		            "id": "e5b09780-771f-4112-bec9-528255091da9",
-		            "name": "夏服",
-		        },
-		        {
-		            "id": "c149c73e-771a-443e-9f70-ea6045cc07a6",
-		            "name": "カメラ女子",
-		        },
-		        {
-		            "id": "57d70b5a-83bd-46b0-b913-9bfd642e46ce",
-		            "name": "花と女の子",
-		        },
-		        {
-		            "id": "cc9f849c-4170-4be1-9518-beb4492613a0",
-		            "name": "女の子",
-		        }
-	*/
 
 	adminRouter.GET("/illustration_tag", adminService.GetIllustrationTagList)
 	adminRouter.GET("/illustration_tag/:id", adminService.GetIllustrationTagById)

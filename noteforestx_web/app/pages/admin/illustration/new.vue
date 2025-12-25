@@ -10,11 +10,13 @@ import type {DialogProps} from 'primevue/dialog'
 import {Icon} from '@vicons/utils'
 import {CaretForwardOutline, GlobeOutline} from "@vicons/ionicons5"
 import {Command, CircleArrowOutUpLeft, Keyboard, Option} from "lucide-vue-next"
-
+import useThemeStore from "~/store/themeStore";
+import useActionStore from "~/store/actionStore";
 
 const {t} = useI18n()
+const themeStore = useThemeStore()
+const actionStore = useActionStore()
 const toast = useToast();
-
 
 // 表单 DTO
 type createIllustrationRequestDto = {
@@ -291,8 +293,95 @@ const showModalCard = ref<{
 const dialogRef = ref<HTMLElement | null>(null)
 const dialogTitle = ref<string>("admin.illustration.tagMgr")
 
+// POST x-www-form-urlencoded
+const commitNewIllustration = async () => {
+  try {
+    // 1. 构建 FormData
+    const formData = new FormData()
+    formData.append("name", newIllustration.value.name)
+    formData.append("author_id", newIllustration.value.author_id)
+    newIllustration.value.tags_id.forEach(tagId => formData.append("tags_id[]", tagId))
+    formData.append("link", newIllustration.value.link)
+    formData.append("description", newIllustration.value.description)
+    formData.append("limited", String(newIllustration.value.limited))
+    formData.append("source", newIllustration.value.source)
+
+    // 上传文件
+    uploadedFiles.value.forEach(file => {
+      formData.append("files", file) // 字段名必须和后端一致
+    })
+
+    // 2. 提交请求
+    const res = await fetch("/api/admin/illustration", {
+      method: "POST",
+      body: formData
+    })
+
+    if (!res.ok) {
+      const text = await res.text()
+      console.error("上传失败", text)
+      toast.add({
+        severity: 'error',
+        summary: t('universal.errToast'),
+        detail: t('admin.illustration.commitFail') + ": " + text,
+        life: 3000
+      })
+      return
+    }
+
+    // 3. 成功处理
+    console.log("上传成功")
+    toast.add({
+      severity: 'success',
+      summary: t('universal.success'),
+      detail: t('admin.illustration.commitSuccess'),
+      life: 3000
+    })
+
+    // 重置表单状态
+    newIllustration.value = {
+      name: "",
+      author_id: "",
+      tags_id: [],
+      link: "",
+      description: "",
+      limited: false,
+      source: ""
+    }
+    uploadedFiles.value = []
+    previewUrls.value = []
+    tagsSelected.value = []
+    authorSelected.value = undefined
+
+  } catch (err: any) {
+    console.error("err: ", err)
+    toast.add({
+      severity: 'error',
+      summary: t('universal.errToast'),
+      detail: t('universal.errToastMessage') + " " + err,
+      life: 3000
+    })
+  }
+}
+
 fetchIllustrationTags()
 fetchAuthors()
+
+watch(() => actionStore.triggerCommitNewIllustration, (newVal: boolean) => {
+  if (newVal) {
+    actionStore.resetTriggerCommitNewIllustration()
+    console.log('commitNewIllustration', newVal)
+    commitNewIllustration()
+  }
+})
+
+onBeforeMount(() => {
+  themeStore.setShowCommitIllustrationBtn(true)
+})
+
+onBeforeUnmount(() => {
+  themeStore.setShowCommitIllustrationBtn(false)
+})
 
 onMounted(() => {
   setTimeout(() => {
@@ -307,7 +396,7 @@ onMounted(() => {
   <div class="mt-4">
     <PageHeader :title="t('admin.illustration.createIllustrationTitle')"
                 :subtitle="t('admin.illustration.createIllustrationSubtitle')"/>
-    <div>
+    <div v-if="false">
       <div class="w-full flex flex-col justify-center items-start pl-0 pr-5 pb-3 space-y-2">
         <!-- 行1：标签管理 -->
         <div class="flex flex-row justify-start items-center gap-2">

@@ -86,8 +86,9 @@ const deleteIllust = async (id: string) => {
 }
 
 const createNewIllustrationClick = async () => router.push({
-  path: "/admin/illustration/create",
+  path: "/admin/illustration/new",
 })
+
 
 // 初始化加载
 onMounted(() => {
@@ -109,8 +110,11 @@ onMounted(() => {
     <div v-if="!loading" class="mx-auto w-full max-w-[1920px] mt-6">
       <div class="grid gap-5 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
         <IllustrationItemPreview
+            admin
             :illustration="i"
-            v-for="i in illustrationList" :key="i.id"></IllustrationItemPreview>
+            v-for="i in illustrationList" :key="i.id"
+          @click=""
+         />
       </div>
     </div>
     <div v-else class="text-center py-10 text-gray-500">

@@ -153,7 +153,7 @@
     },
   "my_work": {
     "title_tag": "作品",
-    "main_title": "技能與工具",
+    "main_title": "技能 & 工具",
     "main_desc": "瀏覽我所使用過的程式語言、函式庫以及工具。",
     "intro": "我從事網頁開發已有約九年，嘗試過多種程式語言與技術堆疊，涵蓋後端與前端開發。雖然網頁開發領域廣泛，但我對前端開發與 UI/UX 設計特別感興趣並專注其中。",
     "app_dev_title": "應用程式開發者",
@@ -228,6 +228,20 @@
     "social_desc2": "如果时间紧张，我在下面列出了最常使用的社交平台链接：",
     "social_table_header1": "社交平台",
     "social_table_header2": "链接"
+  },
+  "home": {
+    "intro_title": "我是 {name}，",
+    "intro_desc": "一名热爱直观、简洁与现代 UI 设计的 {role}。",
+    "favorite_stack": "当前喜欢的技术栈 / 工具：",
+    "scroll_down": "向下滚动了解更多",
+    "get_in_touch": "与我取得联系",
+    "fullstack_developer": "全栈开发者"
+  },
+  "app_footer": {
+    "about_me": "关于我",
+    "this_site": "该站点",
+    "source_code": "源码仓库",
+    "uiverse": "Uiverse 组件库",
+    "primevue": "PrimeVue"
   }
-
 }

@@ -225,6 +225,14 @@
     "social_desc2": "If you are in a hurry, I have listed the links to the social platforms I use most often below:",
     "social_table_header1": "Social Platform",
     "social_table_header2": "Link"
+  },
+  "home": {
+    "intro_title": "I'm {name},",
+    "intro_desc": "a {role} who loves intuitive, clean and modern UI design.",
+    "favorite_stack": "current favorite tech stack / tools:",
+    "scroll_down": "Scroll down to know more",
+    "get_in_touch": "Get in touch"
   }
+
 
 }

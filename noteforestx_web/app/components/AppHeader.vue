@@ -398,7 +398,27 @@ onBeforeUnmount(() => {
           </span>
         </template>
       </Button>
-      </div>
+    </div>
+
+    <div class="mr-3 flex flex-row gap-3" v-if="themeStore.showCommitIllustrationBtn">
+      <Button
+          class="h-8 px-3 flex items-center gap-2"
+          icon="pi pi-search"
+          severity="primary"
+          outlined
+          size="small"
+          :label="`Search`"
+          @click="actionStore.fireTriggerCommitNewIllustration()"
+      >
+        <template #default>
+          <span class="flex items-center gap-1">
+            <i class="pi pi-search text-xs"></i>
+          <span>Save</span>
+          <span class="px-2 py-0.5 text-xs font-light ">⌘+S</span>
+          </span>
+        </template>
+      </Button>
+    </div>
 
 
   </div>

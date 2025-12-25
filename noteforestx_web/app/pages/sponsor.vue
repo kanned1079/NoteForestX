@@ -1,5 +1,11 @@
 <script setup lang="ts">
 import toolslist from "~/assets/imgs/toolslist.png"
+import {useScrollFadeIn} from "~/composables/useScrollFadeIn";
+useScrollFadeIn({
+  selector: '.animate-card-sponsor',
+  y: 60,
+  stagger: 0.15
+})
 </script>
 
 <template>
@@ -11,7 +17,7 @@ import toolslist from "~/assets/imgs/toolslist.png"
       <!--      <div class="opacity-85">關於本網站的一些技術細節</div>-->
 
       <!-- 背景與目標 -->
-      <section class="space-y-2">
+      <section class="space-y-2 animate-card-sponsor">
         <h2 class="text-xl font-bold opacity-90">背景與目標</h2>
         <p>
           本博客的目的是記錄日常學習、技術分享與項目經驗。我希望透過這個項目實踐全棧開發、
@@ -21,7 +27,7 @@ import toolslist from "~/assets/imgs/toolslist.png"
         </p>
       </section>
 
-      <section class="space-y-2">
+      <section class="space-y-2 animate-card-sponsor">
         <h2 class="text-xl font-bold opacity-90">虛擬貨幣</h2>
         <p class="font-mono">0xaa53b6eb01103118a909a018a8c24d480e47bf7e <span class="font-bold">(Ethereum)</span></p>
         <p class="font-mono">0xaa53b6eb01103118a909a018a8c24d480e47bf7e <span class="font-bold">(Arbitrum)</span></p>

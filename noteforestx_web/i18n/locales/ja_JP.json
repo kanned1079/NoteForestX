@@ -15,5 +15,9 @@
     "general": "General",
     "profile": "User Portal",
     "admin": "Admin Portal"
+  },
+  "home": {
+    "intro_title": "{name} と申します。",
+    "intro_desc": "直感的で、クリーンでモダンな UI デザインを愛する {role} です。"
   }
 }
