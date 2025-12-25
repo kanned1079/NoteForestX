@@ -68,5 +68,6 @@ func (this *RouterInstance) RegisterAdminRoutes(v1 *gin.RouterGroup) {
 	adminRouter.POST("/article", adminService.AddArticle)
 	adminRouter.PUT("/article/:id", adminService.UpdateArticleById)
 	adminRouter.PATCH("/article/:id", adminService.PatchArticleById)
+	adminRouter.DELETE("/article/:id", adminService.RemoveArticleById)
 
 }

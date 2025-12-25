@@ -27,7 +27,7 @@ func (s *AdminService) preProcessArticleData(ctx *gin.Context) (*dto.AddOrUpdate
 		return nil, http.StatusBadRequest, errors.New("title and content cannot be empty")
 	}
 
-	s.utils.Logger.PrintInfo(reqData)
+	//s.utils.Logger.PrintInfo(reqData)
 	return &reqData, http.StatusOK, nil
 }
 
@@ -279,7 +279,7 @@ func (s *AdminService) GetArticleList(ctx *gin.Context) {
 		Order("created_at DESC").
 		Offset((req.Page - 1) * req.Size).
 		Limit(req.Size).
-		Select("id, slug, title, top, status, created_at").
+		Select("id, slug, title, top, status, created_at, updated_at").
 		Find(&articles).Error; err != nil {
 
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

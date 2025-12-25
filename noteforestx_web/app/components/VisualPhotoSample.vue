@@ -1,37 +1,36 @@
 <script lang="ts" setup>
-import FbUhERzacAIyiDB from '~/assets/imgs/FbUhERzacAIyiDB.jpg'
-import IMG_0017 from '~/assets/imgs/IMG_0017.jpeg'
+
 </script>
 
 <template>
   <div class="polaroid">
     <div class="photo">
-      <img :src="IMG_0017" class="image" alt="photo" />
-<!--      <div class="sun"></div>-->
+      <div class="sun"></div>
       <div class="cloud"></div>
       <div class="cloud"></div>
-<!--      <div class="mountains">-->
-<!--        <div class="mountain1"></div>-->
-<!--        <div class="mountain2"></div>-->
-<!--      </div>-->
-<!--      <div class="trees">-->
-<!--        <div class="tree"></div>-->
-<!--        <div class="tree"></div>-->
-<!--        <div class="tree"></div>-->
-<!--        <div class="tree"></div>-->
-<!--        <div class="tree"></div>-->
-<!--      </div>-->
-<!--      <div class="lake">-->
-<!--        <div class="water-surface"></div>-->
-<!--        <div class="water-ripples"></div>-->
-<!--        <div class="water-sparkles"></div>-->
-<!--      </div>-->
+      <div class="mountains">
+        <div class="mountain1"></div>
+        <div class="mountain2"></div>
+      </div>
+      <div class="trees">
+        <div class="tree"></div>
+        <div class="tree"></div>
+        <div class="tree"></div>
+        <div class="tree"></div>
+        <div class="tree"></div>
+      </div>
+      <div class="lake">
+        <div class="water-surface"></div>
+        <div class="water-ripples"></div>
+        <div class="water-sparkles"></div>
+      </div>
       <div class="dust"></div>
       <div class="scratches"></div>
     </div>
-    <div class="caption text-3xl font-bold">好結局</div>
-    <div class="caption">現在是2019年的夏天</div>
+    <div class="caption text-3xl font-bold">好结局</div>
+    <div class="caption">现在是2019年的夏天</div>
   </div>
+
 </template>
 
 <style scoped>
@@ -41,18 +40,6 @@ body {
   align-items: center;
   background: #f0f0f0;
   margin: 0;
-}
-
-.image {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(1.3); /* 放大和居中 */
-  height: auto;
-  width: auto;
-  max-width: 100%;
-  max-height: 100%;
-  z-index: 1; /* 确保图片在其他层之下 */
 }
 
 .polaroid {

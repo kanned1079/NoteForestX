@@ -96,6 +96,11 @@ const onKeydown = (e: KeyboardEvent) => {
   // 只处理 /
   if (e.key !== '/') return;
 
+  if (e.shiftKey && e.key.toLowerCase() === 'q') {
+    e.preventDefault()
+    return router.back()
+  }
+
   // 输入状态下放行
   if (isTypingTarget(e.target)) return;
 
@@ -130,18 +135,18 @@ fetchArticleById(articleId);
 
 
 onBeforeMount(() => {
+
+})
+
+onMounted(() => {
   themeStore.setShowCatalog(true)
   themeStore.actionCenterMsgs = [
     `按下 / 以开启文章的目录面板`,
     `单击目录区域的文章标题可以回到顶部`,
     `点击文章中的Tag以获取TagId`
   ]
-})
-
-onMounted(() => {
-
   // 根据屏幕自动切换 Drawer 方向（可选）
-  position.value = window.innerWidth < 1024 ? 'bottom' : 'left';
+  // position.value = window.innerWidth < 1024 ? 'bottom' : 'left';
 
   window.addEventListener('keydown', onKeydown);
 });

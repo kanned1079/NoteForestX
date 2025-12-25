@@ -5,6 +5,7 @@ import murasame_ciallo from '~/assets/imgs/murasame_ciallo.jpg'
 import useThemeStore from "~/store/themeStore";
 import ProgrammingLangIcons from "~/components/ProgrammingLangIcons.vue";
 import VisualPhoto from "~/components/VisualPhoto.vue"
+import dayjs from "dayjs";
 
 const themeStore = useThemeStore()
 const containerRef = ref<HTMLElement | null>(null)
@@ -203,7 +204,7 @@ onMounted(async () => {
       >
         <!-- 左侧：文字 -->
         <div
-            class="w-full md:w-1/2 flex justify-center text-slate-900 dark:text-slate-100"
+            class="w-full md:w-1/2 flex justify-center text-slate-900 dark:text-slate-100 pl-4"
         >
           <div class="w-full max-w-md">
             <!-- 标题 -->
@@ -245,6 +246,7 @@ onMounted(async () => {
               </p>
               <ProgrammingLangIcons />
             </div>
+
           </div>
         </div>
 

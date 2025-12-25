@@ -1,4 +1,8 @@
 <script setup lang="ts">
+definePageMeta({
+  disableShortcuts: true,
+})
+
 import {MdEditor} from 'md-editor-v3'
 import '~/assets/css/md-style.css'
 import PageHeader from "~/components/PageHeader.vue";

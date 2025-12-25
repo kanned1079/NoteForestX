@@ -180,6 +180,7 @@ const getUserName = computed(() => {
 const onSearchBtnClicked = () => themeStore.searchDialog.show = true
 
 function onKeydown(e: KeyboardEvent) {
+  if (route.meta.disableShortcuts) return
   // 忽略输入框中的按键，避免干扰输入
   const target = e.target as HTMLElement
   if (target?.tagName === 'INPUT' || target?.tagName === 'TEXTAREA') {
@@ -261,7 +262,7 @@ onBeforeUnmount(() => {
           </div>
         </template>
       </Button>
-      <Menu ref="appMenu" id="app_menu" :model="itemsMenu" style="margin-top: 10px" class="w-full md:min-w-60 md:max-w-max mt-2" :popup="true">
+      <Menu ref="appMenu" id="app_menu" :model="itemsMenu" style="width: auto" class="w-full md:min-w-60 md:max-w-max mt-2" :popup="true">
         <template #start>
 
         </template>
@@ -337,6 +338,7 @@ onBeforeUnmount(() => {
           severity="secondary"
           size="small"
           outlined
+          @click="actionStore.fireTriggerSearchArticle()"
       />
     </div>
 

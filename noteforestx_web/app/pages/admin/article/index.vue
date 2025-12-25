@@ -14,11 +14,13 @@ import {useScrollFadeIn} from "~/composables/useScrollFadeIn";
 import IconField from "primevue/iconfield";
 import InputIcon from "primevue/inputicon";
 import type InputText from "primevue/inputtext";
+import MyConfirmCard from "~/components/RedesignedComponents/MyConfirmCard.vue";
 
 const {t} = useI18n()
 const toast = useToast()
 const confirm = useConfirm()
 const router = useRouter()
+const confirmRef = ref<InstanceType<typeof MyConfirmCard>>()
 
 useScrollFadeIn({
   selector: '.animate-card-article-index',
@@ -134,33 +136,41 @@ const editArticle = (id: string) => {
   navigateTo({ path: `/admin/article/edit/${id}` })
 }
 
+const delArticle = ref<{
+  id: string
+  title: string
+}>({
+  id: "",
+  title: ""
+})
+
+const deleteArticleClick = (article: Article) => {
+  delArticle.value.id = article.id
+  delArticle.value.title = article.title
+  confirmRef.value?.showConfirm()
+}
+
 /* ===== 删除 ===== */
-const deleteArticle = (id: string) => {
-  confirm.require({
-    message: "确定要删除这篇文章吗？",
-    header: "删除确认",
-    icon: "pi pi-exclamation-triangle",
-    acceptClass: "p-button-danger",
-    accept: async () => {
-      try {
-        await $fetch(`/api/article/${id}`, { method: "DELETE" })
-        toast.add({
-          severity: "success",
-          summary: "删除成功",
-          detail: "文章已删除",
-          life: 3000,
-        })
-        fetchArticleList()
-      } catch (err: any) {
-        toast.add({
-          severity: "error",
-          summary: "删除失败",
-          detail: `${err}`,
-          life: 4000,
-        })
-      }
-    },
-  })
+const deleteArticle = async () => {
+  if (delArticle.value.id) {
+    try {
+      await $fetch(`/api/admin/article/${delArticle.value.id}`, {method: "DELETE"})
+      toast.add({
+        severity: "success",
+        summary: "成功",
+        detail: "文章已删除",
+        life: 3000,
+      })
+      await fetchArticleList()
+    } catch (err: any) {
+      toast.add({
+        severity: "error",
+        summary: "删除失败",
+        detail: `${err}`,
+        life: 4000,
+      })
+    }
+  }
 }
 
 const updateArticleStatus = async (
@@ -366,7 +376,7 @@ onBeforeUnmount(() => {
                   />
                   <i
                       class="pi pi-trash cursor-pointer text-red-500 opacity-80 hover:opacity-100"
-                      @click="deleteArticle(data.id)"
+                      @click="deleteArticleClick(data)"
                   />
                 </div>
               </template>
@@ -397,6 +407,18 @@ onBeforeUnmount(() => {
     </transition>
 
   </div>
+
+  <MyConfirmCard
+      ref="confirmRef"
+      class="w-full max-w-[90vw] sm:max-w-[420px] lg:max-w-[500px]"
+      header="删除"
+      :title="delArticle.title"
+      :subtitle="delArticle.id"
+      :cancelled="() => {delArticle = {id: '', title: ''}; console.log('cleared')}"
+      :confirmed="deleteArticle"
+      confirm-btn-severity="danger"
+  />
+
 </template>
 
 <style>

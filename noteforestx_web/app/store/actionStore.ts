@@ -32,6 +32,16 @@ const useActionStore = defineStore('actionStore', () => {
         triggerShowCatalogPayload.value = null
     }
 
+    const triggerSearchArticle = ref<boolean>(false)
+
+    const fireTriggerSearchArticle = (data?: any) => {
+        triggerSearchArticle.value = true
+    }
+
+    const resetTriggerSearchArticle = () => {
+        triggerSearchArticle.value = false
+    }
+
 
     return {
         triggerArticleSave,
@@ -40,7 +50,10 @@ const useActionStore = defineStore('actionStore', () => {
         triggerShowCatalog,
         fireTriggerShowCatalog,
         triggerShowCatalogPayload,
-        resetTriggerShowCatalog
+        resetTriggerShowCatalog,
+        triggerSearchArticle,
+        fireTriggerSearchArticle,
+        resetTriggerSearchArticle
     }
 
 }, {

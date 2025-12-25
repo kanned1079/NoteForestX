@@ -12,11 +12,8 @@ import (
 	"gorm.io/gorm"
 )
 
-//func (this ArticleService) GetArticleList(ctx *gin.Context) {
-//
-//}
-
 // GetArticleList 获取文章列表（分页 + 搜索 + 标签 + 状态）
+// published ONLY
 func (s *ArticleService) GetArticleList(ctx *gin.Context) {
 	var req dto.GetArticleListRequestDto
 	if err := ctx.ShouldBindQuery(&req); err != nil {
@@ -37,9 +34,11 @@ func (s *ArticleService) GetArticleList(ctx *gin.Context) {
 		Preload("Tags")
 
 	// ========== 状态过滤 ==========
-	if req.Status != nil && *req.Status != "" {
-		db = db.Where("status = ?", *req.Status)
-	}
+	//if req.Status != nil && *req.Status != "" {
+	//	db = db.Where("status = ?", *req.Status)
+	//}
+
+	db = db.Where("status = ?", "published")
 
 	// ========== 标签 ID 过滤（最高优先级） ==========
 	if req.TagId != nil && *req.TagId != "" {
@@ -99,7 +98,7 @@ func (s *ArticleService) GetArticleList(ctx *gin.Context) {
 		Order("created_at DESC").
 		Offset((req.Page - 1) * req.Size).
 		Limit(req.Size).
-		Select("id, slug, title, top, status, created_at").
+		Select("id, slug, title, top, created_at, updated_at").
 		Find(&articles).Error; err != nil {
 
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
