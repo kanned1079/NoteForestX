@@ -4,9 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
-	"gorm.io/gorm"
 	"net/http"
 	"noteforestx_server/internal/config"
 	"noteforestx_server/internal/models"
@@ -15,6 +12,10 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
+
+	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
+	"gorm.io/gorm"
 )
 
 // GetIllTagsSearchResult GET:/api/v1/illustration/tags/search?name=xxx
@@ -119,7 +120,7 @@ func (this *IllustrationService) GetIllustrationById(ctx *gin.Context) {
 		})
 
 	if err := db.First(&illustration, "id = ?", illustrationID).Error; err != nil {
-		if err == gorm.ErrRecordNotFound {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
 			ctx.JSON(http.StatusNotFound, gin.H{"message": "illustration not found"})
 			return
 		}
@@ -127,11 +128,71 @@ func (this *IllustrationService) GetIllustrationById(ctx *gin.Context) {
 		return
 	}
 
+	// illustration.Author.Id 查询10个该作者的作品列表 按照created_at排序
+
 	// 3. 返回结果
 	ctx.JSON(http.StatusOK, gin.H{
 		"illustration": illustration,
 	})
 }
+
+//func (this *IllustrationService) GetIllustrationById(ctx *gin.Context) {
+//	this.utils.Logger.PrintError("called")
+//	// 1. 获取 URL 参数 id（UUID）
+//	illustrationID := ctx.Param("id")
+//	if illustrationID == "" {
+//		ctx.JSON(http.StatusBadRequest, gin.H{"message": "missing illustration id"})
+//		return
+//	}
+//
+//	// 2. 查询单个插画
+//	var illustration models.Illustration
+//	db := this.Db.
+//		Preload("Author").
+//		Preload("Tags").
+//		Preload("Images", func(tx *gorm.DB) *gorm.DB {
+//			return tx.Order("`order` ASC")
+//		})
+//
+//	if err := db.
+//		Where("id = ?", illustrationID).
+//		First(&illustration).Error; err != nil {
+//
+//		if errors.Is(err, gorm.ErrRecordNotFound) {
+//			ctx.JSON(http.StatusNotFound, gin.H{"message": "illustration not found"})
+//			return
+//		}
+//		ctx.JSON(http.StatusInternalServerError, gin.H{
+//			"message": "query failed: " + err.Error(),
+//		})
+//		return
+//	}
+//
+//	// 3. 查询该作者的其他 10 个作品（UUID）
+//	var authorIllustrations []models.Illustration
+//
+//	if illustration.Author.Id != uuid.Nil {
+//		err := this.Db.
+//			Model(&models.Illustration{}).
+//			Where("author_id = ? AND id <> ?", illustration.Author.Id, illustration.Id).
+//			Order("created_at DESC").
+//			Limit(10).
+//			Find(&authorIllustrations).Error
+//
+//		if err != nil {
+//			ctx.JSON(http.StatusInternalServerError, gin.H{
+//				"message": "query author illustrations failed: " + err.Error(),
+//			})
+//			return
+//		}
+//	}
+//
+//	// 4. 返回结果
+//	ctx.JSON(http.StatusOK, gin.H{
+//		"illustration":         illustration,
+//		"author_illustrations": authorIllustrations,
+//	})
+//}
 
 // GetIllustrationList GET:/api/v1/illustration?page=&size=&search_as=&search_content=&sort=&show_limited=
 func (this *IllustrationService) GetIllustrationList(ctx *gin.Context) {
@@ -390,36 +451,99 @@ func (this *IllustrationService) FetchIllustrationByFilename(ctx *gin.Context) {
 }
 
 // FetchIllustrationByIllId GET:/api/v1/illustration/:id
+//func (this *IllustrationService) FetchIllustrationByIllId(ctx *gin.Context) {
+//	illId := ctx.Param("id")
+//	illId = strings.TrimSpace(illId)
+//	if illId == "" {
+//		ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid id"})
+//		return
+//	}
+//	var ill models.Illustration
+//	// 加载作者和标签
+//	if err := this.Db.Model(&models.Illustration{}).
+//		Preload("Author").
+//		Preload("Tags", func(db *gorm.DB) *gorm.DB {
+//			return db.Order("`created_at` ASC")
+//		}).
+//		Preload("Images", func(db *gorm.DB) *gorm.DB {
+//			return db.Order("`order` ASC")
+//		}).
+//		Where("id = ?", illId).
+//		First(&ill).Error; err != nil {
+//
+//		if errors.Is(err, gorm.ErrRecordNotFound) {
+//			ctx.JSON(http.StatusNotFound, gin.H{
+//				"message": "illustration not found for id: " + illId,
+//			})
+//			return
+//		}
+//
+//		ctx.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+//		return
+//	}
+//
+//	ctx.JSON(http.StatusOK, ill)
+//}
+
 func (this *IllustrationService) FetchIllustrationByIllId(ctx *gin.Context) {
-	illId := ctx.Param("id")
-	illId = strings.TrimSpace(illId)
-	if illId == "" {
-		ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid id"})
+	// 1. 获取 URL 参数 id（UUID）
+	illustrationID := strings.TrimSpace(ctx.Param("id"))
+	if illustrationID == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"message": "missing illustration id"})
 		return
 	}
-	var ill models.Illustration
-	// 加载作者和标签
-	if err := this.Db.Model(&models.Illustration{}).
+
+	// 2. 查询单个插画（加载 Author / Tags / Images）
+	var illustration models.Illustration
+	if err := this.Db.
+		Model(&models.Illustration{}).
 		Preload("Author").
 		Preload("Tags", func(db *gorm.DB) *gorm.DB {
-			return db.Order("`created_at` ASC")
+			return db.Order("created_at ASC")
 		}).
 		Preload("Images", func(db *gorm.DB) *gorm.DB {
 			return db.Order("`order` ASC")
 		}).
-		Where("id = ?", illId).
-		First(&ill).Error; err != nil {
+		Where("id = ?", illustrationID).
+		First(&illustration).Error; err != nil {
 
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			ctx.JSON(http.StatusNotFound, gin.H{
-				"message": "illustration not found for id: " + illId,
+				"message": "illustration not found",
 			})
 			return
 		}
 
-		ctx.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"message": err.Error(),
+		})
 		return
 	}
 
-	ctx.JSON(http.StatusOK, ill)
+	// 3. 查询该作者的其他 10 个作品（同样加载 Images）
+	var authorIllustrations []models.Illustration
+
+	if illustration.Author.Id != uuid.Nil {
+		if err := this.Db.
+			Model(&models.Illustration{}).
+			Preload("Images", func(db *gorm.DB) *gorm.DB {
+				return db.Order("`order` ASC")
+			}).
+			Where("author_id = ? AND id <> ?", illustration.Author.Id, illustration.Id).
+			Order("created_at DESC").
+			Limit(10).
+			Find(&authorIllustrations).Error; err != nil {
+
+			ctx.JSON(http.StatusInternalServerError, gin.H{
+				"message": "query author illustrations failed: " + err.Error(),
+			})
+			return
+		}
+	}
+
+	// 4. 返回结果
+	ctx.JSON(http.StatusOK, gin.H{
+		"illustration":         illustration,
+		"author_illustrations": authorIllustrations,
+	})
 }

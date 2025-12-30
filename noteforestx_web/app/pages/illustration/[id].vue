@@ -1,9 +1,16 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
-import type { Illustration } from "../../types/illustration";
+import type { Illustration } from "~/types/illustration";
 import dayjs from "dayjs";
-import {useAsyncData} from "nuxt/app";
+// import {useAsyncData} from "nuxt/app";
+import {useScrollFadeIn} from "~/composables/useScrollFadeIn";
+
+useScrollFadeIn({
+  selector: '.animate-card-illustration-id',
+  y: 100,
+  stagger: 0.15
+})
 
 const route = useRoute();
 const illustId = route.params.id as string;
@@ -11,20 +18,26 @@ const illustId = route.params.id as string;
 const config = useRuntimeConfig();
 
 const illustration = ref<Illustration | null>(null);
+const authorIllustrationList = ref<Illustration[]>([])
+
+interface IllustrationDetailResponse {
+  illustration: Illustration
+  author_illustrations: Illustration[]
+}
 
 const fetchIllustrationById = async () => {
   try {
-    const data = await $fetch<Illustration>(`/api/illustration/${illustId}`, {
-    //   const data = await useFetch<Illustration>(`/api/illustration/${illustId}`, {
-      method: "GET",
-    });
-    if (data) {
-      illustration.value = data;
-    }
-  } catch (err: any) {
-    console.error("err: ", err);
+    const data = await $fetch<IllustrationDetailResponse>(
+        `/api/illustration/${illustId}`,
+        { method: "GET" }
+    )
+
+    illustration.value = data.illustration
+    authorIllustrationList.value = data.author_illustrations
+  } catch (err) {
+    console.error("fetch illustration failed:", err)
   }
-};
+}
 
 const openLink = (url: string | undefined) => {
   if (url) {
@@ -55,7 +68,7 @@ onMounted(() => {
     <!-- 大布局 -->
     <div class="grid grid-cols-1 md:grid-cols-12 gap-8 px-4 lg:px-20">
       <div class="md:col-span-6">
-        <div class="flex flex-col">
+        <div class="flex flex-col animate-card-illustration-id">
           <div
               v-for="(i, index) in illustration?.images"
               :key="i.id"
@@ -97,7 +110,7 @@ onMounted(() => {
       <!-- 右侧信息 -->
       <div class="md:col-span-6">
         <!-- 插画信息 -->
-        <div>
+        <div class="animate-card-illustration-id">
           <Tag :severity="illustration?.limited?'warn':'primary'" :value="illustration?.limited?'Limited (NSFW)':'Unlimited (SFW)'"></Tag>
           <div class="text-2xl font-bold mt-2">{{ illustration?.name || "NO NAME" }}</div>
           <div class="font-light opacity-70 mt-2">{{ illustration?.description || "NO DESCRIPTION" }}</div>
@@ -110,7 +123,7 @@ onMounted(() => {
                 class="w-auto hover:underline p-0 text-sm font-light"
                 @click="() => {console.log(i.id)}"
             >
-              {{ `#${i.name}` }}
+              {{ `#${i?.name}` }}
             </Button>
           </div>
           <div class="text-sm font-light opacity-60 mt-2">
@@ -127,7 +140,7 @@ onMounted(() => {
         </div>
 
         <!-- 作者信息 -->
-        <div class="mt-6 border-t pt-4">
+        <div class="mt-6 border-t pt-4 animate-card-illustration-id">
           <div class="text-2xl font-bold hover:underline">{{ illustration?.author.name }}</div>
           <div class="text-sm font-light opacity-60 mt-2">
             创建于 {{ dayjs(illustration?.author.created_at).format("YYYY/MM/DD HH:mm") }}
@@ -142,13 +155,25 @@ onMounted(() => {
           </Button>
 
           <!-- 其他作品 -->
-          <div class="text-md font-bold mt-4 hover:underline">该作者的其他作品</div>
-          <div class="grid grid-cols-2 gap-3 mt-4">
-            <IllustrationItemPreview
-                v-for="i in 4"
-                :key="i"
-            />
+          <!-- 作者其他作品 -->
+          <div
+              class="animate-card-illustration-id"
+              v-if="authorIllustrationList.length > 0"
+          >
+            <div class="text-md font-bold mt-4 hover:underline">
+              该作者的其他作品
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 mt-4">
+              <IllustrationItemPreview
+                  v-for="ill in authorIllustrationList"
+                  :key="ill.id"
+                  :illustration="ill"
+              />
+            </div>
           </div>
+
+
         </div>
       </div>
     </div>

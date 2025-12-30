@@ -165,7 +165,7 @@ onMounted(() => {
   themeStore.showHeaderSearchBtn = true
   window.addEventListener("keydown", keyDownHandler)
 
-  themeStore.searchDialog.show = true
+  // themeStore.searchDialog.show = true
 
 
 

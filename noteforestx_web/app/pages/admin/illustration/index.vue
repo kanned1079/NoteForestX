@@ -38,10 +38,10 @@ const fetchIllustList = async () => {
       },
     })
     illustrationList.value = data.list
-    for(let i=0; i< 9; i++) {
-      illustrationList.value.push(illustrationList.value[0])
-      total.value += 1
-    }
+    // for(let i=0; i< 9; i++) {
+    //   illustrationList.value.push(illustrationList.value[0])
+    //   total.value += 1
+    // }
     total.value = data.total
   } catch (err: any) {
     console.error(err)
@@ -89,10 +89,11 @@ const createNewIllustrationClick = async () => router.push({
   path: "/admin/illustration/new",
 })
 
+fetchIllustList()
 
 // 初始化加载
 onMounted(() => {
-  fetchIllustList()
+
 })
 </script>
 

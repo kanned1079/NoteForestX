@@ -200,6 +200,27 @@ watch(() => actionStore.triggerArticleSave, (newVal: boolean) => {
   }
 })
 
+const handleCmdKeyDown = (e: KeyboardEvent) => {
+  const isMac = navigator.platform.toUpperCase().includes('MAC')
+  if (
+      (isMac && e.metaKey && e.key.toLowerCase() === 'k') ||
+      (!isMac && e.ctrlKey && e.key.toLowerCase() === 'k')
+  ) {
+    e.preventDefault()
+    themeStore.setShowEditMetaDialog(true)
+  } else if ((isMac && e.metaKey && e.key.toLowerCase() === 's') ||
+      (!isMac && e.ctrlKey && e.key.toLowerCase() === 's')) {
+    e.preventDefault()
+    saveArticle()
+  }
+
+  if (e.metaKey && e.key.toLowerCase() === 'r') {
+    e.preventDefault()
+    // clearAndSearch()
+  }
+
+}
+
 if (articleId !== 'new' && articleId) fetchArticleById(articleId as string)
 
 onBeforeMount(() => {
@@ -208,10 +229,13 @@ onBeforeMount(() => {
 
 onMounted(() => {
   console.log(articleId)
+  window.addEventListener('keydown', handleCmdKeyDown)
 })
 
 onBeforeUnmount(() => {
   themeStore.setShowEditMetaBtn(false)
+  window.removeEventListener('keydown', handleCmdKeyDown)
+
 })
 
 </script>
