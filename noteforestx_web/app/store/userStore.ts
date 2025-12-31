@@ -26,10 +26,13 @@ const useUserStore = defineStore('userStore', () => {
         token.value = null // 或 ''
     }
 
-    const logout = async () => {
+    const logout = (): boolean => {
         console.log('登出操作')
+        const token = useCookie('access_token', {})
+        token.value = null
         clearUserData()
-        await useRouter().replace({path: '/'})
+        // useRouter().replace({path: '/'})
+        return true
     }
 
     const languageInUsing = ref<string>('')

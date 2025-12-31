@@ -266,7 +266,13 @@ onMounted(async () => {
               <p class="text-sm opacity-80 mb-2">
                 {{ t('home.favorite_stack') }}
               </p>
-              <ProgrammingLangIcons />
+              <ProgrammingLangIcons @click="onClickWorkBtn('0')" />
+              <span
+                  @click="onClickWorkBtn('0')"
+                  class="text-sm opacity-70 mt-2 flex flex-row items-center  hover:underline cursor-pointer">
+                {{ t('my_work.main_title') }}
+                <span class="pi pi-angle-right font-light"></span>
+              </span>
             </div>
 
           </div>

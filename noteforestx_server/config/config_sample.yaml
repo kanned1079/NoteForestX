@@ -25,7 +25,7 @@ runtime:
   access_token_expired_in: 3600   # Access token expiration time in seconds (e.g. 3600 = 1 hour)
   enable_register: true           # If set to "false", will not allow new user register
   min_password_len: 6             # Set the min length of user password allowance
-  bcrypt_cost: 16                 # the bcrypt hash of the password at the given cost
+  bcrypt_cost: 10                 # the bcrypt hash of the password at the given cost
   listening_addr: ":8081"         # Application listening port, e.g. ":8080" "172.16.12.120:8081"
 
 illustration:

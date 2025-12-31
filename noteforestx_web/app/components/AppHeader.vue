@@ -14,11 +14,13 @@ import ChangeLanguage from "~/components/ChangeLanguage.vue";
 import {languageList} from "~/types/language"
 import ActionArea from '~/components/ActionArea.vue'
 import { useScrollFadeIn } from '~/composables/useScrollFadeIn'
+import {useToast} from "primevue/usetoast";
 
 
 import { useTemplateRef } from 'vue'
 import Kbd from "~/components/MyIntro/Kbd.vue";
 
+const toast = useToast()
 const {t, setLocale, locale} = useI18n()
 const route = useRoute()
 const router = useRouter();
@@ -68,11 +70,11 @@ const buildMenu = () => {
           icon: 'pi pi-book',
           route: '/article'
         },
-        {
-          label: 'layout.illustrationLib',
-          icon: 'pi pi-images',
-          route: '/illustration'
-        },
+        // {
+        //   label: 'layout.illustrationLib',
+        //   icon: 'pi pi-images',
+        //   route: '/illustration'
+        // },
         {
           label: 'layout.sponsor',
           icon: 'pi pi-gift',
@@ -107,37 +109,40 @@ const buildMenu = () => {
     items.push({
       label: 'appMenu.admin',
       items: [
-        {
-          label: 'layout.statistic',
-          icon: 'pi pi-chart-bar'
-        },
+        // {
+        //   label: 'layout.statistic',
+        //   icon: 'pi pi-chart-bar'
+        // },
         {
           label: 'layout.knowledgeMgr',
-          icon: 'pi pi-file-edit'
+          icon: 'pi pi-file-edit',
+          route: '/admin/article'
         },
-        {
-          label: 'layout.illustrationMgr',
-          icon: 'pi pi-palette'
-        }
+        // {
+        //   label: 'layout.illustrationMgr',
+        //   icon: 'pi pi-palette'
+        // }
       ]
     })
   }
 
   // ✅ 用户菜单
-  if (userStore.isAuthed && userStore.user.role === 'USER') {
+  // if (userStore.isAuthed && userStore.user.role === 'USER') {
+    if (userStore.isAuthed) {
     items.push({
       label: 'appMenu.profile',
       items: [
         {
           label: 'layout.myAccount',
           icon: 'pi pi-user',
-          shortcut: '⌥+I'
+          shortcut: '⌥+I',
+          route: '/profile'
         },
         {
           label: 'layout.logout',
           icon: 'pi pi-sign-out',
           shortcut: '⌥+Q',
-          command: () => userStore.logout()
+          command: () => logoutClick()
         }
       ]
     })
@@ -148,7 +153,8 @@ const buildMenu = () => {
   return items
 }
 
-const itemsMenu = buildMenu()
+const itemsMenu = computed(() => buildMenu())
+// const itemsMenu = buildMenu()
 
 const appMenu = ref()
 const toggleAppMenu = (event: MouseEvent) => {
@@ -227,8 +233,16 @@ const onClickWorkBtn = (code: '0' | '1' | '2') => {
     const el = document.querySelector('#work-section')
     if (el) el.scrollIntoView({ behavior: 'smooth' })
   }
+}
 
-
+const logoutClick = () => {
+  if (userStore.logout()) {
+    toast.add({
+      severity: 'success',
+      summary: '登出成功',
+      life: 3000
+    });
+  }
 }
 
 onMounted(() => {
@@ -281,7 +295,7 @@ onBeforeUnmount(() => {
           <button
               @click="onClickProfileButton"
               v-ripple
-              class="relative overflow-hidden w-full border-0 bg-transparent flex items-start p-2 pl-4 hover:bg-surface-100 dark:hover:bg-surface-800 rounded-none cursor-pointer transition-colors duration-200"
+              class="relative overflow-hidden w-full border-0 bg-transparent flex items-start pt-2 pb-2 pl-4 pr-4 hover:bg-surface-100 dark:hover:bg-surface-800 rounded-none cursor-pointer transition-colors duration-200"
           >
             <div class="inline-flex flex-col items-start text-left w-full">
       <span class="font-bold whitespace-normal break-words w-full">
@@ -290,6 +304,13 @@ onBeforeUnmount(() => {
               <span class="text-sm">{{ t(getUserRole) }}</span>
             </div>
           </button>
+<!--          <button-->
+<!--              v-if="userStore.isAuthed"-->
+<!--              @click="logoutClick"-->
+<!--              class="relative overflow-hidden w-full border-0 bg-transparent flex items-start p-2 pl-4 hover:bg-surface-100 dark:hover:bg-surface-800 rounded-none cursor-pointer transition-colors duration-200"-->
+<!--          >-->
+<!--           <p class="text-sm font-semibold opacity-80 text-blue-800 hover:underline">登出账户</p>-->
+<!--          </button>-->
         </template>
       </Menu>
 
@@ -301,7 +322,7 @@ onBeforeUnmount(() => {
           aria-haspopup="true"
           aria-controls="app_menu"
           class="p-1 mr-2"
-          v-for="i in [ {label: '技能&工具', code: '0'}, {label: '聯繫我', code: '1'}]"
+          v-for="i in [ {label: '技能&工具', code: '0'}]"
           @click="onClickWorkBtn(i.code as '0' | '1' | '2')"
       >
         <p class="text-base font-base">{{ i.label }}</p>
@@ -419,12 +440,13 @@ onBeforeUnmount(() => {
         </template>
       </Button>
     </div>
-
-
   </div>
 
-  <Dialog v-model:visible="showLoginModal" :show-header="false" modals :style="null">
-    <LoginForm/>
+  <Dialog
+      :dismissableMask="true"
+      maximizable modal
+      v-model:visible="showLoginModal" :show-header="false" modals class="p-0">
+    <LoginForm :close-dialog="() => {showLoginModal=false}"/>
   </Dialog>
 
   <Mask :modelValue="blocked" :close="() => {blocked = false}" closeable >

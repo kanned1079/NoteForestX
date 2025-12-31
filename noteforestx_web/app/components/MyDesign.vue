@@ -64,9 +64,33 @@ useScrollFadeIn({
           </p>
         </div>
 
-        <div class="flex w-full mt-10 min-h-[400px] animated-card-my-design">
-          <!-- 左：沿用原有的 v-for 遍历 -->
-          <div class="hidden md:block w-1/2">
+<!--        <div class="flex w-full mt-10 min-h-[400px] animated-card-my-design">-->
+<!--          &lt;!&ndash; 左：沿用原有的 v-for 遍历 &ndash;&gt;-->
+<!--          <div class="hidden md:block w-1/2">-->
+<!--            <MyCard-->
+<!--                v-for="i in designSteps"-->
+<!--                :key="i.id"-->
+<!--                rounded="xl"-->
+<!--                :padding="12"-->
+<!--                class="mb-3"-->
+<!--                hoverable-->
+<!--                @click="currentCardId = i.id"-->
+<!--            >-->
+<!--              <p class="text-lg font-semibold mb-2">{{ i.title }}</p>-->
+<!--              <p class="text-sm font-light">{{ i.content }}</p>-->
+<!--            </MyCard>-->
+<!--          </div>-->
+
+<!--          &lt;!&ndash; 右 &ndash;&gt;-->
+<!--          <div class="w-full md:w-1/2 flex flex-col justify-center items-center">-->
+<!--            <SampleDesignedCard class="animated-card-my-design" />-->
+<!--            &lt;!&ndash;            <ColorSelector class="animated-card-my-design" />&ndash;&gt;-->
+<!--          </div>-->
+<!--        </div>-->
+
+        <div class="flex flex-col md:flex-row w-full mt-10 min-h-[400px] animated-card-my-design">
+          <!-- 左：移动端 + 桌面端都显示 -->
+          <div class="w-full md:w-1/2">
             <MyCard
                 v-for="i in designSteps"
                 :key="i.id"
@@ -81,10 +105,9 @@ useScrollFadeIn({
             </MyCard>
           </div>
 
-          <!-- 右 -->
-          <div class="w-full md:w-1/2 flex flex-col justify-center items-center ">
+          <!-- 右：仅桌面端显示 -->
+          <div class="hidden md:flex w-full md:w-1/2 flex-col items-center justify-center">
             <SampleDesignedCard class="animated-card-my-design" />
-            <!--            <ColorSelector class="animated-card-my-design" />-->
           </div>
         </div>
 
