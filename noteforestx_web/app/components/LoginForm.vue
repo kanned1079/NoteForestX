@@ -1,40 +1,46 @@
 <template>
-<!--  <div class="bg-surface-50 dark:bg-surface-950 px-6 py-20 md:px-20 lg:px-80">-->
-    <div class="bg-surface-0 dark:bg-surface-900 p-8 md:p-6 rounded-2xl w-full max-w-sm mx-auto flex flex-col gap-8 mt-4">
-      <div class="flex flex-col items-center gap-4">
-        <div class="flex items-center gap-4">
+  <!--  <div class="bg-surface-50 dark:bg-surface-950 px-6 py-20 md:px-20 lg:px-80">-->
+  <div class="bg-surface-0 dark:bg-surface-900 p-8 md:p-6 rounded-2xl w-full max-w-sm mx-auto flex flex-col gap-8 mt-4 min-w-[320px]">
+    <div class="flex flex-col items-center gap-4">
+      <div class="flex items-center gap-4">
+      </div>
+      <div class="flex flex-col items-center gap-2 w-full">
+        <div class="text-surface-900 dark:text-surface-0 text-2xl font-semibold leading-tight text-center w-full">
+          {{ t("login.page.title") }}
         </div>
-        <div class="flex flex-col items-center gap-2 w-full">
-          <div class="text-surface-900 dark:text-surface-0 text-2xl font-semibold leading-tight text-center w-full">Welcome Back</div>
-          <div class="text-center w-full">
-            <span class="text-surface-700 dark:text-surface-200 leading-normal">Don't have an account?</span>
-            <a class="text-primary font-medium ml-1 cursor-pointer hover:text-primary-emphasis">Create today!</a>
-          </div>
+        <div class="text-center w-full">
+            <span class="text-surface-700 dark:text-surface-200 leading-normal text-sm">
+              {{ t("login.page.subtitle") }}
+            </span>
         </div>
       </div>
-      <div class="flex flex-col gap-6 w-full">
-        <div class="flex flex-col gap-2 w-full">
-          <label for="email1" class="text-surface-900 dark:text-surface-0 font-medium leading-normal">Email Address</label>
-          <InputText v-model="formData.email" id="email1" type="text" placeholder="Email address" class="w-full px-3 py-2 shadow-sm rounded-lg" />
-        </div>
-        <div class="flex flex-col gap-2 w-full">
-          <label for="password1" class="text-surface-900 dark:text-surface-0 font-medium leading-normal">Password</label>
-          <InputText v-model="formData.password"  id="password1" type="password" placeholder="Password" class="w-full px-3 py-2 shadow-sm rounded-lg" />
-          <a class="text-primary font-xs cursor-pointer hover:text-primary-emphasis opacity-80 hover:underline">Forgot your password?</a>
-
-        </div>
-
-      </div>
-      <Button @click="callLoginReq" label="Sign In" icon="pi pi-user" class="w-full py-2 rounded-lg flex justify-center items-center gap-2">
-        <template #icon>
-          <i class="pi pi-user text-base! leading-normal!" />
-        </template>
-      </Button>
-
-
     </div>
-<!--  </div>-->
+    <div class="flex flex-col gap-6 w-full">
+      <div class="flex flex-col gap-2 w-full">
+        <label for="email1" class="text-surface-900 text-sm dark:text-surface-0 font-medium leading-normal">
+          {{ t("login.form.labels.email") }}
+        </label>
+        <InputText size="small" v-model="formData.email" id="email1" type="text" placeholder="Email address" class="w-full px-3 py-2 shadow-sm rounded-lg" />
+      </div>
+      <div class="flex flex-col gap-2 w-full">
+        <label for="password1" class="text-surface-900 text-sm dark:text-surface-0 font-medium leading-normal">
+          {{ t("login.form.labels.password") }}
+        </label>
+        <InputText @keyup.enter.stop="callLoginReq" size="small" v-model="formData.password"  id="password1" type="password" placeholder="Password" class="w-full px-3 py-2 shadow-sm rounded-lg" />
+        <a class="text-xs cursor-pointer hover:text-primary-emphasis opacity-80 hover:underline">
+          {{ t("login.form.forgotPwd") }}
+        </a>
+      </div>
+    </div>
+    <Button size="small" @click="callLoginReq" :label="t('login.button.signIn')" icon="pi pi-user" class="w-full py-2 rounded-lg flex justify-center items-center gap-2">
+      <template #icon>
+        <i class="pi pi-user text-base! leading-normal!" />
+      </template>
+    </Button>
+  </div>
+  <!--  </div>-->
 </template>
+
 <script lang="ts" setup>
 const props = defineProps<{
   closeDialog: () => void
@@ -46,6 +52,7 @@ import { ref } from 'vue';
 import {useToast} from "primevue/usetoast";
 import useUserStore from "~/store/userStore";
 
+const {t} = useI18n(); // 初始化 i18n
 const token = useCookie('access_token', {})
 const toast = useToast()
 const userStore = useUserStore()
@@ -74,18 +81,18 @@ const callLoginReq = async () => {
     props.closeDialog()
     toast.add({
       severity: 'success',
-      summary: '登录成功',
-      detail: `${data.user.email} 欢迎回来`,
+      summary: t("login.toast.loginSuccessSummary"),
+      detail: t("login.toast.loginSuccessDetail", { email: data.user.email }), // 插值传参
       life: 3000
     });
+    setTimeout(() => navigateTo("/profile"), 1000)
   } catch (err :any) {
     toast.add({
       severity: 'warn',
-      summary: '出现错误',
+      summary: t("login.toast.loginErrorSummary"),
       detail: `${err}`,
       life: 3000
     });
   }
 }
-
 </script>

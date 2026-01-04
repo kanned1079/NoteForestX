@@ -1,7 +1,7 @@
 {
   "layout": {
     "homePage": "Home Page",
-    "knowledgeLib": "Knowledge Library",
+    "knowledgeLib": "Article",
     "illustrationLib": "Illustration Collection",
     "aboutMe": "About Me",
     "myAccount": "My Account",
@@ -10,6 +10,7 @@
     "knowledgeMgr": "Article Management",
     "illustrationMgr": "Illustration Management",
     "sponsor": "Sponsor",
+    "details": "Implementation",
     "changLang": "Change Language"
   },
   "appMenu": {
@@ -231,8 +232,171 @@
     "intro_desc": "a {role} who loves intuitive, clean and modern UI design.",
     "favorite_stack": "current favorite tech stack / tools:",
     "scroll_down": "Scroll down to know more",
-    "get_in_touch": "Get in touch"
+    "get_in_touch": "Get in touch",
+    "fullstack_developer": "Fullstack Developer"
+  },
+  "profile": {
+    "yourInfo": "Your Profile",
+    "resetPassword": "Reset Password",
+    "username": {
+      "editTip": "Click to add or modify your username",
+      "desc": "This is the username you use when posting comments. If you have not set it, your email address will be displayed.",
+      "dialog": {
+        "title": "Update Username",
+        "label": "Username",
+        "placeholder": "Kasugano Sora",
+        "hint": "After creating a username, it will replace your user email for display."
+      },
+      "toast": {
+        "warnEmpty": "Username cannot be empty",
+        "success": "Username updated successfully {username}",
+        "errorSummary": "An error occurred"
+      }
+    },
+    "userId": {
+      "desc": "Your unique user ID on this site, which cannot be modified."
+    },
+    "createTime": {
+      "desc": "The time when you created your account."
+    },
+    "password": {
+      "editTip": "If needed, tap here to reset your password.",
+      "dialog": {
+        "title": "Update Password",
+        "oldPwdLabel": "Original Password",
+        "oldPwdPlaceholder": "Previous Password",
+        "newPwdLabel": "New Password",
+        "newPwdPlaceholder": "New Password",
+        "hint": "The new password must be at least 6 characters long. You will use the new password to log in next time."
+      },
+      "toast": {
+        "warnLength": "The new password must be at least 6 characters long",
+        "success": "Password updated successfully",
+        "errorSummary": "An error occurred"
+      }
+    },
+    "notLogin": {
+      "title": "Login Required",
+      "desc": "You have logged out. If you have an account on this site, please click on the left to log in."
+    },
+    "toast": {
+      "errorSummary": "An error occurred"
+    }
+  },
+  "article": {
+    "pageHeader": {
+      "title": "Article Management",
+      "subtitle": "As the title suggests, this is where you manage articles. Newly created articles are invisible by default, and you can set different statuses for each article."
+    },
+    "operation": {
+      "addNewArticle": "Add New Article",
+      "resetSearch": "Reset Search"
+    },
+    "table": {
+      "headers": {
+        "title": "Title",
+        "tags": "Tags",
+        "createTime": "Creation Time",
+        "status": "Status",
+        "operation": "Operation"
+      },
+      "empty": {
+        "title": "No Results",
+        "desc": "No corresponding results found. Try a different keyword."
+      },
+      "tags": {
+        "noTags": "---",
+        "tagPrefix": "#"
+      },
+      "total": "Total: {count}"
+    },
+    "loading": {
+      "text": "Loading..."
+    },
+    "toast": {
+      "loadFailed": "Load Failed",
+      "deleteSuccess": "Article has been deleted",
+      "deleteFailed": "Delete Failed",
+      "operateSuccess": "Operation Successful",
+      "operateFailed": "Failed"
+    },
+    "confirm": {
+      "deleteHeader": "Delete"
+    }
+  },
+  "article_edit": {
+    "pageHeader": {
+      "defaultTitle": "Article Title",
+      "subtitle": "Click the top right corner to set article meta information"
+    },
+    "operation": {
+      "addNewArticle": "Add New Article",
+      "searchCmdK": "Search CMD+K"
+    },
+    "metaDialog": {
+      "header": "Edit Meta",
+      "labels": {
+        "title": "Title",
+        "tags": "Tags",
+        "slug": "Slug (Optional)",
+        "headerImage": "Header Image (Optional)"
+      }
+    },
+    "tags": {
+      "option": {
+        "newTag": "New",
+        "tagPrefix": "#"
+      },
+      "noTags": "No tags selected yet",
+      "toast": {
+        "addSuccessSummary": "Add Tag",
+        "noSearchResultWarn": "No search results found. You can try adding a new one."
+      }
+    },
+    "toast": {
+      "loadFailed": "Load Failed",
+      "loadArticleFailed": "Load failed. Please go back and try again.",
+      "saveSuccess": "Article saved successfully",
+      "saveFailed": "Load Failed",
+      "warnSummary": "Warning",
+      "successSummary": "Success",
+      "errorSummary": "Error"
+    }
+  },
+  "login": {
+    "page": {
+      "title": "NoteForest X",
+      "subtitle": "Log in or register your account"
+    },
+    "form": {
+      "labels": {
+        "email": "Email Address",
+        "password": "Password"
+      },
+      "forgotPwd": "Forgot your password?"
+    },
+    "button": {
+      "signIn": "Sign In"
+    },
+    "toast": {
+      "loginSuccessSummary": "Login Successful",
+      "loginSuccessDetail": "Welcome back {email}",
+      "loginErrorSummary": "An error occurred"
+    }
+  },
+  "shortcuts": {
+    "header": "Shortcuts",
+    "description": "Navigate the site with ease using keyboard shortcuts.",
+    "quickAccess": {
+      "open": "Open Quick Access",
+      "close": "Close Quick Access"
+    },
+    "backHome": "Back To Home",
+    "article": "Article"
+  },
+  "actionCenter": {
+    "title": "Action Center",
+    "msg": "Message",
+    "noMsg": "Sorry, There's no message for u. :D"
   }
-
-
 }

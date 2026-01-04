@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref, onMounted, computed} from "vue"
+import {ref, onMounted, computed, onBeforeUnmount} from "vue"
 import {useI18n} from "vue-i18n";
 import PageHeader from "~/components/PageHeader.vue"
 import {type Article, type ArticleStatus} from "~/types/article"
@@ -15,6 +15,11 @@ import IconField from "primevue/iconfield";
 import InputIcon from "primevue/inputicon";
 import type InputText from "primevue/inputtext";
 import MyConfirmCard from "~/components/RedesignedComponents/MyConfirmCard.vue";
+import Button from "primevue/button"; // 补充缺失的组件导入
+import DataTable from "primevue/datatable";
+import Column from "primevue/column";
+import Tag from "primevue/tag";
+import MyPaginationBar from "~/components/MyPaginationBar.vue"; // 补充缺失的组件导入
 
 const {t} = useI18n()
 const toast = useToast()
@@ -94,7 +99,6 @@ const onEnterPress = () => {
   fetchArticleList()
 }
 
-
 /* ===== 拉取文章列表 ===== */
 const fetchArticleList = async () => {
   loading.value = true
@@ -115,9 +119,10 @@ const fetchArticleList = async () => {
     articleList.value = data.list
     total.value = data.total
   } catch (err: any) {
+    console.error(err)
     toast.add({
       severity: "error",
-      summary: "加载失败",
+      summary: t("article.toast.loadFailed"),
       detail: `${err}`,
       life: 4000,
     })
@@ -157,16 +162,16 @@ const deleteArticle = async () => {
       await $fetch(`/api/admin/article/${delArticle.value.id}`, {method: "DELETE"})
       toast.add({
         severity: "success",
-        summary: "成功",
-        detail: "文章已删除",
+        summary: t("article.toast.operateSuccess"),
+        detail: t("article.toast.deleteSuccess"),
         life: 3000,
       })
       await fetchArticleList()
     } catch (err: any) {
       toast.add({
         severity: "error",
-        summary: "删除失败",
-        detail: `${err}`,
+        summary: t("article.toast.deleteFailed"),
+        detail: err?.data?.error || err?.message || String(err),
         life: 4000,
       })
     }
@@ -188,8 +193,8 @@ const updateArticleStatus = async (
 
     toast.add({
       severity: 'success',
-      summary: '成功',
-      detail: '操作成功',
+      summary: t("article.toast.operateSuccess"),
+      detail: t("article.toast.operateSuccess"),
       life: 3000,
     })
 
@@ -197,7 +202,7 @@ const updateArticleStatus = async (
   } catch (err: any) {
     toast.add({
       severity: 'error',
-      summary: '失败',
+      summary: t("article.toast.operateFailed"),
       detail: err?.data?.error || err?.message || String(err),
       life: 4000,
     })
@@ -240,7 +245,6 @@ onMounted(() => {
 onBeforeUnmount(() => {
   window.removeEventListener('keydown', handleKeyDown)
 })
-
 </script>
 
 <template>
@@ -248,15 +252,15 @@ onBeforeUnmount(() => {
 
     <!-- 页面头 -->
     <PageHeader
-        title="文章管理"
-        subtitle="如标题一样，这里是管理文章的地方，新建的文章默认为不可见，可以对每一篇文章设置不同的状态。"
+        :title="t('article.pageHeader.title')"
+        :subtitle="t('article.pageHeader.subtitle')"
     />
 
     <!-- 操作区 -->
     <div class="flex flex-row mb-6 space-x-3">
       <Button
           size="small"
-          label="添加新文章"
+          :label="t('article.operation.addNewArticle')"
           icon="pi pi-plus"
           class="text-sm"
           @click="createNewArticleClick"
@@ -264,7 +268,7 @@ onBeforeUnmount(() => {
       <Button
           size="small"
           severity="secondary"
-          label="重制搜索"
+          :label="t('article.operation.resetSearch')"
           icon="pi pi-refresh"
           class="text-sm"
           variant="outlined"
@@ -277,7 +281,7 @@ onBeforeUnmount(() => {
             class="w-full font-mono justify-center"
             size="small"
             v-model="searchInput"
-            placeholder="/cmd {title|tag}"
+            :placeholder="`/cmd {title|tag}`"
             autofocus
             @keyup.enter="onEnterPress"
         />
@@ -285,8 +289,8 @@ onBeforeUnmount(() => {
     </div>
 
     <!-- 表格 Card -->
-<!--    <Card class="">-->
-<!--      <template #content>-->
+    <!--    <Card class="">-->
+    <!--      <template #content>-->
 
     <transition name="slide-fade">
       <div v-if="!loading">
@@ -300,14 +304,13 @@ onBeforeUnmount(() => {
 
             <template #empty>
               <div class="text-center mt-10 mb-10 space-y-3">
-                <div class="text-3xl font-bold">没有结果</div>
-                <div>没有找到对应的所有结果，尝试换一个关键词</div>
+                <div class="text-3xl font-bold">{{ t('article.table.empty.title') }}</div>
+                <div>{{ t('article.table.empty.desc') }}</div>
               </div>
             </template>
 
-
             <!-- 标题 -->
-            <Column field="title" header="标题">
+            <Column field="title" :header="t('article.table.headers.title')">
               <template #body="{ data }">
             <span
                 class="cursor-pointer hover:underline block truncate max-w-[60ch]"
@@ -319,25 +322,27 @@ onBeforeUnmount(() => {
             </Column>
 
             <!-- Tags -->
-            <Column header="Tags">
+            <Column :header="t('article.table.headers.tags')">
               <template #body="{ data }">
                 <div class="flex gap-2 flex-wrap">
                 <span
                     v-if="data.tags.length > 0"
                     v-for="tag in data.tags"
                     :key="tag.id"
-                    class="text-sm opacity-70 hover:underline cursor-pointer font-mono"
-                    @click="() => {searchQuery.tag_id=tag.id; fetchArticleList()}"
+                    class="text-sm opacity-70 hover:underline cursor-pointer"
+                    @click="() => { searchQuery.tag_id=tag.id; fetchArticleList()}"
                 >
-                  {{ `#${tag.name}` }}
+                  {{ t('article.table.tags.tagPrefix') }}{{ tag.name }}
                 </span>
-                  <span v-else class="text-sm opacity-70 hover:underline cursor-pointer">---</span>
+                  <span v-else class="text-sm opacity-70 hover:underline cursor-pointer">
+                    {{ t('article.table.tags.noTags') }}
+                  </span>
                 </div>
               </template>
             </Column>
 
             <!-- 创建时间 -->
-            <Column header="创建时间">
+            <Column :header="t('article.table.headers.createTime')">
               <template #body="{ data }">
               <span class="text-sm opacity-70 font-mono">
                 {{ dayjs(data.created_at).format('YYYY-MM-DD') }}
@@ -346,7 +351,7 @@ onBeforeUnmount(() => {
             </Column>
 
             <!-- 状态 -->
-            <Column header="状态">
+            <Column :header="t('article.table.headers.status')">
               <template #body="{ data }">
                 <Tag
                     size="small"
@@ -357,12 +362,11 @@ onBeforeUnmount(() => {
                     style="padding: 2px 6px"
                     @click="updateArticleStatus(data.id, 'status', getNextArticleStatus(data.status))"
                 />
-
               </template>
             </Column>
 
             <!-- 操作 -->
-            <Column header="操作" style="width: 120px">
+            <Column :header="t('article.table.headers.operation')" style="width: 120px">
               <template #body="{ data }">
                 <div class="flex gap-3">
                   <i
@@ -384,7 +388,9 @@ onBeforeUnmount(() => {
 
           </DataTable>
 
-          <p class="ml-[6px] mt-4 mb-2 opacity-80 text-sm font-bold">Total: {{ articleList.length }}</p>
+          <p class="ml-[6px] mt-4 mb-2 opacity-80 text-sm font-bold">
+            {{ t('article.table.total', { count: articleList.length }) }}
+          </p>
 
         </MyCard>
 
@@ -398,11 +404,10 @@ onBeforeUnmount(() => {
       </div>
     </transition>
 
-
     <transition name="slide-fade">
       <div v-if="loading" class="text-center py-10 text-gray-500">
         <i class="pi pi-spin pi-spinner text-2xl"></i>
-        <p class="mt-2">加载中...</p>
+        <p class="mt-2">{{ t('article.loading.text') }}</p>
       </div>
     </transition>
 
@@ -411,7 +416,7 @@ onBeforeUnmount(() => {
   <MyConfirmCard
       ref="confirmRef"
       class="w-full max-w-[90vw] sm:max-w-[420px] lg:max-w-[500px]"
-      header="删除"
+      :header="t('article.confirm.deleteHeader')"
       :title="delArticle.title"
       :subtitle="delArticle.id"
       :cancelled="() => {delArticle = {id: '', title: ''}; console.log('cleared')}"
@@ -420,6 +425,28 @@ onBeforeUnmount(() => {
   />
 
 </template>
+
+<style>
+/* 表格主体透明 */
+.p-datatable .p-datatable-tbody > tr,
+.p-datatable .p-datatable-tbody > tr > td,
+.p-datatable .p-datatable-tbody > tr > td > div {
+  background-color: transparent !important;
+  padding: 10px 6px;
+}
+
+/* 如果有 hover 效果也要透明 */
+.p-datatable .p-datatable-tbody > tr.p-highlight,
+.p-datatable .p-datatable-tbody > tr:hover {
+  background-color: rgba(255,255,255,0.1) !important; /* 或 transparent */
+}
+
+/* 表头也可以透明 */
+.p-datatable .p-datatable-thead > tr > th {
+  background-color: transparent !important;
+  padding: 10px 6px;
+}
+</style>
 
 <style>
 /* 表格主体透明 */

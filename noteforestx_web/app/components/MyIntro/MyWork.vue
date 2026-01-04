@@ -22,7 +22,7 @@ useScrollFadeIn({
   <div class="flex justify-center">
     <!-- 页面文字基准色 -->
     <div
-        class="relative max-w-[1000px] container z-10 px-4 pt-20
+        class="relative max-w-[1200px] container z-10 px-4 pt-20
              text-slate-800 dark:text-slate-100"
     >
 

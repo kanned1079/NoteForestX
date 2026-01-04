@@ -85,11 +85,11 @@ const buildMenu = () => {
           icon: 'pi pi-wrench',
           route: '/details'
         },
-        {
-          label: 'Its My Duty',
-          icon: 'pi pi-wrench',
-          route: '/its-my-duty'
-        }
+        // {
+        //   label: 'Its My Duty',
+        //   icon: 'pi pi-wrench',
+        //   route: '/its-my-duty'
+        // }
       ]
     },
     {
@@ -301,16 +301,9 @@ onBeforeUnmount(() => {
       <span class="font-bold whitespace-normal break-words w-full">
         {{ getUserName }}
       </span>
-              <span class="text-sm">{{ t(getUserRole) }}</span>
+              <span class="text-sm opacity-50">{{ t(getUserRole) }}</span>
             </div>
           </button>
-<!--          <button-->
-<!--              v-if="userStore.isAuthed"-->
-<!--              @click="logoutClick"-->
-<!--              class="relative overflow-hidden w-full border-0 bg-transparent flex items-start p-2 pl-4 hover:bg-surface-100 dark:hover:bg-surface-800 rounded-none cursor-pointer transition-colors duration-200"-->
-<!--          >-->
-<!--           <p class="text-sm font-semibold opacity-80 text-blue-800 hover:underline">登出账户</p>-->
-<!--          </button>-->
         </template>
       </Menu>
 

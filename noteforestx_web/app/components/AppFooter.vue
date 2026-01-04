@@ -27,7 +27,7 @@ const siteLinks = [
       <div
           class="
           w-full
-          max-w-[1000px]
+          max-w-[1200px]
           grid
           grid-cols-1
           md:grid-cols-2

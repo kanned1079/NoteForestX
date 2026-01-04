@@ -13,8 +13,8 @@ const separator = computed(() =>
 </script>
 
 <template>
-  <div class="flex flex-col">
-    <div class="flex flex-row justify-between items-center">
+  <div class="flex flex-col w-full">
+    <div class="flex flex-row justify-between items-center ">
       <!-- 左侧描述 -->
       <p class="text-sm text-gray-600 dark:text-gray-300">
         {{ label }}

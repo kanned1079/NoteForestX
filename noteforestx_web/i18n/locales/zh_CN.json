@@ -1,7 +1,7 @@
 {
   "layout": {
     "homePage": "首页",
-    "knowledgeLib": "知识库",
+    "knowledgeLib": "文章",
     "illustrationLib": "插画收集",
     "aboutMe": "关于我",
     "myAccount": "我的账户",
@@ -132,25 +132,25 @@
     "backend_desc": "後端的設計理念主要是保持簡潔與高效，並且盡可能將邏輯與資料分幾層處理，提升可維護性。",
     "tool_image_alt": "toolslist"
   },
-    "my_design": {
-      "section1_tag": "簡潔 & 直觀",
-      "section1_title": "引人注目、現代簡約的設計。",
-      "section1_desc": "保持使用者介面簡潔現代，同時不影響使用者體驗。",
-      "step0_title": "字體設計",
-      "step0_content": "挑選字體類型、字號大小與字重粗細。",
-      "step1_title": "間距配置",
-      "step1_content": "調整元素位置，並為元素之間設定適當間距。",
-      "step2_title": "色彩選用",
-      "step2_content": "挑選具備充足對比度的色彩調色體系。",
-      "step3_title": "視覺效果",
-      "step3_content": "添加邊框、陰影、圓角等視覺效果。",
-      "section2_tag": "講究細節",
-      "section2_title": "擁有敏銳的細節洞察能力",
-      "section2_desc": "著重操作便捷性、使用者介面一致性，並持續優化使用者體驗",
-      "section3_tag": "美觀且高效",
-      "section3_title": "程式碼簡潔易懂且性能優化",
-      "section3_desc": "撰寫乾淨整潔的程式碼為首要原則，同時兼顧最大限度的效能優化"
-    },
+  "my_design": {
+    "section1_tag": "简洁直观 · 一目了然",
+    "section1_title": "兼具吸睛度与现代感的极简主义设计",
+    "section1_desc": "在不牺牲任何用户体验的前提下，打造简洁大气、兼具现代美感的用户界面，让操作更高效、视觉更舒适。",
+    "step0_title": "字体精细化设计",
+    "step0_content": "精心甄选字体类型、优化字体尺寸搭配，并合理设定字体字重，兼顾可读性与视觉层次感。",
+    "step1_title": "间距科学配置",
+    "step1_content": "精准调整页面各元素的摆放位置，为不同元素之间设置合理且统一的间距，提升界面整洁度与呼吸感。",
+    "step2_title": "色彩专业选用",
+    "step2_content": "挑选具备充足对比度的色彩调色体系，兼顾视觉美观、品牌调性与无障碍浏览需求。",
+    "step3_title": "视觉效果赋能",
+    "step3_content": "为元素添加边框、阴影、圆角等精细化视觉效果，增强界面层次感与质感，同时避免过度装饰影响操作。",
+    "section2_tag": "匠心打磨 · 注重细节",
+    "section2_title": "拥有敏锐且深入的细节洞察能力",
+    "section2_desc": "始终聚焦操作便捷性、用户界面一致性两大核心，持续迭代优化，不断提升用户的使用体验与产品好感度。",
+    "section3_tag": "美观高效 · 兼顾性能",
+    "section3_title": "代码简洁易懂，且经过全方位性能优化",
+    "section3_desc": "将撰写干净、整洁、可维护的优质代码作为首要原则，同时兼顾最大限度的性能优化，实现视觉与性能的双重出色表现。"
+  },
   "my_work": {
     "title_tag": "作品",
     "main_title": "技能 & 工具",
@@ -243,5 +243,170 @@
     "source_code": "源码仓库",
     "uiverse": "Uiverse 组件库",
     "primevue": "PrimeVue"
+  },
+  "profile": {
+    "yourInfo": "您的信息",
+    "resetPassword": "重置密码",
+
+    "username": {
+      "editTip": "点击以添加或修改用户名",
+      "desc": "这是您在发表评论时使用的用户名，如果您没有设置，将显示为邮箱地址。",
+      "dialog": {
+        "title": "更新用户名",
+        "label": "用户名",
+        "placeholder": "Kasugano Sora",
+        "hint": "创建用户名后将替代用户邮箱进行展示。"
+      },
+      "toast": {
+        "warnEmpty": "用户名不能为空",
+        "success": "更新用户名成功 {username}",
+        "errorSummary": "出现错误"
+      }
+    },
+    "userId": {
+      "desc": "您在本站的用户唯一 ID，不能修改。"
+    },
+    "createTime": {
+      "desc": "您创建账户时候的时间。"
+    },
+    "password": {
+      "editTip": "如果需要，轻点这里以重置密码。",
+      "dialog": {
+        "title": "更新密码",
+        "oldPwdLabel": "原密码",
+        "oldPwdPlaceholder": "Previous Password",
+        "newPwdLabel": "新密码",
+        "newPwdPlaceholder": "New Password",
+        "hint": "新密码最少由6位字符组成，在您下次登录的时候使用新密码登录。"
+      },
+      "toast": {
+        "warnLength": "新密码长度至少6位",
+        "success": "更新密码成功",
+        "errorSummary": "出现错误"
+      }
+    },
+    "notLogin": {
+      "title": "需要登录",
+      "desc": "您已经登出，如果您有本站的账户请点击左侧进行登录。"
+    },
+    "toast": {
+      "errorSummary": "出现错误"
+    }
+  },
+  "article": {
+    "pageHeader": {
+      "title": "文章管理",
+      "subtitle": "如标题一样，这里是管理文章的地方，新建的文章默认为不可见，可以对每一篇文章设置不同的状态。"
+    },
+    "operation": {
+      "addNewArticle": "添加新文章",
+      "resetSearch": "重制搜索"
+    },
+    "table": {
+      "headers": {
+        "title": "标题",
+        "tags": "Tags",
+        "createTime": "创建时间",
+        "status": "状态",
+        "operation": "操作"
+      },
+      "empty": {
+        "title": "没有结果",
+        "desc": "没有找到对应的所有结果，尝试换一个关键词"
+      },
+      "tags": {
+        "noTags": "---",
+        "tagPrefix": "#"
+      },
+      "total": "Total: {count}"
+    },
+    "loading": {
+      "text": "加载中..."
+    },
+    "toast": {
+      "loadFailed": "加载失败",
+      "deleteSuccess": "文章已删除",
+      "deleteFailed": "删除失败",
+      "operateSuccess": "操作成功",
+      "operateFailed": "失败"
+    },
+    "confirm": {
+      "deleteHeader": "删除"
+    }
+  },
+  "article_edit": {
+    "pageHeader": {
+      "defaultTitle": "文章標題",
+      "subtitle": "點擊右上角以設置文章Meta信息"
+    },
+    "operation": {
+      "addNewArticle": "添加新文章",
+      "searchCmdK": "搜索 CMD+K"
+    },
+    "metaDialog": {
+      "header": "編輯Meta",
+      "labels": {
+        "title": "标题",
+        "tags": "Tags",
+        "slug": "Slug (可选)",
+        "headerImage": "头部图片 (可选)"
+      }
+    },
+    "tags": {
+      "option": {
+        "newTag": "新增",
+        "tagPrefix": "#"
+      },
+      "noTags": "还没有选择标签",
+      "toast": {
+        "addSuccessSummary": "添加Tag",
+        "noSearchResultWarn": "没有搜索结果 可以尝试新增"
+      }
+    },
+    "toast": {
+      "loadFailed": "加载失败",
+      "loadArticleFailed": "加载失败 请返回重试",
+      "saveSuccess": "文章保存成功",
+      "saveFailed": "加载失败",
+      "warnSummary": "警告",
+      "successSummary": "成功",
+      "errorSummary": "错误"
+    }
+  },
+  "login": {
+    "page": {
+      "title": "NoteForest X",
+      "subtitle": "登录或注册您的账户"
+    },
+    "form": {
+      "labels": {
+        "email": "邮件地址",
+        "password": "密码"
+      },
+      "forgotPwd": "忘记了你的密码？"
+    },
+    "button": {
+      "signIn": "登录"
+    },
+    "toast": {
+      "loginSuccessSummary": "登录成功",
+      "loginSuccessDetail": "{email} 欢迎回来",
+      "loginErrorSummary": "出现错误"
+    }
+  },
+  "shortcuts": {
+    "header": "快捷鍵",
+    "description": "使用快捷鍵輕鬆導航頁面",
+    "quickAccess": {
+      "open": "打開快速訪問",
+      "close": "關閉快速訪問"
+    },
+    "backHome": "返回主頁",
+    "article": "文章"
+  },
+  "actionCenter": {
+    "title": "控制中心",
+    "msg": "訊息",
+    "noMsg": "您目前還沒有任何訊息。 :D"
   }
 }
