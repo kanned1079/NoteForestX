@@ -315,11 +315,38 @@ onBeforeUnmount(() => {
           aria-haspopup="true"
           aria-controls="app_menu"
           class="p-1 mr-2"
-          v-for="i in [ {label: '技能&工具', code: '0'}]"
-          @click="onClickWorkBtn(i.code as '0' | '1' | '2')"
+          @click="onClickWorkBtn('0')"
       >
-        <p class="text-base font-base">{{ i.label }}</p>
+        <span class="pi pi-sparkles"></span>
+        <p class="text-base font-base">{{ t('my_work.header_title') }}</p>
       </Button>
+
+      <Button
+          v-if="themeStore.showLeftIntroBtn"
+          size="medium"
+          severity="secondary"
+          variant="text"
+          aria-haspopup="true"
+          aria-controls="app_menu"
+          class="p-1 mr-2"
+          @click="navigateTo({path: '/article'})"
+      >
+        <span class="pi pi-book" />
+      </Button>
+
+      <Button
+          v-if="themeStore.showLeftIntroBtn"
+          size="medium"
+          severity="secondary"
+          variant="text"
+          aria-haspopup="true"
+          aria-controls="app_menu"
+          class="p-1 mr-2"
+          @click="navigateTo({path: '/collection'})"
+      >
+        <span class="pi pi-star hover:pi-star-fill"></span>
+      </Button>
+
 
     </div>
 
@@ -336,7 +363,7 @@ onBeforeUnmount(() => {
         <template #default>
     <span class="flex items-center gap-1">
       <i class="pi pi-search text-xs"></i>
-      <span>搜寻</span>
+<!--      <span>搜寻</span>-->
       <span
           class="px-2 py-0.5 text-xs font-light "
       >

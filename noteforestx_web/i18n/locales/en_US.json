@@ -150,6 +150,7 @@
     "section3_desc": "Writing clean and tidy code is the primary principle, while also taking into account maximum performance optimization."
   },
   "my_work": {
+    "header_title": "Skills",
     "title_tag": "Works",
     "main_title": "Skills & Tools",
     "main_desc": "Browse the programming languages, libraries and tools I have used.",
@@ -398,5 +399,11 @@
     "title": "Action Center",
     "msg": "Message",
     "noMsg": "Sorry, There's no message for u. :D"
+  },
+  "collection": {
+    "title": "App",
+    "description": "Includes resources related to some personal projects and collections.",
+    "my": "Personal Projects",
+    "collected": "Collection"
   }
 }

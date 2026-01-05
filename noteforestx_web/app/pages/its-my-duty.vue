@@ -14,11 +14,10 @@ useScrollFadeIn({
   <div class="flex flex-col justify-center items-center ">
     <!-- 纸张本体 -->
 
-
     <div class="space-y-3 mt-10 mb-10 text-center">
-      <p class="text-3xl font-semibold animate-card-its-my-duty">「 為什麼？ 」</p>
+      <p class="text-2xl font-semibold animate-card-its-my-duty">「 為什麼？ 」</p>
       <p class="opacity-80 animate-card-its-my-duty">Why ?</p>
-      <p class="text-3xl font-bold mt-6 animate-card-its-my-duty">因為這是我的職責</p>
+      <p class="text-3xl font-bold mt-6 animate-card-its-my-duty underline underline-offset-2">因為這是我的職責</p>
       <p class="opacity-80 animate-card-its-my-duty">Because this is my duty.</p>
     </div>
     <div class="a4-paper animate-card-its-my-duty">
