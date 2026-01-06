@@ -19,9 +19,6 @@ const showScroll = ref(false)
 let resizeHandler: (() => void) | null = null
 let meteorInterval: number | null = null
 
-// =======================
-// 滚动进入动画
-// =======================
 useScrollFadeIn({
   selector: '.animated-card-firstpage',
   direction: 'up',
@@ -31,16 +28,12 @@ useScrollFadeIn({
   start: 'top 90%'
 })
 
-// =======================
-// 流星参数
-// =======================
 const METEOR_COUNT = 5
 const MIN_LENGTH = 120
 const MAX_LENGTH = 480
 const MIN_DURATION = 1.5
 const MAX_DURATION = 3.5
 
-// ⚠️ 注意：不要在顶层访问 window
 let W = 0
 let H = 0
 
@@ -53,7 +46,6 @@ const onClickWorkBtn = (code: '0' | '1') => {
 }
 
 onMounted(async () => {
-  // -------- SSR 安全点 --------
   W = window.innerWidth
   H = window.innerHeight
 
@@ -65,9 +57,6 @@ onMounted(async () => {
 
   const { gsap } = await import('gsap')
 
-  // =======================
-  // Scroll Down 延迟出现
-  // =======================
   if (scrollRef.value) {
     gsap.fromTo(
         scrollRef.value,
@@ -76,18 +65,12 @@ onMounted(async () => {
     )
   }
 
-  // =======================
-  // Resize
-  // =======================
   resizeHandler = () => {
     W = window.innerWidth
     H = window.innerHeight
   }
   window.addEventListener('resize', resizeHandler)
 
-  // =======================
-  // 创建流星
-  // =======================
   const createMeteor = () => {
     if (!container) return
 

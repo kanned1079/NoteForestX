@@ -7,8 +7,11 @@ const STORAGE_KEY = 'theme-mode'
 
 export function useTheme() {
     const mode = ref<ThemeMode>('system')
+    const isClient = import.meta.client
 
     const applyTheme = () => {
+        if (!isClient) return
+
         const root = document.documentElement
         root.classList.remove('dark')
 
@@ -20,14 +23,16 @@ export function useTheme() {
         }
     }
 
-    // 系统变化时同步（只在 system 模式下）
     const handleSystemChange = (e: MediaQueryListEvent) => {
+        if (!isClient) return
         if (mode.value === 'system') {
             document.documentElement.classList.toggle('dark', e.matches)
         }
     }
 
     onMounted(() => {
+        if (!isClient) return
+
         const saved = localStorage.getItem(STORAGE_KEY) as ThemeMode | null
         if (saved) mode.value = saved
 
@@ -38,10 +43,16 @@ export function useTheme() {
             .addEventListener('change', handleSystemChange)
     })
 
-    watch(mode, (val) => {
-        localStorage.setItem(STORAGE_KEY, val)
-        applyTheme()
-    })
+    watch(
+        mode,
+        (val) => {
+            if (!isClient) return
+
+            localStorage.setItem(STORAGE_KEY, val)
+            applyTheme()
+        },
+        { flush: 'post' } // 👈 可选，但更稳
+    )
 
     return {
         mode,
