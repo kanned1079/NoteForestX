@@ -1,8 +1,10 @@
 export const openInNewTab = (url: string) => {
-    const newWindow = window.open(url, '_blank');
+    if (import.meta.server) return
+
+    const newWindow = window.open(url, '_blank')
     if (newWindow) {
-        newWindow.focus();
+        newWindow.focus()
     } else {
-        console.warn('this operation not allowed.');
+        console.warn('this operation not allowed.')
     }
 }
