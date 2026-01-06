@@ -40,7 +40,6 @@ const onClickProfileButton = () => {
   }
 }
 
-
 const actionAreaRefItem = useTemplateRef('actionAreaRef')
 
 const showLangSelector = () => {
@@ -133,7 +132,12 @@ const buildMenu = () => {
   return items
 }
 
-const itemsMenu = computed(() => buildMenu())
+// const itemsMenu = computed(() => buildMenu())
+
+const itemsMenu = computed(() => {
+  if (!import.meta.client) return [] // SSR 下返回空数组
+  return buildMenu()
+})
 
 const appMenu = ref()
 const toggleAppMenu = (event: MouseEvent) => {
@@ -203,13 +207,22 @@ function onKeydown(e: KeyboardEvent) {
   }
 }
 
+// const onClickWorkBtn = (code: '0' | '1' | '2') => {
+//   if (code === '2')  {
+//     const designEl = document.querySelector('#work-design')
+//     if (designEl) designEl.scrollIntoView({ behavior: 'smooth' })
+//   } else {
+//     themeStore.setWorkTab(code)
+//     const el = document.querySelector('#work-section')
+//     if (el) el.scrollIntoView({ behavior: 'smooth' })
+//   }
+// }
+
 const onClickWorkBtn = (code: '0' | '1' | '2') => {
-  if (code === '2')  {
+  if (process.client) { // Nuxt 3 提供 process.client 判断
     const designEl = document.querySelector('#work-design')
-    if (designEl) designEl.scrollIntoView({ behavior: 'smooth' })
-  } else {
-    themeStore.setWorkTab(code)
     const el = document.querySelector('#work-section')
+    if (designEl) designEl.scrollIntoView({ behavior: 'smooth' })
     if (el) el.scrollIntoView({ behavior: 'smooth' })
   }
 }

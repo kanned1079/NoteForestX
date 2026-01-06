@@ -14,7 +14,11 @@ const route = useRoute()
     <!-- Header 占位区（关键！） -->
     <div class="h-[60px]">
       <div class="fixed left-0 right-0 top-0 z-50 h-[60px]">
-        <AppHeader />
+
+        <ClientOnly>
+          <AppHeader />
+
+        </ClientOnly>
       </div>
     </div>
 

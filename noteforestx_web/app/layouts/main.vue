@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue"
 import AppFooter from "~/components/AppFooter.vue";
+import AppHeader from "~/components/AppHeader.vue";
 // import AppHeader from "../components/AppHeader.vue"
 // import WelcomeBanner from "../components/WelcomeBanner.vue"
 // import CollapseTransition from "../components/CollapseTransition.vue" // ✅ 新增导入
@@ -27,7 +28,10 @@ const expandUpper = () => {
         class="fixed left-0 right-0 z-50 transition-all duration-500 ease-in-out"
         :style="{ top: showBanner ? bannerHeight + 'px' : '0px' }"
     >
-      <AppHeader />
+      <ClientOnly>
+        <AppHeader />
+
+      </ClientOnly>
     </div>
 
     <!-- 页面内容，同样下移，避免被 Header 覆盖 -->

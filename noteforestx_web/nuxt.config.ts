@@ -331,7 +331,20 @@ export default defineNuxtConfig({
         optimizeDeps: {
             exclude: ['primevue']
         }
-    }
+    },
+    nitro: {
+        // 可选：开启调试输出
+        logLevel: 'info',
+    },
+    // hooks: {
+    //     'render:errorMiddleware'(app) {
+    //         // 捕获所有 SSR 错误
+    //         app.use((err, req, res, next) => {
+    //             console.error('SSR Error:', err)
+    //             next(err)
+    //         })
+    //     }
+    // }
     // nitro: {
     //     devProxy: {
     //         "/api/": {
