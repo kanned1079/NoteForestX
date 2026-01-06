@@ -1,21 +1,436 @@
 {
   "layout": {
-    "homePage": "首页",
-    "knowledgeLib": "知识库",
-    "illustrationLib": "插画收集",
-    "aboutMe": "关于我",
-    "myAccount": "我的账户",
+    "homePage": "首頁",
+    "knowledgeLib": "文章",
+    "illustrationLib": "插畫收藏",
+    "aboutMe": "關於我",
+    "myAccount": "我的帳戶",
     "logout": "登出",
-    "statistic": "统计数据",
-    "knowledgeMgr": "文章管理",
-    "illustrationMgr": "插画管理",
-    "sponsor": "赞助",
-    "changLang": "修改语言"
+    "logoutSuccess": "登出成功",
+    "statistic": "統計",
+    "sponsor": "贊助",
+    "details": "技術實現",
+    "changLang": "變更語言",
+    "editMeta": "編輯Meta",
+    "save": "儲存"
   },
   "appMenu": {
     "general": "一般",
-    "profile": "用户门户",
-    "admin": "管理门户",
-    "lang": "语言"
+    "profile": "用戶門戶",
+    "admin": "管理門戶",
+    "lang": "語言",
+    "userRole": "用戶",
+    "adminRole": "管理員",
+    "noLoginRole": "點擊以登入"
+  },
+  "universal": {
+    "pagination": {
+      "itemsPerPage": "{size} 項目/頁"
+    },
+    "showSize": "顯示數量",
+    "errToast": "遇到錯誤",
+    "successToast": "成功",
+    "warnToast": "注意",
+    "pages": "頁碼",
+    "errToastMessage": "錯誤資訊：",
+    "pageF": "前一頁",
+    "pageA": "後一頁",
+    "current": "當前",
+    "total": "總計",
+    "info": "提示",
+    "formNotInvalid": "表單不符合要求，請檢查輸入項目。(400)",
+    "overIndex": "超出所允許的頁面編號下標",
+    "illustration": {
+      "illustrationName": "插畫集資訊Meta",
+      "name": "插畫集名稱",
+      "link": "原始連結",
+      "description": "描述",
+      "original": "來源",
+      "isLimited": "是否限制型(NSFW)",
+      "isLimitedHint": "如果被選擇，該插畫集將對部分用戶不可見。",
+      "tags": "標籤",
+      "author": "作者",
+      "eshi": "畫師",
+      "relatedIllustrationCount": "關聯插畫數量",
+      "createdAt": "創建時間",
+      "updatedAt": "更新時間",
+      "edit": "編輯",
+      "delete": "刪除",
+      "deleteConfirm": "確認刪除",
+      "save": "儲存",
+      "cancel": "取消",
+      "notFound": "無內容"
+    }
+  },
+  "admin": {
+    "illustration": {
+      "editIllustrationTitle": "編輯插畫集資訊，支援更新插畫集名稱、描述、來源、是否限制型(NSFW)、標籤、作者。部分功能請善用搜尋。",
+      "createIllustrationTitle": "新增插畫",
+      "createIllustrationSubtitle": "在此頁面可向插畫庫中創建新的插畫集，新插畫將直接加入對用戶可見的插畫列表中，如設定了NSFW將對部分用戶不可見。",
+      "selectTags": "選擇標籤",
+      "imageUploadedTitle": "點擊以上傳檔案",
+      "noImageUploaded": "上傳前請核對檔名、圖片格式及順序，第一張圖片將作為插畫集的封面。",
+      "uploadImageDescription": "點擊按鈕新增插畫檔案，支援主流圖片格式，請確保檔名正確，勿上傳敏感資料（如信用卡號、密碼等）。",
+      "tagSelectorOpenBtn": "開啟選擇器",
+      "tagSearchInputPlaceholder": "搜尋標籤名並按Enter鍵搜尋　eg: {name} ...",
+      "authorSearchInputPlaceholder": "搜尋作者名並按Enter鍵搜尋　eg: {name} ...",
+      "tagsSearchNotFound": "無搜尋結果",
+      "tagsSearchNotFoundHint": "對於名為 {name} 的標籤，無搜尋結果，請嘗試更換關鍵詞，或使用Meta+Enter創建。",
+      "authorsSearchNotFoundHint": "對於名為 {name} 的作者，無搜尋結果，請嘗試更換關鍵詞，或使用Meta+Enter創建。",
+      "tagMgr": "標籤管理&新增",
+      "authorMgr": "作者管理&新增",
+      "toggleCreateMode": "切換至新建模式",
+      "esc": "關閉當前視窗",
+      "tag": {
+        "newTagName": "標籤名稱",
+        "copySuccess": "複製到剪貼簿成功 {text}",
+        "copyFailure": "複製錯誤 {msg}",
+        "tagNameNotValid": "標籤名不合法或重名，請檢查後重試。",
+        "editTagNameHint": "*僅更新標籤名稱，所關聯的所有作品都將被修改。",
+        "editTagNameSuccessHint": "修改標籤名稱成功",
+        "deleteTagSuccessHint": "刪除標籤成功",
+        "deleteTagConflict": "該標籤已連結至插畫集，無法刪除。",
+        "noTagsSatisfied": "沒有找到符合的標籤？",
+        "noAuthorSatisfied": "沒有找到符合的作者？",
+        "authorAdded": "新標籤新增成功",
+        "tagNameConflict": "遇到衝突，該標籤是否已存在？"
+      },
+      "author": {
+        "editTagNameHint": "*僅更新作者名稱，所關聯的所有作品都將被修改。",
+        "deleteTagSuccessHint": "刪除成功",
+        "editSuccess": "編輯成功",
+        "noAuthorSatisfied": "沒有找到符合的作者？",
+        "authorNameConflict": "遇到衝突，該作者是否已存在？",
+        "authorAdded": "新增作者成功",
+        "emptySearchHint": "請輸入至少一個關鍵詞以進入新建作者步驟。",
+        "authorName": "作者名",
+        "homeLink": "主頁連結"
+      }
+    }
+  },
+  "details": {
+    "open_source": "開源",
+    "open_source_desc": "專案開源於 Github 平台",
+    "open_source_link": "https://github.com/kanned1079/NoteForestX",
+    "background_title": "背景與目標",
+    "background_desc": "本博客旨在記錄日常學習、技術分享與專案經驗。我希望透過此專案實踐全棧開發、系統設計與 DevOps 部署涉及的技術。舊版本博客部分功能設計較為簡陋，因此全新的 NoteForest X 版本修復了舊版 Bug，並擴充了多項新功能。",
+    "tech_stack": "技術棧",
+    "frontend_title": "前端部分",
+    "frontend_list_1": "Nuxt4 —— 提供 SSR / SSG 能力",
+    "frontend_list_2": "Vue3 —— 框架核心",
+    "frontend_list_3": "Vite —— 高效構建工具",
+    "frontend_list_4": "PrimeVue —— 主要元件庫",
+    "frontend_list_5": "md-editor-v3 —— 用於 Markdown 文本編輯與渲染",
+    "frontend_list_6": "GSAP、pinia、tailwindcss、flag-icons —— 動畫與圖標庫等",
+    "frontend_desc": "選擇 Vue 的原因在於其輕量、高效且生態完善，同時我長期使用 Vue，對其開發模式極為熟悉。",
+    "backend_title": "後端部分",
+    "backend_list_1": "Golang —— 高性能、簡潔的後端主力語言",
+    "backend_list_2": "GIN 自定義 REST API —— 提供文章、插畫集、用戶系統的數據接口",
+    "backend_list_3": "Redis —— 用於快取、儲存會話資料與加速查詢",
+    "backend_list_4": "MySQL/MariaDB —— 文章、插畫對應路徑的持久化儲存",
+    "backend_list_5": "Anubis —— 輕量級 Web AI 防火牆工具",
+    "backend_list_6": "Docker + Nginx + pm2 —— 部署與執行階段的底層工具",
+    "backend_desc": "後端設計理念以簡潔高效為主，盡可能將邏輯與資料分層處理，提升可維護性。",
+    "tool_image_alt": "toolslist"
+  },
+  "my_design": {
+    "section1_tag": "簡潔直觀 · 一目了然",
+    "section1_title": "兼具吸睛度與現代感的極簡主義設計",
+    "section1_desc": "在不犧牲任何用戶體驗的前提下，打造簡潔大氣、兼具現代美感的用戶界面，讓操作更高效、視覺更舒適。",
+    "step0_title": "字體精細化設計",
+    "step0_content": "精心甄選字體類型、優化字體尺寸搭配，並合理設定字體粗細，兼顧可讀性與視覺層次感。",
+    "step1_title": "間距科學配置",
+    "step1_content": "精準調整頁面各元素的擺放位置，為不同元素設定合理統一的間距，提升界面整潔度與呼吸感。",
+    "step2_title": "色彩專業選用",
+    "step2_content": "挑選具備充足對比度的色彩體系，兼顧視覺美觀、品牌調性與無障礙瀏覽需求。",
+    "step3_title": "視覺效果賦能",
+    "step3_content": "為元素添加邊框、陰影、圓角等精細化視覺效果，增強界面層次感與質感，同時避免過度裝飾影響操作。",
+    "section2_tag": "匠心打磨 · 注重細節",
+    "section2_title": "具備敏銳且深入的細節洞察能力",
+    "section2_desc": "始終聚焦操作便捷性、用戶界面一致性兩大核心，持續迭代優化，不斷提升用戶的使用體驗與產品好感度。",
+    "section3_tag": "美觀高效 · 兼顧性能",
+    "section3_title": "程式碼簡潔易懂，且經過全方位性能優化",
+    "section3_desc": "將撰寫乾淨、整潔、可維護的優質程式碼作為首要原則，同時兼顧最大限度的性能優化，實現視覺與性能的雙重出色表現。"
+  },
+  "my_work": {
+    "header_title": "技能",
+    "title_tag": "作品",
+    "main_title": "技能 & 工具",
+    "main_desc": "瀏覽我使用過的程式語言、函式庫及工具。",
+    "intro": "我從事網頁開發已近九年，嘗試過多種程式語言與技術棧，涵蓋後端與前端開發。儘管網頁開發領域廣泛，但我對前端開發與 UI/UX 設計特別感興趣並專注於此。",
+    "app_dev_title": "應用程式開發者",
+    "app_dev_desc1": "我熱愛創作乾淨、極簡、美觀且具價值的作品，當然亦講求易用性。",
+    "app_dev_desc2": "我特別享受製作 UI 元件豐富的網站，包括：",
+    "app_dev_item1": "Web 應用程式",
+    "app_dev_item2": "文件與說明頁面",
+    "app_dev_item3": "CMS 內容佈局",
+    "app_dev_item4": "後台儀表板布局",
+    "app_dev_item5": "其他類型",
+    "tool_intro": "同時我也會製作簡單的網頁（如登陸頁面）。在網站製作過程中，我最熟練使用的工具包括以下這些：",
+    "vue_tech_title": "Vue 與 Nuxt.js 搭配 TypeScript",
+    "vue_tech_desc1": "單頁網站是我的專長，Vue.js 猶如我的魔法棒。我已使用多年，創作的作品日漸精良。",
+    "vue_tech_desc2": "程式語言方面，我慣用 TypeScript；儘管 PHP、Python 亦可應用於網頁開發，但 TypeScript 已陪伴我近七年。",
+    "backend_tech_title": "Golang 與 Nest.js",
+    "backend_tech_desc": "我用它們構建可擴展、高效能的後端服務，涵蓋 API 設計至數據操作。起初專注於後端開發，後來發現 CLI 無法滿足所有需求，遂開始學習 GUI 開發。",
+    "ops_title": "運維經驗",
+    "ops_desc": "最初源於對 IT 行業的濃厚興趣，我很早就接觸 Linux；經過數年學習，現已透過虛擬化與 Linux 部署多項服務，包括邊緣計算服務、檔案目錄程式、個人 Blog、Zabbix 監控、SoftEtherVPN 等。",
+    "detail_summary_title": "細節與摘要",
+    "detail_summary_desc": "我使用標籤呈現所有資料以便閱讀，底部橫線標示使用頻率，例如：",
+    "usage_example1": "經常使用",
+    "usage_example2": "偶爾使用",
+    "program_lang_title": "程式語言",
+    "lang_ts": "TypeScript",
+    "lang_js": "JavaScript",
+    "lang_go": "Golang",
+    "lang_java": "Java",
+    "lang_shell": "Shell",
+    "tech_tools_title": "技術與工具",
+    "tool_tailwind": "Tailwind CSS",
+    "tool_naive": "NaiveUI",
+    "tool_prime": "PrimeVue",
+    "tool_material": "MaterialUI",
+    "tool_vue": "Vue",
+    "tool_nuxt": "Nuxt.js",
+    "tool_electron": "Electron",
+    "tool_pinia": "pinia",
+    "tool_react": "React",
+    "tool_gin": "GIN",
+    "tool_gorm": "gORM",
+    "tool_grpc": "gRPC",
+    "tool_redis": "Redis",
+    "tool_mysql": "MySQL/MariaDB",
+    "tool_mongo": "MongoDB",
+    "tool_docker": "Docker",
+    "tool_nginx": "Nginx",
+    "software_tools_title": "軟體與工具",
+    "software_idea": "JetBrains IntelliJ IDEA",
+    "software_vscode": "Visual Studio Code",
+    "software_vim": "Vim",
+    "software_git": "Git",
+    "software_mysqlworkbench": "MySQL Workbench",
+    "software_ps": "Adobe PhotoShop",
+    "software_ai": "Adobe Illustrator"
+  },
+  "contact_me": {
+    "title_tag": "作品展示",
+    "main_title": "聯繫我",
+    "main_desc": "你可隨時透過社交媒體、電子郵件或電話與我聯繫。",
+    "intro_desc1": "友情提醒：此處提供的資訊僅供商業用途。如有任何查詢，歡迎直接透過我的社交媒體聯繫。",
+    "intro_desc2": "感謝你了解並負責任地使用本產品。",
+    "contact_info_title": "聯繫方式",
+    "table_header1": "聯繫項",
+    "table_header2": "詳情",
+    "contact_item1": "地址",
+    "contact_item2": "時區",
+    "contact_item3": "電郵",
+    "contact_detail2": "UTC+8:00（中國標準時間）",
+    "contact_remark": "如需進一步聯繫（如索取我的電話號碼），請先發送電子郵件。",
+    "social_media_title": "社交媒體",
+    "social_desc1": "你可透過搜尋 {username} 找到我的社交媒體帳號，此用戶名於各大平台均保持一致。",
+    "social_desc2": "若時間緊迫，以下列出我最常用的社交平台連結：",
+    "social_table_header1": "社交平台",
+    "social_table_header2": "連結"
+  },
+  "home": {
+    "intro_title": "我是 {name}，",
+    "intro_desc": "一名熱愛直觀、簡潔與現代 UI 設計的 {role}。",
+    "favorite_stack": "目前喜愛的技術棧 / 工具：",
+    "scroll_down": "向下滾動了解更多",
+    "get_in_touch": "與我聯繫",
+    "fullstack_developer": "全棧開發者"
+  },
+  "app_footer": {
+    "about_me": "關於我",
+    "this_site": "本網站",
+    "source_code": "原始碼倉庫",
+    "uiverse": "Uiverse 元件庫",
+    "primevue": "PrimeVue"
+  },
+  "profile": {
+    "yourInfo": "你的資訊",
+    "resetPassword": "重設密碼",
+    "username": {
+      "editTip": "點擊以新增或修改用戶名",
+      "desc": "這是你發表評論時使用的用戶名，若未設定將顯示為電郵地址。",
+      "dialog": {
+        "title": "更新用戶名",
+        "label": "用戶名",
+        "placeholder": "Kasugano Sora",
+        "hint": "創建用戶名後將取代電郵地址顯示。"
+      },
+      "toast": {
+        "warnEmpty": "用戶名不可為空",
+        "success": "更新用戶名成功 {username}",
+        "errorSummary": "出現錯誤"
+      }
+    },
+    "userId": {
+      "desc": "你於本網站的唯一用戶 ID，無法修改。"
+    },
+    "createTime": {
+      "desc": "你創建帳戶的時間。"
+    },
+    "password": {
+      "editTip": "如需重設密碼，請點擊此處。",
+      "dialog": {
+        "title": "更新密碼",
+        "oldPwdLabel": "原密碼",
+        "oldPwdPlaceholder": "Previous Password",
+        "newPwdLabel": "新密碼",
+        "newPwdPlaceholder": "New Password",
+        "hint": "新密碼最少須包含6個字符，下次登入請使用新密碼。"
+      },
+      "toast": {
+        "warnLength": "新密碼長度至少6位",
+        "success": "更新密碼成功",
+        "errorSummary": "出現錯誤"
+      }
+    },
+    "notLogin": {
+      "title": "需要登入",
+      "desc": "你已登出，若擁有本網站帳戶，請點擊左側登入。"
+    },
+    "toast": {
+      "errorSummary": "出現錯誤"
+    }
+  },
+  "article": {
+    "catalog": "目錄",
+    "pageHeader": {
+      "title": "文章管理",
+      "subtitle": "如標題所示，此處為文章管理區域；新建文章預設為不可見，你可為每篇文章設定不同狀態。"
+    },
+    "operation": {
+      "addNewArticle": "新增文章",
+      "resetSearch": "重設搜尋"
+    },
+    "table": {
+      "headers": {
+        "title": "標題",
+        "tags": "標籤",
+        "createTime": "創建時間",
+        "status": "狀態",
+        "operation": "操作"
+      },
+      "empty": {
+        "title": "沒有結果",
+        "desc": "未找到對應結果，請嘗試更換關鍵詞"
+      },
+      "tags": {
+        "noTags": "---",
+        "tagPrefix": "#"
+      },
+      "total": "Total: {count}"
+    },
+    "loading": {
+      "text": "載入中..."
+    },
+    "toast": {
+      "loadFailed": "載入失敗",
+      "deleteSuccess": "文章已刪除",
+      "deleteFailed": "刪除失敗",
+      "operateSuccess": "操作成功",
+      "operateFailed": "失敗"
+    },
+    "confirm": {
+      "deleteHeader": "刪除"
+    }
+  },
+  "article_edit": {
+    "pageHeader": {
+      "defaultTitle": "文章標題",
+      "subtitle": "點擊右上角設定文章Meta資訊"
+    },
+    "operation": {
+      "addNewArticle": "新增文章",
+      "searchCmdK": "搜尋 CMD+K"
+    },
+    "metaDialog": {
+      "header": "編輯Meta",
+      "labels": {
+        "title": "標題",
+        "tags": "標籤",
+        "slug": "Slug (可選)",
+        "headerImage": "頭部圖片 (可選)"
+      }
+    },
+    "tags": {
+      "option": {
+        "newTag": "新增",
+        "tagPrefix": "#"
+      },
+      "noTags": "尚未選擇標籤",
+      "toast": {
+        "addSuccessSummary": "新增標籤",
+        "noSearchResultWarn": "沒有搜尋結果，可嘗試新增"
+      }
+    },
+    "toast": {
+      "loadFailed": "載入失敗",
+      "loadArticleFailed": "載入失敗，請返回重試",
+      "saveSuccess": "文章儲存成功",
+      "saveFailed": "載入失敗",
+      "warnSummary": "警告",
+      "successSummary": "成功",
+      "errorSummary": "錯誤"
+    }
+  },
+  "login": {
+    "page": {
+      "title": "NoteForest X",
+      "subtitle": "登入或註冊你的帳戶"
+    },
+    "form": {
+      "labels": {
+        "email": "電郵地址",
+        "password": "密碼"
+      },
+      "forgotPwd": "忘記密碼？"
+    },
+    "button": {
+      "signIn": "登入"
+    },
+    "toast": {
+      "loginSuccessSummary": "登入成功",
+      "loginSuccessDetail": "{email} 歡迎回來",
+      "loginErrorSummary": "出現錯誤"
+    }
+  },
+  "shortcuts": {
+    "header": "快捷鍵",
+    "description": "使用快捷鍵輕鬆導航頁面",
+    "quickAccess": {
+      "open": "開啟快速訪問",
+      "close": "關閉快速訪問"
+    },
+    "backHome": "返回首頁",
+    "article": "文章"
+  },
+  "actionCenter": {
+    "title": "控制中心",
+    "msg": "訊息",
+    "noMsg": "你目前沒有任何訊息。 :D"
+  },
+  "collection": {
+    "title": "App",
+    "description": "包含個人專案與收藏資源，點擊連結或卡片即可直接訪問。",
+    "my": "個人專案",
+    "collected": "收藏"
+  },
+  "articleIndex": {
+    "pageTitle": "文章",
+    "pageSubtitle": "文章列表按更新時間由新至舊排序，詳細操作說明可開啟操作指南查看。",
+    "searchPlaceholder": "請輸入搜尋關鍵詞",
+    "recentSearches": "最近搜尋",
+    "clearSearchHistory": "清除搜尋紀錄",
+    "noRecentSearches": "暫無最近搜尋紀錄",
+    "searchToSearch": "按Enter鍵搜尋",
+    "arrowToNavigate": "上下鍵導航",
+    "emptyArticleList": "文章列表為空或未找到對應文章",
+    "searchError": "搜尋時遇到錯誤",
+    "loadFailed": "載入失敗",
+    "openSearchBox": "按 Meta+K 開啟搜尋框",
+    "resetSearch": "按 Meta+R 重設搜尋",
+    "clickTagToSearch": "點擊文章標籤可搜尋使用該標籤的文章"
   }
 }

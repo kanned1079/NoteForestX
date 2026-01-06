@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {useI18n} from "vue-i18n";
-import {ref} from "vue"
+import {ref, watch, onMounted, onBeforeUnmount, onBeforeMount} from "vue"
 import useThemeStore from "~/store/themeStore";
 import useActionStore from "~/store/actionStore";
 import {Icon} from "@vicons/utils";
@@ -13,12 +13,10 @@ import type {Article} from "~/types/article";
 import {useScrollFadeIn} from "~/composables/useScrollFadeIn";
 import type {SearchQuery} from "~/types/article_search";
 import ArticleItemDesktop from "~/components/RedesignedComponents/ArticleItemDesktop.vue";
+import {navigateTo} from "#app"; // 补充 navigateTo 导入（Nuxt 环境）
 
 useScrollFadeIn({
   selector: '.animate-card-article-index',
-  // y: 60,
-  // duration: 0.6,
-  // stagger: 0.15
   direction: 'up',
   x: 200,
   stagger: 0.1,
@@ -104,28 +102,6 @@ const updateActive = () => {
     item.active = (idx === activeIndex.value)
   })
 }
-
-// const handleKeyDown = (e: KeyboardEvent) => {
-//   if (searchHistory.value.length === 0) return
-//
-//   if (e.key === "ArrowDown") {
-//     activeIndex.value =
-//         (activeIndex.value + 1) % searchHistory.value.length
-//     updateActive()
-//   }
-//   else if (e.key === "ArrowUp") {
-//     activeIndex.value =
-//         (activeIndex.value - 1 + searchHistory.value.length) % searchHistory.value.length
-//     updateActive()
-//   }
-//   else if (e.key === "Enter") {
-//     const item = searchHistory.value[activeIndex.value]
-//     if (item) {
-//       searchTitle.value = item.title
-//       handleSearch(item.id)
-//     }
-//   }
-// }
 
 const handleKeyDown = (e: KeyboardEvent) => {
   // ✅ 如果焦点在输入框里，直接跳过
@@ -290,7 +266,7 @@ const fetchArticleList = async () => {
     errMsg.value = err
     toast.add({
       severity: "error",
-      summary: "加载失败",
+      summary: t('articleIndex.loadFailed'),
       detail: `${err}`,
       life: 4000,
     })
@@ -319,9 +295,9 @@ onBeforeMount(() => {
 onMounted(() => {
   themeStore.showHeaderSearchBtn = true
   themeStore.actionCenterMsgs = [
-    `按下 Meta+K 以打开搜索框`,
-    `按下 Meta+R 以重置搜索`,
-    `点击文章的Tag可以查询使用了该Tag的文章`,
+    t('articleIndex.openSearchBox'),
+    t('articleIndex.resetSearch'),
+    t('articleIndex.clickTagToSearch'),
   ]
   const savedHistory = localStorage.getItem('articleSearchHistory')
   if (savedHistory) {
@@ -335,19 +311,17 @@ onBeforeUnmount(() => {
   window.removeEventListener("keydown", handleCmdKeyDown)
   themeStore.actionCenterMsgs = []
 })
-
 </script>
 
 <template>
   <div class="w-full flex flex-row justify-center">
-
     <div class="max-w-[900px] container">
-
-      <PageHeader title="文章" class="mb-8 animate-card-article-index">
+      <PageHeader
+          :title="t('articleIndex.pageTitle')"
+          class="mb-8 animate-card-article-index"
+      >
         <template #subtitle>
-          <p>
-            文章列表按照更新順序由新到舊排序，<span class="font-mono px-1 rounded">Meta+K</span> 可調出搜索框搜索對應的文章。
-          </p>
+          <p>{{ t('articleIndex.pageSubtitle') }}</p>
         </template>
       </PageHeader>
 
@@ -372,21 +346,17 @@ onBeforeUnmount(() => {
           />
         </div>
         <div v-else>
-          <Message severity="warn">文章列表為空或查詢不到對應的文章</Message>
+          <Message severity="warn">{{ t('articleIndex.emptyArticleList') }}</Message>
         </div>
       </transition>
 
       <transition name="slide-fade">
         <div v-if="errMsg" class="mt-4">
-          <Message severity="error">查询时遇到错误 {{ errMsg }}</Message>
+          <Message severity="error">{{ t('articleIndex.searchError') }} {{ errMsg }}</Message>
         </div>
       </transition>
-
-
-
-
     </div>
-<!--    主體部分結束-->
+    <!--    主體部分結束-->
   </div>
 
   <Dialog
@@ -401,7 +371,6 @@ onBeforeUnmount(() => {
       @after-hide="onSearchDialogClose"
       @show="onSearchDialogOpen"
   >
-
     <div class="flex flex-col p-4">
       <!--      <SearchIllustrationInput/>-->
       <IconField class="w-auto">
@@ -410,7 +379,7 @@ onBeforeUnmount(() => {
             class="w-full font-mono justify-center"
             size="medium"
             v-model="searchTitle"
-            placeholder="Ciallo"
+            :placeholder="t('articleIndex.searchPlaceholder')"
             @input="() => {isValid = !!searchTitle.trim()}"
             autofocus
             :invalid="!isValid"
@@ -418,18 +387,24 @@ onBeforeUnmount(() => {
         />
       </IconField>
       <div v-if="searchHistory.length > 0" class="mt-2 mb-2 flex flex-row justify-between items-center">
-        <span class="font-medium">最近搜索</span>
-        <Button class="h-8 text-xs font-light" size="small" link label="清除搜索历史"
-                @click="removeAllSearchHistory"></Button>
+        <span class="font-medium">{{ t('articleIndex.recentSearches') }}</span>
+        <Button
+            class="h-8 text-xs font-light"
+            size="small"
+            link
+            :label="t('articleIndex.clearSearchHistory')"
+            @click="removeAllSearchHistory"
+        ></Button>
       </div>
       <div v-else class="text-center w-full pt-8 pb-6">
-        <span>No recent searches</span>
+        <span>{{ t('articleIndex.noRecentSearches') }}</span>
       </div>
 
-      <div v-for="i in searchHistory"
-           class="transition ease-in-out duration-150 flex items-center justify-between gap-3 p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 mb-2"
-           :class="{'bg-gray-200 dark:bg-gray-800': i.active}"
-           @click="searchTitle = i.title; handleSearch(i.id)"
+      <div
+          v-for="i in searchHistory"
+          class="transition ease-in-out duration-150 flex items-center justify-between gap-3 p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 mb-2"
+          :class="{'bg-gray-200 dark:bg-gray-800': i.active}"
+          @click="searchTitle = i.title; handleSearch(i.id)"
       >
         <!-- 左侧图标 -->
         <div class="flex-shrink-0">
@@ -462,7 +437,7 @@ onBeforeUnmount(() => {
             </Icon>
           </template>
         </Tag>
-        <span>to search</span>
+        <span>{{ t('articleIndex.searchToSearch') }}</span>
         <Tag class="ml-2" severity="secondary">
           <template #icon>
             <Icon>
@@ -477,23 +452,10 @@ onBeforeUnmount(() => {
             </Icon>
           </template>
         </Tag>
-        <span>to navigate</span>
+        <span>{{ t('articleIndex.arrowToNavigate') }}</span>
       </div>
-
-<!--      <div>-->
-<!--        <Button variant="link" label="查看搜索規則" iconPos="right" class="text-xs p-0">-->
-<!--          <template #icon>-->
-<!--            <i class="pi pi-info-circle text-sm"></i>-->
-<!--          </template>-->
-<!--        </Button>-->
-<!--      </div>-->
-
     </div>
-
-
   </Dialog>
-
-
 </template>
 
 <style>

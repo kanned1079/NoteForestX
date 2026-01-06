@@ -23,10 +23,6 @@ export default defineEventHandler(async (event) => {
 
     // ✅ 使用 getCookie 获取 token
     const token = getCookie(event, 'access_token')
-
-    // const token = getCookie(event, 'access_token')
-    console.log('[username.patch.ts] token:', token)
-
     if (!token) {
         throw createError({
             statusCode: 401,

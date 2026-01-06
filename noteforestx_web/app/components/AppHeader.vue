@@ -60,36 +60,24 @@ const buildMenu = () => {
           icon: 'pi pi-home',
           route: '/'
         },
-        // {
-        //   label: 'layout.aboutMe',
-        //   icon: 'pi pi-github',
-        //   route: '/about'
-        // },
         {
           label: 'layout.knowledgeLib',
           icon: 'pi pi-book',
-          route: '/article'
+          // route: '/article'
+          route: `/${locale.value}/article`
         },
-        // {
-        //   label: 'layout.illustrationLib',
-        //   icon: 'pi pi-images',
-        //   route: '/illustration'
-        // },
         {
-          label: 'layout.sponsor',
-          icon: 'pi pi-gift',
-          route: '/sponsor'
+          label: 'collection.title',
+          icon: 'pi pi-star',
+          // route: '/collection',
+          route: `/${locale.value}/collection`
         },
         {
           label: 'layout.details',
           icon: 'pi pi-wrench',
-          route: '/details'
+          // route: '/details'
+          route: `/${locale.value}/details`
         },
-        // {
-        //   label: 'Its My Duty',
-        //   icon: 'pi pi-wrench',
-        //   route: '/its-my-duty'
-        // }
       ]
     },
     {
@@ -106,28 +94,20 @@ const buildMenu = () => {
 
   // ✅ 管理员菜单
   if (userStore.isAuthed && userStore.user.role === 'ADMIN') {
+  //   if (userStore.isAuthed) {
     items.push({
       label: 'appMenu.admin',
       items: [
-        // {
-        //   label: 'layout.statistic',
-        //   icon: 'pi pi-chart-bar'
-        // },
         {
           label: 'layout.knowledgeMgr',
           icon: 'pi pi-file-edit',
-          route: '/admin/article'
+          // route: '/admin/article'
+          route: `/${locale.value}/admin/article`
         },
-        // {
-        //   label: 'layout.illustrationMgr',
-        //   icon: 'pi pi-palette'
-        // }
       ]
     })
   }
 
-  // ✅ 用户菜单
-  // if (userStore.isAuthed && userStore.user.role === 'USER') {
     if (userStore.isAuthed) {
     items.push({
       label: 'appMenu.profile',
@@ -136,7 +116,7 @@ const buildMenu = () => {
           label: 'layout.myAccount',
           icon: 'pi pi-user',
           shortcut: '⌥+I',
-          route: '/profile'
+          route: `/${locale.value}/profile`
         },
         {
           label: 'layout.logout',
@@ -154,7 +134,6 @@ const buildMenu = () => {
 }
 
 const itemsMenu = computed(() => buildMenu())
-// const itemsMenu = buildMenu()
 
 const appMenu = ref()
 const toggleAppMenu = (event: MouseEvent) => {
@@ -239,7 +218,7 @@ const logoutClick = () => {
   if (userStore.logout()) {
     toast.add({
       severity: 'success',
-      summary: '登出成功',
+      summary: t('layout.logoutSuccess'),
       life: 3000
     });
   }
@@ -284,12 +263,36 @@ onBeforeUnmount(() => {
           <span class="text-primary font-bold">{{ t(item.label as string) }}</span>
         </template>
         <template #item="{ item, props }">
-          <router-link v-slot="{ href, navigate }" :to="item.route" custom>
-            <a v-ripple :href="href" v-bind="props.action" @click="navigate">
-              <span :class="item.icon"/>
+          <!-- ① 有路由的菜单项 -->
+          <router-link
+              v-if="item.route"
+              :to="item.route"
+              custom
+              v-slot="{ href, navigate }"
+          >
+            <a
+                v-ripple
+                :href="href"
+                v-bind="props.action"
+                @click="navigate"
+            >
+              <span :class="item.icon" />
               <span class="ml-2">{{ t(item.label as string) }}</span>
             </a>
           </router-link>
+
+          <!-- ② 纯行为菜单项 -->
+          <button
+              v-else
+              v-ripple
+              type="button"
+              v-bind="props.action"
+              @click="item.command?.()"
+              class="w-full text-left flex items-center"
+          >
+            <span :class="item.icon" />
+            <span class="ml-2">{{ t(item.label as string) }}</span>
+          </button>
         </template>
         <template #end>
           <button
@@ -396,7 +399,7 @@ onBeforeUnmount(() => {
         <template #default>
           <span class="flex items-center gap-1">
             <i class="pi pi-search text-xs"></i>
-          <span>編輯Meta</span>
+          <span>{{ t('layout.editMeta') }}</span>
           <span class="px-2 py-0.5 text-xs font-light ">⌘+K</span>
           </span>
         </template>
@@ -413,8 +416,8 @@ onBeforeUnmount(() => {
       >
         <template #default>
           <span class="flex items-center gap-1">
-            <i class="pi pi-search text-xs"></i>
-          <span>Save</span>
+            <i class="pi pi-file text-xs"></i>
+          <span>{{ t('layout.save') }}</span>
           <span class="px-2 py-0.5 text-xs font-light ">⌘+S</span>
           </span>
         </template>
@@ -434,7 +437,7 @@ onBeforeUnmount(() => {
         <template #default>
           <span class="flex items-center gap-1">
             <i class="pi pi-align-left text-xs"></i>
-          <span>显示目录</span>
+          <span>{{ t('article.catalog') }}</span>
           <span class="px-2 py-0.5 text-xs font-light font-mono"> / </span>
           </span>
         </template>

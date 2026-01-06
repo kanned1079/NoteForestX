@@ -1,23 +1,437 @@
 {
   "layout": {
-    "homePage": "Home Page",
-    "knowledgeLib": "Knowledge Library",
-    "illustrationLib": "Illustration Collection",
-    "aboutMe": "About Me",
-    "myAccount": "My Account",
-    "logout": "Logout",
-    "statistic": "Statistical Data",
-    "knowledgeMgr": "Article Management",
-    "illustrationMgr": "Illustration Management",
-    "sponsor": "Sponsor"
+    "homePage": "ホームページ",
+    "knowledgeLib": "記事",
+    "illustrationLib": "イラスト集",
+    "aboutMe": "自分について",
+    "myAccount": "アカウント",
+    "logout": "ログアウト",
+    "logoutSuccess": "ログアウトに成功しました",
+    "statistic": "統計",
+    "sponsor": "スポンサー",
+    "details": "技術実装",
+    "changLang": "言語を切り替える",
+    "editMeta": "メタ情報を編集",
+    "save": "保存"
   },
   "appMenu": {
-    "general": "General",
-    "profile": "User Portal",
-    "admin": "Admin Portal"
+    "general": "一般",
+    "profile": "ユーザーポータル",
+    "admin": "管理者ポータル",
+    "lang": "言語",
+    "userRole": "ユーザー",
+    "adminRole": "管理者",
+    "noLoginRole": "クリックしてログイン"
+  },
+  "universal": {
+    "pagination": {
+      "itemsPerPage": "{size} 件/ページ"
+    },
+    "showSize": "表示件数",
+    "errToast": "エラーが発生しました",
+    "successToast": "成功",
+    "warnToast": "注意",
+    "pages": "ページ番号",
+    "errToastMessage": "エラー情報：",
+    "pageF": "前のページ",
+    "pageA": "次のページ",
+    "current": "現在",
+    "total": "合計",
+    "info": "ヒント",
+    "formNotInvalid": "フォームの内容が不正です。入力項目を確認してください。(400)",
+    "overIndex": "許可されたページ番号の範囲を超えています",
+    "illustration": {
+      "illustrationName": "イラスト集メタ情報",
+      "name": "イラスト集名",
+      "link": "元リンク",
+      "description": "説明",
+      "original": "出典",
+      "isLimited": "年齢制限対象か(NSFW)",
+      "isLimitedHint": "選択した場合、一部ユーザーにこのイラスト集は表示されません。",
+      "tags": "タグ",
+      "author": "作者",
+      "eshi": "イラストレーター",
+      "relatedIllustrationCount": "関連イラスト数",
+      "createdAt": "作成日時",
+      "updatedAt": "更新日時",
+      "edit": "編集",
+      "delete": "削除",
+      "deleteConfirm": "削除を確定",
+      "save": "保存",
+      "cancel": "キャンセル",
+      "notFound": "コンテンツがありません"
+    }
+  },
+  "admin": {
+    "illustration": {
+      "editIllustrationTitle": "イラスト集情報の編集。イラスト集名、説明、出典、年齢制限対象か(NSFW)、タグ、作者の更新に対応しています。一部機能は検索を活用してください。",
+      "createIllustrationTitle": "新しいイラストを追加",
+      "createIllustrationSubtitle": "このページでイラストライブラリに新しいイラスト集を作成できます。新しいイラストはユーザーに表示されるイラストリストに直接追加され、NSFWを設定した場合は一部ユーザーに表示されません。",
+      "selectTags": "タグを選択",
+      "imageUploadedTitle": "クリックしてファイルをアップロード",
+      "noImageUploaded": "アップロード前にファイル名、画像形式、順序を確認してください。1枚目の画像がイラスト集のカバーになります。",
+      "uploadImageDescription": "ボタンをクリックしてイラストファイルを追加してください。主流の画像形式に対応しています。ファイル名が正しいことを確認し、クレジットカード番号や暗証番号などの機密情報はアップロードしないでください。",
+      "tagSelectorOpenBtn": "セレクターを開く",
+      "tagSearchInputPlaceholder": "タグ名を検索してEnterキーを押して検索　例：{name} ...",
+      "authorSearchInputPlaceholder": "作者名を検索してEnterキーを押して検索　例：{name} ...",
+      "tagsSearchNotFound": "検索結果がありません",
+      "tagsSearchNotFoundHint": "{name} というタグは検索結果がありません。キーワードを変えて試してください。またはMeta+Enterキーで作成できます。",
+      "authorsSearchNotFoundHint": "{name} という作者は検索結果がありません。キーワードを変えて試してください。またはMeta+Enterキーで作成できます。",
+      "tagMgr": "タグ管理＆追加",
+      "authorMgr": "作者管理＆追加",
+      "toggleCreateMode": "新規作成モードに切り替え",
+      "esc": "現在のウィンドウを閉じる",
+      "tag": {
+        "newTagName": "タグ名",
+        "copySuccess": "クリップボードにコピー成功 {text}",
+        "copyFailure": "コピーエラー {msg}",
+        "tagNameNotValid": "タグ名が不正または重複しています。確認して再試行してください。",
+        "editTagNameHint": "*タグ名の更新のみ対応しています。関連するすべての作品が変更されます。",
+        "editTagNameSuccessHint": "タグ名の変更に成功しました",
+        "deleteTagSuccessHint": "タグの削除に成功しました",
+        "deleteTagConflict": "このタグはイラスト集に関連付けられているため、削除できません。",
+        "noTagsSatisfied": "該当するタグが見つかりませんか？",
+        "noAuthorSatisfied": "該当する作者が見つかりませんか？",
+        "authorAdded": "新しいタグの追加に成功しました",
+        "tagNameConflict": "競合が発生しました。このタグは既に存在しますか？"
+      },
+      "author": {
+        "editTagNameHint": "*作者名の更新のみ対応しています。関連するすべての作品が変更されます。",
+        "deleteTagSuccessHint": "削除に成功しました",
+        "editSuccess": "編集に成功しました",
+        "noAuthorSatisfied": "該当する作者が見つかりませんか？",
+        "authorNameConflict": "競合が発生しました。この作者は既に存在しますか？",
+        "authorAdded": "作者の追加に成功しました",
+        "emptySearchHint": "新規作者を作成するには、少なくとも1つのキーワードを入力してください。",
+        "authorName": "作者名",
+        "homeLink": "ホームページリンク"
+      }
+    }
+  },
+  "details": {
+    "open_source": "オープンソース",
+    "open_source_desc": "プロジェクトはGithubで公開されています",
+    "open_source_link": "https://github.com/kanned1079/NoteForestX",
+    "background_title": "背景と目標",
+    "background_desc": "本ブログの目的は、日常の学習、技術共有、プロジェクト経験の記録です。このプロジェクトを通じて、フルスタック開発、システム設計、DevOpsデプロイに関わる技術を実践したいと考えています。ブログの旧バージョンでは一部機能の設計が簡素であったため、新しいNoteForest Xバージョンでは旧バージョンのバグを修正し、いくつかの新機能を追加しました。",
+    "tech_stack": "技術スタック",
+    "frontend_title": "フロントエンド部分",
+    "frontend_list_1": "Nuxt4 —— SSR/SSG機能を提供するために使用",
+    "frontend_list_2": "Vue3 —— フレームワークのコア",
+    "frontend_list_3": "Vite —— 高性能なビルドツール",
+    "frontend_list_4": "PrimeVue —— メインのコンポーネントライブラリ",
+    "frontend_list_5": "md-editor-v3 —— Markdownテキストの編集とレンダリングに使用",
+    "frontend_list_6": "GSAP、pinia、tailwindcss、flag-icons —— アニメーションやアイコンライブラリなど",
+    "frontend_desc": "Vueを選択した理由は、軽量で高性能、エコシステムが充実していることに加え、自身が長期間Vueを使用しており、開発スタイルに非常に慣れているためです。",
+    "backend_title": "バックエンド部分",
+    "backend_list_1": "Golang —— 高性能で簡潔なバックエンドのメイン言語",
+    "backend_list_2": "GINカスタムREST API —— 記事、イラスト集、ユーザーシステムのデータインターフェースを提供",
+    "backend_list_3": "Redis —— キャッシュ、セッションデータの保存、クエリの高速化に使用",
+    "backend_list_4": "MySQL/MariaDB —— 記事、イラストの対応パスの永続的なストレージ",
+    "backend_list_5": "Anubis —— 軽量なWeb AIファイアウォールユーティリティ",
+    "backend_list_6": "Docker + Nginx + pm2 —— デプロイと実行フェーズの基盤ツール",
+    "backend_desc": "バックエンドの設計理念は主に簡潔さと高性能を保持し、論理とデータを可能な限り層別に処理して保守性を向上させることです。",
+    "tool_image_alt": "ツールリスト"
+  },
+  "my_design": {
+    "section1_tag": "シンプルで直感的・一目瞭然",
+    "section1_title": "見た目と現代感を兼ね備えたミニマリストデザイン",
+    "section1_desc": "ユーザーエクスペリエンスを犠牲にすることなく、シンプルで洗練され、現代的な美感を備えたユーザーインターフェースを構築し、操作をより効率的に、視覚をより快適にします。",
+    "step0_title": "フォントの精緻なデザイン",
+    "step0_content": "フォントの種類を厳選し、フォントサイズの組み合わせを最適化し、フォントウェイトを適切に設定し、可読性と視覚的な層感を両立させます。",
+    "step1_title": "間隔の科学的な設定",
+    "step1_content": "ページ内の各要素の配置位置を精密に調整し、異なる要素間に合理的かつ統一的な間隔を設定し、インターフェースの整潔さと呼吸感を向上させます。",
+    "step2_title": "色彩の専門的な選定",
+    "step2_content": "十分なコントラストを備えたカラーパレットを選択し、視覚的な美しさ、ブランドのトーン、バリアフリー閲覧のニーズを両立させます。",
+    "step3_title": "視覚効果による価値向上",
+    "step3_content": "要素にボーダー、シャドウ、角丸などの精緻な視覚効果を追加し、インターフェースの層感と質感を強化しながら、過度な装飾が操作に影響することを回避します。",
+    "section2_tag": "こだわりの磨き・ディテール重視",
+    "section2_title": "鋭く深いディテールへの洞察力を備える",
+    "section2_desc": "常に操作の利便性とユーザーインターフェースの一貫性という二大核心に焦点を当て、持続的にイテレーションと最適化を行い、ユーザーの使用体験と製品への好感度を絶えず向上させます。",
+    "section3_tag": "美しさと高性能・両立を実現",
+    "section3_title": "コードがシンプルで理解しやすく、全方位的なパフォーマンス最適化が施されている",
+    "section3_desc": "清潔で整潔、保守可能な高品質なコードの記述を第一の原則とし、同時に最大限のパフォーマンス最適化を両立させ、視覚とパフォーマンスの両方で優れた表現を実現します。"
+  },
+  "my_work": {
+    "header_title": "スキル",
+    "title_tag": "作品",
+    "main_title": "スキル＆ツール",
+    "main_desc": "自分が使用したことのあるプログラミング言語、ライブラリ、ツールを閲覧してください。",
+    "intro": "ウェブ開発を従事して約9年になり、複数のプログラミング言語と技術スタックを試してきました。バックエンドとフロントエンド開発をカバーしています。ウェブ開発の領域は広範囲ですが、特にフロントエンド開発とUI/UXデザインに興味を持ち、専念しています。",
+    "app_dev_title": "アプリケーション開発者",
+    "app_dev_desc1": "清潔でミニマル、美しく価値のある作品を創造することが好きです。もちろん使いやすさも重要です。",
+    "app_dev_desc2": "特にUIコンポーネントが豊富なウェブサイトの制作を楽しんでおり、主な対象は以下の通りです：",
+    "app_dev_item1": "ウェブアプリケーション",
+    "app_dev_item2": "ドキュメントと説明ページ",
+    "app_dev_item3": "CMSコンテンツレイアウト",
+    "app_dev_item4": "管理ダッシュボードレイアウト",
+    "app_dev_item5": "その他",
+    "tool_intro": "ただし、ランディングページなどのシンプルなウェブサイトも依然として制作しています。ウェブサイト制作の過程で、自分が最も慣れているツールは何でしょうか？",
+    "vue_tech_title": "Vue と Nuxt.js を TypeScript と組み合わせ",
+    "vue_tech_desc1": "シングルページウェブサイトが自分の得意分野であり、Vue.jsはまるで自分の魔法の杖のようなものです。長年使用しており、制作する作品がますます洗練されてきました。",
+    "vue_tech_desc2": "まずプログラミング言語については、TypeScriptを使用する習慣があります。PHPやPythonもウェブ開発に使用できますが、TypeScriptは約7年間伴ってきました。",
+    "backend_tech_title": "Golang と Nest.js",
+    "backend_tech_desc": "これらを使用してスケーラブルで高性能なバックエンドサービスを構築し、API設計からデータ操作までカバーしています。当初はバックエンド開発に専念していましたが、後にCLIではすべてのニーズを満たせないことに気づき、GUI開発の学習を開始しました。",
+    "ops_title": "運用経験",
+    "ops_desc": "当初はIT業界への強い興味から、早くからLinuxに接触しました。数年間の学習を経て、現在では仮想化とLinuxを使用して複数のサービスをデプロイしています。エッジコンピューティングサービス、ファイルディレクトリプログラム、個人ブログ、Zabbix監視、SoftEtherVPNなどを含みますが、これらに限定されません。",
+    "detail_summary_title": "ディテールと概要",
+    "detail_summary_desc": "すべてのデータをタグで表示して閲覧しやすくしています。下部の横線は使用頻度を示しており、例えば：",
+    "usage_example1": "頻繁に使用",
+    "usage_example2": "たまに使用",
+    "program_lang_title": "プログラミング言語",
+    "lang_ts": "TypeScript",
+    "lang_js": "JavaScript",
+    "lang_go": "Golang",
+    "lang_java": "Java",
+    "lang_shell": "Shell",
+    "tech_tools_title": "技術とツール",
+    "tool_tailwind": "Tailwind CSS",
+    "tool_naive": "NaiveUI",
+    "tool_prime": "PrimeVue",
+    "tool_material": "MaterialUI",
+    "tool_vue": "Vue",
+    "tool_nuxt": "Nuxt.js",
+    "tool_electron": "Electron",
+    "tool_pinia": "pinia",
+    "tool_react": "React",
+    "tool_gin": "GIN",
+    "tool_gorm": "gORM",
+    "tool_grpc": "gRPC",
+    "tool_redis": "Redis",
+    "tool_mysql": "MySQL/MariaDB",
+    "tool_mongo": "MongoDB",
+    "tool_docker": "Docker",
+    "tool_nginx": "Nginx",
+    "software_tools_title": "ソフトウェアとツール",
+    "software_idea": "JetBrains IntelliJ IDEA",
+    "software_vscode": "Visual Studio Code",
+    "software_vim": "Vim",
+    "software_git": "Git",
+    "software_mysqlworkbench": "MySQL Workbench",
+    "software_ps": "Adobe PhotoShop",
+    "software_ai": "Adobe Illustrator"
+  },
+  "contact_me": {
+    "title_tag": "作品展示",
+    "main_title": "お問い合わせ",
+    "main_desc": "いつでもソーシャルメディア、電子メール、または電話で連絡できます。",
+    "intro_desc1": "友情提示：ここに提供されている情報は商用目的のみに使用されます。ご質問がある場合は、直接ソーシャルメディアから連絡してください。",
+    "intro_desc2": "本製品を理解し、責任を持って使用していただきありがとうございます。",
+    "contact_info_title": "お問い合わせ先",
+    "table_header1": "連絡項目",
+    "table_header2": "詳細",
+    "contact_item1": "住所",
+    "contact_item2": "タイムゾーン",
+    "contact_item3": "メールアドレス",
+    "contact_detail2": "UTC+8:00（中国標準時）",
+    "contact_remark": "電話番号の取得など、さらなる連絡が必要な場合は、まず電子メールを送信してください。",
+    "social_media_title": "ソーシャルメディア",
+    "social_desc1": "{username} を検索すると自分のソーシャルメディアアカウントを見つけることができます。このユーザー名はほぼすべてのプラットフォームで統一されています。",
+    "social_desc2": "時間が限られている場合、以下に最も頻繁に使用するソーシャルプラットフォームのリンクを記載しています：",
+    "social_table_header1": "ソーシャルプラットフォーム",
+    "social_table_header2": "リンク"
   },
   "home": {
-    "intro_title": "{name} と申します。",
-    "intro_desc": "直感的で、クリーンでモダンな UI デザインを愛する {role} です。"
+    "intro_title": "{name}です、",
+    "intro_desc": "直感的でシンプル、現代的なUIデザインを愛する{role}です。",
+    "favorite_stack": "現在お気に入りの技術スタック/ツール：",
+    "scroll_down": "スクロールして詳細を見る",
+    "get_in_touch": "連絡を取る",
+    "fullstack_developer": "フルスタック開発者"
+  },
+  "app_footer": {
+    "about_me": "自分について",
+    "this_site": "本サイト",
+    "source_code": "ソースコードリポジトリ",
+    "uiverse": "Uiverseコンポーネントライブラリ",
+    "primevue": "PrimeVue"
+  },
+  "profile": {
+    "yourInfo": "あなたの情報",
+    "resetPassword": "パスワードをリセット",
+
+    "username": {
+      "editTip": "クリックしてユーザー名を追加または変更",
+      "desc": "これはコメント投稿時に使用するユーザー名です。設定していない場合はメールアドレスが表示されます。",
+      "dialog": {
+        "title": "ユーザー名を更新",
+        "label": "ユーザー名",
+        "placeholder": "春日野穹",
+        "hint": "ユーザー名を作成するとユーザーのメールアドレスに代わって表示されます。"
+      },
+      "toast": {
+        "warnEmpty": "ユーザー名は必須項目です",
+        "success": "ユーザー名の更新に成功しました {username}",
+        "errorSummary": "エラーが発生しました"
+      }
+    },
+    "userId": {
+      "desc": "本サイトでのユーザーの一意なIDです。変更はできません。"
+    },
+    "createTime": {
+      "desc": "アカウントを作成した日時です。"
+    },
+    "password": {
+      "editTip": "必要な場合はここをクリックしてパスワードをリセット",
+      "dialog": {
+        "title": "パスワードを更新",
+        "oldPwdLabel": "現在のパスワード",
+        "oldPwdPlaceholder": "Previous Password",
+        "newPwdLabel": "新しいパスワード",
+        "newPwdPlaceholder": "New Password",
+        "hint": "新しいパスワードは最低6文字で構成する必要があります。次回ログイン時には新しいパスワードを使用してください。"
+      },
+      "toast": {
+        "warnLength": "新しいパスワードは最低6文字必要です",
+        "success": "パスワードの更新に成功しました",
+        "errorSummary": "エラーが発生しました"
+      }
+    },
+    "notLogin": {
+      "title": "ログインが必要です",
+      "desc": "既にログアウトしています。本サイトのアカウントをお持ちの場合は左側をクリックしてログインしてください。"
+    },
+    "toast": {
+      "errorSummary": "エラーが発生しました"
+    }
+  },
+  "article": {
+    "catalog": "目次",
+    "pageHeader": {
+      "title": "記事管理",
+      "subtitle": "タイトルの通り、ここは記事を管理する場所です。新規作成した記事はデフォルトで非公開設定になっており、各記事に異なるステータスを設定できます。"
+    },
+    "operation": {
+      "addNewArticle": "新しい記事を追加",
+      "resetSearch": "検索をリセット"
+    },
+    "table": {
+      "headers": {
+        "title": "タイトル",
+        "tags": "タグ",
+        "createTime": "作成日時",
+        "status": "ステータス",
+        "operation": "操作"
+      },
+      "empty": {
+        "title": "結果がありません",
+        "desc": "該当する結果が見つかりませんでした。キーワードを変えて試してください"
+      },
+      "tags": {
+        "noTags": "---",
+        "tagPrefix": "#"
+      },
+      "total": "合計：{count}件"
+    },
+    "loading": {
+      "text": "読み込み中..."
+    },
+    "toast": {
+      "loadFailed": "読み込みに失敗しました",
+      "deleteSuccess": "記事を削除しました",
+      "deleteFailed": "削除に失敗しました",
+      "operateSuccess": "操作に成功しました",
+      "operateFailed": "失敗しました"
+    },
+    "confirm": {
+      "deleteHeader": "削除"
+    }
+  },
+  "article_edit": {
+    "pageHeader": {
+      "defaultTitle": "記事タイトル",
+      "subtitle": "右上をクリックして記事のメタ情報を設定"
+    },
+    "operation": {
+      "addNewArticle": "新しい記事を追加",
+      "searchCmdK": "検索 CMD+K"
+    },
+    "metaDialog": {
+      "header": "メタ情報を編集",
+      "labels": {
+        "title": "タイトル",
+        "tags": "タグ",
+        "slug": "スラッグ（任意）",
+        "headerImage": "ヘッダー画像（任意）"
+      }
+    },
+    "tags": {
+      "option": {
+        "newTag": "新規追加",
+        "tagPrefix": "#"
+      },
+      "noTags": "タグが選択されていません",
+      "toast": {
+        "addSuccessSummary": "タグを追加",
+        "noSearchResultWarn": "検索結果がありません。新規追加を試してください"
+      }
+    },
+    "toast": {
+      "loadFailed": "読み込みに失敗しました",
+      "loadArticleFailed": "読み込みに失敗しました。戻って再試行してください",
+      "saveSuccess": "記事の保存に成功しました",
+      "saveFailed": "読み込みに失敗しました",
+      "warnSummary": "警告",
+      "successSummary": "成功",
+      "errorSummary": "エラー"
+    }
+  },
+  "login": {
+    "page": {
+      "title": "NoteForest X",
+      "subtitle": "アカウントでログインまたは登録"
+    },
+    "form": {
+      "labels": {
+        "email": "メールアドレス",
+        "password": "パスワード"
+      },
+      "forgotPwd": "パスワードを忘れましたか？"
+    },
+    "button": {
+      "signIn": "ログイン"
+    },
+    "toast": {
+      "loginSuccessSummary": "ログインに成功しました",
+      "loginSuccessDetail": "{email} おかえりなさい",
+      "loginErrorSummary": "エラーが発生しました"
+    }
+  },
+  "shortcuts": {
+    "header": "ショートカットキー",
+    "description": "ショートカットキーを使用してページを簡単にナビゲート",
+    "quickAccess": {
+      "open": "クイックアクセスを開く",
+      "close": "クイックアクセスを閉じる"
+    },
+    "backHome": "ホームページに戻る",
+    "article": "記事"
+  },
+  "actionCenter": {
+    "title": "コントロールセンター",
+    "msg": "メッセージ",
+    "noMsg": "現在メッセージはありません。:D"
+  },
+  "collection": {
+    "title": "アプリ",
+    "description": "個人プロジェクトと収集したリソースを含みます。リンクまたはカードをクリックすると直接アクセスできます。",
+    "my": "個人プロジェクト",
+    "collected": "収集"
+  },
+  "articleIndex": {
+    "pageTitle": "記事",
+    "pageSubtitle": "記事リストは更新日時順に新しい順に並んでいます。詳細な操作説明は操作ガイドを開いて再度確認できます。",
+    "searchPlaceholder": "検索キーワードを入力してください",
+    "recentSearches": "最近の検索",
+    "clearSearchHistory": "検索履歴をクリア",
+    "noRecentSearches": "最近の検索履歴はありません",
+    "searchToSearch": "Enterキーで検索",
+    "arrowToNavigate": "上下キーでナビゲート",
+    "emptyArticleList": "記事リストが空であるか、該当する記事が見つかりません",
+    "searchError": "検索中にエラーが発生しました",
+    "loadFailed": "読み込みに失敗しました",
+    "openSearchBox": "Meta+Kキーを押して検索ボックスを開く",
+    "resetSearch": "Meta+Rキーを押して検索をリセット",
+    "clickTagToSearch": "記事のタグをクリックして、そのタグが使用されている記事を検索"
   }
 }

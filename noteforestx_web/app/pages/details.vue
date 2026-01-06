@@ -45,6 +45,12 @@ onMounted(() => {
         <p>{{ t('details.background_desc') }}</p>
       </section>
 
+      <section class="space-y-2 animate-card-details">
+        <h2 class="text-xl font-bold opacity-90">{{ t('layout.sponsor') }}</h2>
+        <p class="font-mono">0xaa53b6eb01103118a909a018a8c24d480e47bf7e <span class="font-bold">(Ethereum)</span></p>
+        <p class="font-mono">0xaa53b6eb01103118a909a018a8c24d480e47bf7e <span class="font-bold">(Arbitrum)</span></p>
+      </section>
+
       <!-- 技術棧 -->
       <section class="space-y-4 animate-card-details">
         <h2 class="text-xl font-bold opacity-90">{{ t('details.tech_stack') }}</h2>

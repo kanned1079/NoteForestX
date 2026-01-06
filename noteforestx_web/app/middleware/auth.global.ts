@@ -21,8 +21,6 @@ export default defineNuxtRouteMiddleware((to) => {
 
     if (path.includes('/admin') && (!isAuthed || !isAdmin)) {
         console.log('sorry, you have no admin privilege.')
-        // return navigateTo(`/${to.path.split('/')[1]}/`)
-        // return false
         return navigateTo(`/`)
     }
 })

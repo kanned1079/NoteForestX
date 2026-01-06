@@ -201,12 +201,13 @@ onMounted(async () => {
       <div
           class="
     w-full max-w-[1200px]
-    flex items-center
+    flex flex-col md:flex-row
+    items-center
   "
       >
         <!-- 左侧：文字 -->
         <div
-            class="w-full md:w-1/2 flex justify-center text-slate-900 dark:text-slate-100 pl-4"
+            class="w-full md:flex-1 flex justify-start text-slate-900 dark:text-slate-100 pl-4"
         >
           <div class="w-full max-w-md">
             <!-- 标题 -->
@@ -214,17 +215,6 @@ onMounted(async () => {
               <p class="text-2xl sm:text-3xl md:text-4xl">
                 hi ! ✌️
               </p>
-
-<!--              <p class="font-bold text-4xl sm:text-5xl md:text-5xl">-->
-<!--                I'm <span class="text-[#1e88a8] underline">kanned1079</span>,-->
-<!--              </p>-->
-
-<!--              <div class="mt-6 text-base sm:text-lg">-->
-<!--                a <span class="font-bold">FullStack Developer</span> who loves intuitive,-->
-<!--              </div>-->
-<!--              <div class="text-base sm:text-lg">-->
-<!--                clean and modern UI design.-->
-<!--              </div>-->
 
               <p class="font-bold text-4xl sm:text-5xl md:text-5xl">
                 <i18n-t keypath="home.intro_title" tag="span">
@@ -260,9 +250,6 @@ onMounted(async () => {
 
             <!-- 技术栈 -->
             <div class="mt-14 animated-card-firstpage">
-<!--              <p class="text-sm opacity-80 mb-2">-->
-<!--                current favorite tech stack / tools:-->
-<!--              </p>-->
               <p class="text-sm opacity-80 mb-2">
                 {{ t('home.favorite_stack') }}
               </p>

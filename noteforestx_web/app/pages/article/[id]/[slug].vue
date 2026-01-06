@@ -10,12 +10,12 @@ import { useToast } from "primevue/usetoast";
 import type { Article } from "~/types/article";
 import useThemeStore from "~/store/themeStore";
 import useActionStore from "~/store/actionStore";
+import {useI18n} from "vue-i18n";
 
 import '~/assets/css/md-style.css'
 import {useDarkMode} from "~/composables/useDarkMode";
 
-/* ---------------- 基础逻辑 ---------------- */
-
+const {t} = useI18n()
 const themeStore = useThemeStore()
 const actionStore = useActionStore()
 const route = useRoute();
@@ -39,8 +39,6 @@ const currentArticle = ref<Article>({
 
 const { isDarkMode } = useDarkMode();
 
-/* ---------------- 动画 ---------------- */
-
 useScrollFadeIn({
   selector: '.animate-card-article-id',
   direction: 'up',
@@ -51,15 +49,13 @@ useScrollFadeIn({
   useScrollTrigger: false
 });
 
-/* ---------------- 拉文章 ---------------- */
-
 const fetchArticleById = async (id: string) => {
   try {
     const res = await $fetch<{
       id: string;
       message: string;
       article: Article | null;
-    }>(`/api/admin/article/${id}`);
+    }>(`/api/article/${id}`);
 
     if (res.article) {
       currentArticle.value = res.article;
@@ -67,7 +63,7 @@ const fetchArticleById = async (id: string) => {
   } catch (err: any) {
     toast.add({
       severity: "error",
-      summary: "加载失败，请返回重试",
+      summary: t('article.toast.loadFailed'),
       detail: String(err),
       life: 4500
     });
@@ -75,11 +71,6 @@ const fetchArticleById = async (id: string) => {
   }
 };
 
-/* ---------------- 快捷键核心逻辑 ---------------- */
-
-/**
- * 判断当前是否在输入环境中
- */
 const isTypingTarget = (target: EventTarget | null) => {
   if (!(target instanceof HTMLElement)) return false;
 
@@ -93,7 +84,6 @@ const isTypingTarget = (target: EventTarget | null) => {
 };
 
 const onKeydown = (e: KeyboardEvent) => {
-  // 只处理 /
   if (e.key !== '/') return;
 
   if (e.shiftKey && e.key.toLowerCase() === 'q') {
@@ -101,21 +91,15 @@ const onKeydown = (e: KeyboardEvent) => {
     return router.back()
   }
 
-  // 输入状态下放行
   if (isTypingTarget(e.target)) return;
 
-  // 阻止浏览器滚动 / 查找
   e.preventDefault();
-
-  // 切换目录
   visible.value = !visible.value;
 };
 
 watch(() => actionStore.triggerShowCatalog, (newVal: boolean) => {
   if (newVal) {
     actionStore.resetTriggerShowCatalog()
-    // if (articleId === 'new') return saveNewArticle()
-    // else return  saveArticle()
     visible.value = !visible.value
   }
 })
@@ -128,15 +112,7 @@ const toPageTop = () => {
   })
 }
 
-/* ---------------- 生命周期 ---------------- */
-
-
 fetchArticleById(articleId);
-
-
-onBeforeMount(() => {
-
-})
 
 onMounted(() => {
   themeStore.setShowCatalog(true)
@@ -145,8 +121,6 @@ onMounted(() => {
     `单击目录区域的文章标题可以回到顶部`,
     `点击文章中的Tag以获取TagId`
   ]
-  // 根据屏幕自动切换 Drawer 方向（可选）
-  // position.value = window.innerWidth < 1024 ? 'bottom' : 'left';
 
   window.addEventListener('keydown', onKeydown);
 });
@@ -167,10 +141,11 @@ onUnmounted(() => {
       class="pt-[40px] px-4 md:px-6 lg:px-8"
   >
     <div class="card flex justify-center">
-      <Drawer v-model:visible="visible" header="目录" :position="position" class="!w-full md:!w-80 lg:!w-[30rem]">
+      <Drawer v-model:visible="visible" :header="t('article.catalog')" :position="position" class="!w-full md:!w-80 lg:!w-[30rem]">
         <div>
           <p class="text-xl font-bold mt-6 mb-4 hover:underline cursor-pointer" @click="toPageTop">{{ currentArticle.title }}</p>
           <MdCatalog :editorId="id" scrollElement="html" />
+          <p class="mt-4 text-xs font-mono opacity-50">{{ articleId }}</p>
         </div>
       </Drawer>
     </div>
@@ -179,7 +154,7 @@ onUnmounted(() => {
     <div class="flex gap-6">
 
       <!-- 正文 -->
-      <main class="flex-1 min-w-0 pb-[120px]">
+      <main class="flex-1 min-w-0">
         <div class="mx-auto max-w-[720px] lg:max-w-[900px] animate-card-article-id">
 
           <ArticleHeader
@@ -194,9 +169,9 @@ onUnmounted(() => {
               :theme="isDarkMode ? 'dark' : undefined"
               preview-theme="github"
           />
+
         </div>
       </main>
-
     </div>
   </div>
 </template>

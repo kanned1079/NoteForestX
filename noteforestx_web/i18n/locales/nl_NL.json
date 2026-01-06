@@ -1,19 +1,438 @@
 {
   "layout": {
-    "homePage": "Home Page",
-    "knowledgeLib": "Knowledge Library",
-    "illustrationLib": "Illustration Collection",
-    "aboutMe": "About Me",
-    "myAccount": "My Account",
-    "logout": "Logout",
-    "statistic": "Statistical Data",
-    "knowledgeMgr": "Article Management",
-    "illustrationMgr": "Illustration Management",
-    "sponsor": "Sponsor"
+    "homePage": "Startpagina",
+    "knowledgeLib": "Artikel",
+    "illustrationLib": "Illustratiecollectie",
+    "aboutMe": "Over Mij",
+    "myAccount": "Mijn Account",
+    "logout": "Uitloggen",
+    "logoutSuccess": "Uitgelogd",
+    "statistic": "Statistieken",
+    "knowledgeMgr": "Artikelbeheer",
+    "illustrationMgr": "Illustratiebeheer",
+    "sponsor": "Sponsoren",
+    "details": "Implementatie",
+    "changLang": "Taal Wijzigen",
+    "editMeta": "Meta Bewerken",
+    "save": "Opslaan"
   },
   "appMenu": {
-    "general": "General",
-    "profile": "User Portal",
-    "admin": "Admin Portal"
+    "general": "Algemeen",
+    "profile": "Gebruikersportaal",
+    "admin": "Beheerdersportaal",
+    "lang": "Taal",
+    "userRole": "Gebruiker",
+    "adminRole": "Beheerder",
+    "noLoginRole": "Klik om in te loggen"
+  },
+  "universal": {
+    "pagination": {
+      "itemsPerPage": "{size} Items/Pagina"
+    },
+    "showSize": "Weergaveaantal",
+    "errToast": "Fout Opgehouden",
+    "successToast": "Succes",
+    "warnToast": "Waarschuwing",
+    "pages": "Paginanummers",
+    "errToastMessage": "Foutbericht: ",
+    "pageF": "Vorige Pagina",
+    "pageA": "Volgende Pagina",
+    "current": "Huidig",
+    "total": "Totaal",
+    "info": "Informatie",
+    "formNotInvalid": "Formulier voldoet niet aan de eisen, controleer de invoervelden. (400)",
+    "overIndex": "Overschrijdt het toegestane paginanummerindex",
+    "illustration": {
+      "illustrationName": "Meta Info Illustratiecollectie",
+      "name": "Naam Illustratiecollectie",
+      "link": "Originele Link",
+      "description": "Beschrijving",
+      "original": "Bron",
+      "isLimited": "Is Beperkt (NSFW)",
+      "isLimitedHint": "Bij selectie is deze illustratiecollectie voor sommige gebruikers onzichtbaar.",
+      "tags": "Tags",
+      "author": "Auteur",
+      "eshi": "Illustrator",
+      "relatedIllustrationCount": "Aantal Gerelateerde Illustraties",
+      "createdAt": "Aanmaaktijd",
+      "updatedAt": "Bijwerkingstijd",
+      "edit": "Bewerken",
+      "delete": "Verwijderen",
+      "deleteConfirm": "Verwijdering Bevestigen",
+      "save": "Opslaan",
+      "cancel": "Annuleren",
+      "notFound": "Geen Inhoud"
+    }
+  },
+  "admin": {
+    "illustration": {
+      "editIllustrationTitle": "Illustratiecollectie-info bewerken. Ondersteunt bijwerken van naam, beschrijving, bron, NSFW-status, tags en auteur. Maak goed gebruik van de zoekfunctie voor bepaalde functies.",
+      "createIllustrationTitle": "Nieuwe Illustratie Toevoegen",
+      "createIllustrationSubtitle": "De nieuwe illustratie wordt direct toegevoegd aan de voor gebruikers zichtbare illustratielijst. Bij ingestelde NSFW-status is deze voor sommige gebruikers onzichtbaar.",
+      "selectTags": "Tags Selecteren",
+      "imageUploadedTitle": "Klik om Bestand te Uploaden",
+      "noImageUploaded": "Controleer de bestandsnaam, afbeeldingsformaat en volgorde voor upload. De eerste afbeelding wordt als omslag van de illustratiecollectie gebruikt.",
+      "uploadImageDescription": "Klik op de knop om illustratiebestanden toe te voegen. Gangbare afbeeldingsformaten worden ondersteund. Zorg voor een juiste bestandsnaam en upload geen gevoelige gegevens, zoals bankrekeningnummers, wachtwoorden en creditcardbeveiligingscodes.",
+      "tagSelectorOpenBtn": "Selector Openen",
+      "tagSearchInputPlaceholder": "Zoek naar Tag-naam en druk op Enter om te zoeken　bv: {name} ...",
+      "authorSearchInputPlaceholder": "Zoek naar Auteur-naam en druk op Enter om te zoeken　bv: {name} ...",
+      "tagsSearchNotFound": "Geen Zoekresultaten",
+      "tagsSearchNotFoundHint": "Geen zoekresultaten voor de Tag met de naam {name}. Probeer een ander trefwoord. Of gebruik Meta+Enter om aan te maken.",
+      "authorsSearchNotFoundHint": "Geen zoekresultaten voor de Auteur met de naam {name}. Probeer een ander trefwoord. Of gebruik Meta+Enter om aan te maken.",
+      "tagMgr": "Tagbeheer & Toevoeging",
+      "authorMgr": "Auteurbeheer & Toevoeging",
+      "toggleCreateMode": "Schakel naar Aanmaakmodus",
+      "esc": "Huidig Venster Sluiten",
+      "tag": {
+        "newTagName": "Nieuwe Tag-naam",
+        "copySuccess": "Succesvol naar Klembord Gekopieerd {text}",
+        "copyFailure": "Kopieerfout {msg}",
+        "tagNameNotValid": "Tag-naam is ongeldig of dubbel. Controleer en probeer opnieuw.",
+        "editTagNameHint": "*Alleen de Tag-naam bijwerken. Alle gekoppelde werken worden gewijzigd.",
+        "editTagNameSuccessHint": "Tag-naam succesvol bijgewerkt",
+        "deleteTagSuccessHint": "Tag succesvol verwijderd",
+        "deleteTagConflict": "Deze Tag is gekoppeld aan illustratiecollecties en kan niet worden verwijderd.",
+        "noTagsSatisfied": "Geen overeenkomende tags gevonden?",
+        "noAuthorSatisfied": "Geen overeenkomende auteurs gevonden?",
+        "authorAdded": "Nieuwe Tag succesvol toegevoegd",
+        "tagNameConflict": "Conflict opgetreden. Bestaat deze Tag al?"
+      },
+      "author": {
+        "editTagNameHint": "*Alleen de Auteur-naam bijwerken. Alle gekoppelde werken worden gewijzigd.",
+        "deleteTagSuccessHint": "Verwijdering Succesvol",
+        "editSuccess": "Bewerking Succesvol",
+        "noAuthorSatisfied": "Geen overeenkomende auteurs gevonden?",
+        "authorNameConflict": "Conflict opgetreden. Bestaat deze auteur al?",
+        "authorAdded": "Auteur succesvol toegevoegd",
+        "emptySearchHint": "Voer ten minste één trefwoord in om door te gaan naar de stap voor het aanmaken van een nieuwe auteur.",
+        "authorName": "Auteur-naam",
+        "homeLink": "Startpagina Link"
+      }
+    }
+  },
+  "details": {
+    "open_source": "Open Source",
+    "open_source_desc": "Dit project is open source op GitHub",
+    "open_source_link": "https://github.com/kanned1079/NoteForestX",
+    "background_title": "Achtergrond en Doelen",
+    "background_desc": "Het doel van deze blog is om dagelijks leren, technische delen en projectervaringen vast te leggen. Ik hoop via dit project de technieken die betrokken zijn bij full-stack ontwikkeling, systeemontwerp en DevOps-implementatie te oefenen. In de oude versie van de blog waren sommige functionele ontwerpen relatief eenvoudig. Daarom corrigeert de gloednieuwe NoteForest X-versie de bugs uit de oude versie en breidt deze uit met enkele nieuwe functies.",
+    "tech_stack": "Technologie Stack",
+    "frontend_title": "Frontend Sectie",
+    "frontend_list_1": "Nuxt4 —— Wordt gebruikt om SSR/SSG-functionaliteiten te bieden",
+    "frontend_list_2": "Vue3 + TypeScript —— Kernontwikkelingsframework en programmeertaal",
+    "frontend_list_3": "Vite —— Fungeert als een hoogpresterend bouwmiddel",
+    "frontend_list_4": "PrimeVue —— Primaire componentbibliotheek",
+    "frontend_list_5": "md-editor-v3 —— Wordt gebruikt voor Markdown-teksteditie en -weergave",
+    "frontend_list_6": "GSAP, Pinia, Tailwind CSS, Flag Icons —— Animatie-, statusbeheers-, opmaak- en icoonbibliotheken",
+    "frontend_desc": "De reden om voor Vue te kiezen is zijn lichtgewicht architectuur, hoge efficiëntie en uitgebreide ecosystem. Daarnaast gebruik ik Vue al langere tijd en ben ik zeer vertrouwd met zijn ontwikkelingsparadigma.",
+    "backend_title": "Backend Sectie",
+    "backend_list_1": "Golang —— Hoogpresterende, beknopte kernbackendprogrammeertaal",
+    "backend_list_2": "Aangepaste REST API op basis van GIN —— Biedt gegevensinterfaces voor artikelen, illustratiecollecties en gebruikerssystemen",
+    "backend_list_3": "Redis —— Wordt gebruikt voor caching, sessieopslag en queryversnelling",
+    "backend_list_4": "MySQL/MariaDB —— Persistente opslag voor de overeenkomstige paden van artikelen en illustraties",
+    "backend_list_5": "Anubis —— Lichtgewicht web AI-firewallhulpprogramma",
+    "backend_list_6": "Docker + Nginx + pm2 —— Onderliggende tools voor implementatie en runtime",
+    "backend_desc": "Het kernontwerpphilosophie van de backend is om eenvoud en hoge efficiëntie te behouden, en de bedrijfslogica zoveel mogelijk van de gegevensverwerking te scheiden in verschillende lagen om de onderhoudbaarheid te verbeteren.",
+    "tool_image_alt": "gereedschappenlijst"
+  },
+  "my_design": {
+    "section1_tag": "Beknopt & Intuïtief",
+    "section1_title": "Opvallend, modern en minimalistisch ontwerp.",
+    "section1_desc": "Houd de gebruikersinterface beknopt en modern zonder de gebruikerservaring in gevaar te brengen.",
+    "step0_title": "Lettertypeontwerp",
+    "step0_content": "Selecteer lettertypetypes, lettergrootten en letterdikkes.",
+    "step1_title": "Afstandconfiguratie",
+    "step1_content": "Pas elementposities aan en stel passende afstanden tussen elementen in.",
+    "step2_title": "Kleurkeuze",
+    "step2_content": "Kies een kleurenpalet met voldoende contrastverhouding.",
+    "step3_title": "Visuele Effecten",
+    "step3_content": "Voeg visuele effecten toe zoals randen, schaduwen en afgeronde hoeken.",
+    "section2_tag": "Gedetailleerde Aandacht voor Detail",
+    "section2_title": "Beschikt over scherp inzicht in details",
+    "section2_desc": "Focus op operationele gemakzaken, consistentie van de gebruikersinterface en optimaliseer voortdurend de gebruikerservaring.",
+    "section3_tag": "Esthetisch en Efficiënt",
+    "section3_title": "Beknopte, begrijpelijke en prestatiegeoptimaliseerde code",
+    "section3_desc": "Het schrijven van schone en opgeruimde code is het belangrijkste principe, terwijl ook maximaal prestatieoptimalisatie in acht wordt genomen."
+  },
+  "my_work": {
+    "header_title": "Vaardigheden",
+    "title_tag": "Werken",
+    "main_title": "Vaardigheden & Tools",
+    "main_desc": "Blader door de programmeertalen, bibliotheken en tools die ik heb gebruikt.",
+    "intro": "Ik ben al ongeveer 9 jaar actief in webontwikkeling, heb verschillende programmeertalen en technologiestacks geprobeerd, zowel backend- als frontendontwikkeling gedekt. Hoewel het gebied van webontwikkeling uitgebreid is, ben ik met name geïnteresseerd in en gericht op frontendontwikkeling en UI/UX-ontwerp.",
+    "app_dev_title": "Applicatieontwikkelaar",
+    "app_dev_desc1": "Ik hou ervan om schone, minimalistische, esthetische en waardevolle werken te creëren, die natuurlijk ook gemakkelijk te gebruiken zijn.",
+    "app_dev_desc2": "Ik geniet er vooral van om websites met rijke UI-componenten te bouwen, inclusief:",
+    "app_dev_item1": "Webapplicaties",
+    "app_dev_item2": "Documentatie en Instructiepagina's",
+    "app_dev_item3": "CMS-inhoudsindelingen",
+    "app_dev_item4": "Backend Dashboardindelingen",
+    "app_dev_item5": "En Andere",
+    "tool_intro": "Maar ik hou er ook nog steeds van om eenvoudige webpagina's te maken, zoals landingspagina's. Wat zijn de tools waarmee ik het meest vertrouwd ben tijdens het maken van websites?",
+    "vue_tech_title": "Vue & Nuxt.js met TypeScript",
+    "vue_tech_desc1": "Single-page websites zijn mijn specialiteit, en Vue.js is als mijn toverstaf. Ik gebruik het al jaren en heb steeds mooiere werken gemaakt.",
+    "vue_tech_desc2": "Allereerst, wat betreft programmeertalen, ben ik gewend om TypeScript te gebruiken, hoewel PHP en Python ook voor webontwikkeling kunnen worden gebruikt. TypeScript is al ongeveer 7 jaar bij me.",
+    "backend_tech_title": "Golang & Nest.js",
+    "backend_tech_desc": "Ik gebruik ze om schaalbare en hoogpresterende backendservices te bouwen, die alles dekken van API-ontwerp tot gegevensbewerkingen. Aanvankelijk was ik gericht op backendontwikkeling, maar later realiseerde ik me dat CLI niet alle behoeften kon voldoen, dus begon ik met het leren van GUI-ontwikkeling.",
+    "ops_title": "Operationservaring",
+    "ops_desc": "Initieel ontstaan uit een grote interesse in de IT-industrie, kwam ik op jonge leeftijd in contact met Linux. Na enkele jaren van leren heb ik nu meerdere services geïmplementeerd met virtualisatie en Linux, inclusief maar niet beperkt tot edge computing-services, bestandmap programma's, persoonlijke blogs, Zabbix-monitoring, SoftEtherVPN, enz.",
+    "detail_summary_title": "Details & Samenvatting",
+    "detail_summary_desc": "Ik gebruik tags om alle gegevens voor gemakkelijk lezen weer te geven. De onderste horizontale lijn geeft het gebruiksfrequentie aan, bijvoorbeeld:",
+    "usage_example1": "Vaak Gebruikt",
+    "usage_example2": "Af en Toe Gebruikt",
+    "program_lang_title": "Programmeertalen",
+    "lang_ts": "TypeScript",
+    "lang_js": "JavaScript",
+    "lang_go": "Golang",
+    "lang_java": "Java",
+    "lang_shell": "Shell",
+    "tech_tools_title": "Technologieën & Tools",
+    "tool_tailwind": "Tailwind CSS",
+    "tool_naive": "NaiveUI",
+    "tool_prime": "PrimeVue",
+    "tool_material": "MaterialUI",
+    "tool_vue": "Vue",
+    "tool_nuxt": "Nuxt.js",
+    "tool_electron": "Electron",
+    "tool_pinia": "pinia",
+    "tool_react": "React",
+    "tool_gin": "GIN",
+    "tool_gorm": "gORM",
+    "tool_grpc": "gRPC",
+    "tool_redis": "Redis",
+    "tool_mysql": "MySQL/MariaDB",
+    "tool_mongo": "MongoDB",
+    "tool_docker": "Docker",
+    "tool_nginx": "Nginx",
+    "software_tools_title": "Software & Tools",
+    "software_idea": "JetBrains IntelliJ IDEA",
+    "software_vscode": "Visual Studio Code",
+    "software_vim": "Vim",
+    "software_git": "Git",
+    "software_mysqlworkbench": "MySQL Workbench",
+    "software_ps": "Adobe PhotoShop",
+    "software_ai": "Adobe Illustrator"
+  },
+  "contact_me": {
+    "title_tag": "Werkpresentatie",
+    "main_title": "Neem Contact Op Met Mij",
+    "main_desc": "U kunt me op elk moment bereiken via sociale media, e-mail of telefoon.",
+    "intro_desc1": "Vriendelijke herinnering: De informatie die hier wordt verstrekt is uitsluitend voor commercieel gebruik. Als u vragen heeft, aarzel dan niet om direct contact met me op te nemen via mijn sociale media.",
+    "intro_desc2": "Bedankt voor het begrijpen en verantwoordelijk gebruiken van dit product.",
+    "contact_info_title": "Contactgegevens",
+    "table_header1": "Contactitem",
+    "table_header2": "Details",
+    "contact_item1": "Adres",
+    "contact_item2": "Tijdzone",
+    "contact_item3": "E-mail",
+    "contact_detail2": "UTC+8:00 (Chinees Standaardtijd)",
+    "contact_remark": "Voor verdere contact, zoals het verkrijgen van mijn telefoonnummer, stuur me eerst een e-mail.",
+    "social_media_title": "Sociale Media",
+    "social_desc1": "U kunt mijn sociale media-accounts vinden door te zoeken naar {username}, die op bijna alle platforms consistent is.",
+    "social_desc2": "Als u haast heeft, heb ik hieronder de links naar de sociale platforms opgesomd die ik het meest gebruik:",
+    "social_table_header1": "Sociaal Platform",
+    "social_table_header2": "Link"
+  },
+  "home": {
+    "intro_title": "Ik ben {name},",
+    "intro_desc": "een {role} die houdt van intuïtief, schoon en modern UI-ontwerp.",
+    "favorite_stack": "momenteel favoriete technologiestack / tools:",
+    "scroll_down": "Scroll naar beneden voor meer informatie",
+    "get_in_touch": "Neem Contact Op",
+    "fullstack_developer": "Fullstack Ontwikkelaar"
+  },
+  "app_footer": {
+    "about_me": "Over Mij",
+    "this_site": "Deze Site",
+    "source_code": "Broncode Repository",
+    "uiverse": "Uiverse Componentbibliotheek",
+    "primevue": "PrimeVue"
+  },
+  "profile": {
+    "yourInfo": "Uw Profiel",
+    "resetPassword": "Wachtwoord Resetten",
+    "username": {
+      "editTip": "Klik om uw gebruikersnaam toe te voegen of te wijzigen",
+      "desc": "Dit is de gebruikersnaam die u gebruikt bij het plaatsen van opmerkingen. Als u deze niet heeft ingesteld, wordt uw e-mailadres weergegeven.",
+      "dialog": {
+        "title": "Gebruikersnaam Bijwerken",
+        "label": "Gebruikersnaam",
+        "placeholder": "Kasugano Sora",
+        "hint": "Na het aanmaken van een gebruikersnaam zal deze uw gebruikerse-mail vervangen voor weergave."
+      },
+      "toast": {
+        "warnEmpty": "Gebruikersnaam mag niet leeg zijn",
+        "success": "Gebruikersnaam succesvol bijgewerkt {username}",
+        "errorSummary": "Er is een fout opgetreden"
+      }
+    },
+    "userId": {
+      "desc": "Uw unieke gebruikers-ID op deze site, die niet kan worden gewijzigd."
+    },
+    "createTime": {
+      "desc": "De tijd waarop u uw account hebt aangemaakt."
+    },
+    "password": {
+      "editTip": "Indien nodig, tik hier om uw wachtwoord te resetten.",
+      "dialog": {
+        "title": "Wachtwoord Bijwerken",
+        "oldPwdLabel": "Oud Wachtwoord",
+        "oldPwdPlaceholder": "Vorige Wachtwoord",
+        "newPwdLabel": "Nieuw Wachtwoord",
+        "newPwdPlaceholder": "Nieuw Wachtwoord",
+        "hint": "Het nieuwe wachtwoord moet minimaal 6 tekens lang zijn. U gebruikt het nieuwe wachtwoord bij de volgende aanmelding."
+      },
+      "toast": {
+        "warnLength": "Het nieuwe wachtwoord moet minimaal 6 tekens lang zijn",
+        "success": "Wachtwoord succesvol bijgewerkt",
+        "errorSummary": "Er is een fout opgetreden"
+      }
+    },
+    "notLogin": {
+      "title": "Inloggen Vereist",
+      "desc": "U bent uitgelogd. Als u een account op deze site heeft, klik dan links om in te loggen."
+    },
+    "toast": {
+      "errorSummary": "Er is een fout opgetreden"
+    }
+  },
+  "article": {
+    "catalog": "Catalogus",
+    "pageHeader": {
+      "title": "Artikelbeheer",
+      "subtitle": "Zoals de titel al aangeeft, is dit de plek waar u artikelen beheert. Nieuw aangemaakte artikelen zijn standaard onzichtbaar, en u kunt verschillende statussen voor elk artikel instellen."
+    },
+    "operation": {
+      "addNewArticle": "Nieuw Artikel Toevoegen",
+      "resetSearch": "Zoekopdracht Resetten"
+    },
+    "table": {
+      "headers": {
+        "title": "Titel",
+        "tags": "Tags",
+        "createTime": "Aanmaaktijd",
+        "status": "Status",
+        "operation": "Operatie"
+      },
+      "empty": {
+        "title": "Geen Resultaten",
+        "desc": "Geen overeenkomstige resultaten gevonden. Probeer een ander trefwoord."
+      },
+      "tags": {
+        "noTags": "---",
+        "tagPrefix": "#"
+      },
+      "total": "Totaal: {count}"
+    },
+    "loading": {
+      "text": "Laden..."
+    },
+    "toast": {
+      "loadFailed": "Laden Mislukt",
+      "deleteSuccess": "Artikel is verwijderd",
+      "deleteFailed": "Verwijdering Mislukt",
+      "operateSuccess": "Operatie Succesvol",
+      "operateFailed": "Mislukt"
+    },
+    "confirm": {
+      "deleteHeader": "Verwijderen"
+    }
+  },
+  "article_edit": {
+    "pageHeader": {
+      "defaultTitle": "Artikel Titel",
+      "subtitle": "Klik rechtsboven om de artikelmeta-informatie in te stellen"
+    },
+    "operation": {
+      "addNewArticle": "Nieuw Artikel Toevoegen",
+      "searchCmdK": "Zoeken CMD+K"
+    },
+    "metaDialog": {
+      "header": "Meta Bewerken",
+      "labels": {
+        "title": "Titel",
+        "tags": "Tags",
+        "slug": "Slug (Optioneel)",
+        "headerImage": "Kopafbeelding (Optioneel)"
+      }
+    },
+    "tags": {
+      "option": {
+        "newTag": "Nieuw",
+        "tagPrefix": "#"
+      },
+      "noTags": "Nog geen tags geselecteerd",
+      "toast": {
+        "addSuccessSummary": "Tag Toevoegen",
+        "noSearchResultWarn": "Geen zoekresultaten gevonden. U kunt proberen een nieuwe toe te voegen."
+      }
+    },
+    "toast": {
+      "loadFailed": "Laden Mislukt",
+      "loadArticleFailed": "Laden mislukt. Ga terug en probeer opnieuw.",
+      "saveSuccess": "Artikel succesvol opgeslagen",
+      "saveFailed": "Laden Mislukt",
+      "warnSummary": "Waarschuwing",
+      "successSummary": "Succes",
+      "errorSummary": "Fout"
+    }
+  },
+  "login": {
+    "page": {
+      "title": "NoteForest X",
+      "subtitle": "Log in of registreer uw account"
+    },
+    "form": {
+      "labels": {
+        "email": "E-mailadres",
+        "password": "Wachtwoord"
+      },
+      "forgotPwd": "Wachtwoord Vergeten?"
+    },
+    "button": {
+      "signIn": "Aanmelden"
+    },
+    "toast": {
+      "loginSuccessSummary": "Aanmelding Succesvol",
+      "loginSuccessDetail": "Welkom terug {email}",
+      "loginErrorSummary": "Er is een fout opgetreden"
+    }
+  },
+  "shortcuts": {
+    "header": "Sneltoetsen",
+    "description": "Navigeer gemakkelijk door de site met behulp van toetsenbordkorte commando's.",
+    "quickAccess": {
+      "open": "Snelle Toegang Openen",
+      "close": "Snelle Toegang Sluiten"
+    },
+    "backHome": "Terug Naar Startpagina",
+    "article": "Artikel"
+  },
+  "actionCenter": {
+    "title": "Actiecentrum",
+    "msg": "Bericht",
+    "noMsg": "Helaas, er zijn geen berichten voor u. :D"
+  },
+  "collection": {
+    "title": "App",
+    "description": "Omvat bronnen met betrekking tot enkele persoonlijke projecten en verzamelingen. Klik op de link of kaart om direct toegang te krijgen.",
+    "my": "Persoonlijke Projecten",
+    "collected": "Verzameling"
+  },
+  "articleIndex": {
+    "pageTitle": "Artikelen",
+    "pageSubtitle": "De artikellijst is gesorteerd op bijwerkingstijd van nieuw naar oud. U kunt de bewerkingsgids raadplegen voor gedetailleerde instructies.",
+    "searchPlaceholder": "Voer zoektermen in",
+    "recentSearches": "Recente Zoekopdrachten",
+    "clearSearchHistory": "Zoekgeschiedenis Wissen",
+    "noRecentSearches": "Geen recente zoekopdrachten",
+    "searchToSearch": "Druk op Enter om te zoeken",
+    "arrowToNavigate": "Gebruik pijltjestoetsen om te navigeren",
+    "emptyArticleList": "Artikellijst is leeg of geen overeenkomende artikelen gevonden",
+    "searchError": "Er is een fout opgetreden tijdens het zoeken",
+    "loadFailed": "Laden Mislukt",
+    "openSearchBox": "Druk op Meta+K om het zoekvak te openen",
+    "resetSearch": "Druk op Meta+R om de zoekopdracht te resetten",
+    "clickTagToSearch": "Klik op de tag van het artikel om te zoeken naar artikelen die deze tag gebruiken"
   }
 }

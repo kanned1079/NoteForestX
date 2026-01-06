@@ -1,19 +1,438 @@
 {
   "layout": {
-    "homePage": "Home Page",
-    "knowledgeLib": "Knowledge Library",
-    "illustrationLib": "Illustration Collection",
-    "aboutMe": "About Me",
-    "myAccount": "My Account",
-    "logout": "Logout",
-    "statistic": "Statistical Data",
-    "knowledgeMgr": "Article Management",
-    "illustrationMgr": "Illustration Management",
-    "sponsor": "Sponsor"
+    "homePage": "Etusivu",
+    "knowledgeLib": "Artikkeli",
+    "illustrationLib": "Illustraatiokokoelma",
+    "aboutMe": "Minusta",
+    "myAccount": "Tili",
+    "logout": "Kirjaudu Ulos",
+    "logoutSuccess": "Uloskirjautuminen Onnistui",
+    "statistic": "Tilastot",
+    "knowledgeMgr": "Artikkelinhallinta",
+    "illustrationMgr": "Illustraatiokokoelmienhallinta",
+    "sponsor": "Sponsori",
+    "details": "Toteutus",
+    "changLang": "Vaihda Kieli",
+    "editMeta": "Muokkaa Meta-Tietoja",
+    "save": "Tallenna"
   },
   "appMenu": {
-    "general": "General",
-    "profile": "User Portal",
-    "admin": "Admin Portal"
+    "general": "Yleiset",
+    "profile": "Käyttäjäportaali",
+    "admin": "Ylläpitäjäportaali",
+    "lang": "Kieli",
+    "userRole": "Käyttäjä",
+    "adminRole": "Ylläpitäjä",
+    "noLoginRole": "Klikkaa Kirjautuaksesi"
+  },
+  "universal": {
+    "pagination": {
+      "itemsPerPage": "{size} Kohdetta/Sivu"
+    },
+    "showSize": "Näytettävien Määrä",
+    "errToast": "Virhe Ilmeni",
+    "successToast": "Onnistui",
+    "warnToast": "Varoitus",
+    "pages": "Sivunumero",
+    "errToastMessage": "Virheviesti: ",
+    "pageF": "Edellinen Sivu",
+    "pageA": "Seuraava Sivu",
+    "current": "Nykyinen",
+    "total": "Yhteensä",
+    "info": "Tiedot",
+    "formNotInvalid": "Lomake ei täytä vaatimuksia, tarkista syöttökentät. (400)",
+    "overIndex": "Ylittää sallitun sivunumeroindeksin",
+    "illustration": {
+      "illustrationName": "Illustraatiokokoelman Meta-Tiedot",
+      "name": "Illustraatiokokoelman Nimi",
+      "link": "Alkuperäinen Linkki",
+      "description": "Kuvaus",
+      "original": "Lähde",
+      "isLimited": "Onko Rajoitettu (NSFW)",
+      "isLimitedHint": "Jos valittu, tämä illustraatiokokoelma on näkymätön osalle käyttäjiä.",
+      "tags": "Tunnisteet",
+      "author": "Tekijä",
+      "eshi": "Illustraattori",
+      "relatedIllustrationCount": "Liittyvien Illustraatioiden Lukumäärä",
+      "createdAt": "Luontiaika",
+      "updatedAt": "Päivittämisajankohta",
+      "edit": "Muokkaa",
+      "delete": "Poista",
+      "deleteConfirm": "Vahvista Poisto",
+      "save": "Tallenna",
+      "cancel": "Peruuta",
+      "notFound": "Ei Sisältöä"
+    }
+  },
+  "admin": {
+    "illustration": {
+      "editIllustrationTitle": "Muokkaa illustraatiokokoelman tietoja. Tukee nimen, kuvauksen, lähteen, NSFW-tilan, tunnisteiden ja tekijän päivittämistä. Käytä hakuominaisuutta joissakin toiminnoissa.",
+      "createIllustrationTitle": "Lisää Uusi Illustraatio",
+      "createIllustrationSubtitle": "Uusi illustraatio lisätään suoraan käyttäjille näkyvään illustraatiolistaan. Jos NSFW asetetaan, kokoelma on näkymätön osalle käyttäjiä.",
+      "selectTags": "Valitse Tunnisteet",
+      "imageUploadedTitle": "Klikkaa Lataaksesi Tiedoston",
+      "noImageUploaded": "Tarkista tiedostonimi, kuvamuoto ja järjestys ennen lataamista. Ensimmäinen kuva käytetään illustraatiokokoelman kansikuvana.",
+      "uploadImageDescription": "Klikkaa painiketta lisätäksesi illustraatiotiedostoja. Tuetaan yleisiä kuvamuotoja. Varmista, että tiedostonimi on oikein, ja älä lataa arkaluontoisia tietoja, kuten pankkitilinumeroita, salasanoja tai luottokorttien turvallisuuskoodeja.",
+      "tagSelectorOpenBtn": "Avaa Valitsin",
+      "tagSearchInputPlaceholder": "Etsi tunnisteen nimeä ja paina Enteriä hakeaksesi  esim: {name} ...",
+      "authorSearchInputPlaceholder": "Etsi tekijän nimeä ja paina Enteriä hakeaksesi  esim: {name} ...",
+      "tagsSearchNotFound": "Ei Haku Tuloksia",
+      "tagsSearchNotFoundHint": "Ei tuloksia tunnisteelle nimeltä {name}. Kokeile toista avainsanaa. Tai luo uusi painamalla Meta+Enteriä.",
+      "authorsSearchNotFoundHint": "Ei tuloksia tekijälle nimeltä {name}. Kokeile toista avainsanaa. Tai luo uusi painamalla Meta+Enteriä.",
+      "tagMgr": "Tunnisteidenhallinta & Lisäys",
+      "authorMgr": "Tekijöidenhallinta & Lisäys",
+      "toggleCreateMode": "Vaihda Luontitilaan",
+      "esc": "Sulje Nykyinen Ikkuna",
+      "tag": {
+        "newTagName": "Uusi Tunnisteen Nimi",
+        "copySuccess": "Kopioitu Leikepöydälle Onnistuneesti {text}",
+        "copyFailure": "Kopiointi Virhe {msg}",
+        "tagNameNotValid": "Tunnisteen nimi on virheellinen tai duplikaatti. Tarkista ja yritä uudelleen.",
+        "editTagNameHint": "*Päivittää vain tunnisteen nimen. Kaikki siihen liittyvät teokset päivittyvät.",
+        "editTagNameSuccessHint": "Tunnisteen nimi päivitetty onnistuneesti",
+        "deleteTagSuccessHint": "Tunniste poistettu onnistuneesti",
+        "deleteTagConflict": "Tämä tunniste on liitetty illustraatiokokoelmiin ja sitä ei voi poistaa.",
+        "noTagsSatisfied": "Ei vastaavia tunnisteita löytynyt?",
+        "noAuthorSatisfied": "Ei vastaavia tekijöitä löytynyt?",
+        "authorAdded": "Uusi tunniste lisätty onnistuneesti",
+        "tagNameConflict": "Konflikti ilmeni. Onko tämä tunniste jo olemassa?"
+      },
+      "author": {
+        "editTagNameHint": "*Päivittää vain tekijän nimen. Kaikki siihen liittyvät teokset päivittyvät.",
+        "deleteTagSuccessHint": "Poisto Onnistui",
+        "editSuccess": "Muokkaus Onnistui",
+        "noAuthorSatisfied": "Ei vastaavia tekijöitä löytynyt?",
+        "authorNameConflict": "Konflikti ilmeni. Onko tämä tekijä jo olemassa?",
+        "authorAdded": "Tekijä lisätty onnistuneesti",
+        "emptySearchHint": "Syötä vähintään yksi avainsana jatkaaksesi uuden tekijän luomista.",
+        "authorName": "Tekijän Nimi",
+        "homeLink": "Kotisivujen Linkki"
+      }
+    }
+  },
+  "details": {
+    "open_source": "Avoin Lähdekoodi",
+    "open_source_desc": "Tämä projekti on julkaistu avoimena lähdekoodina GitHubissa",
+    "open_source_link": "https://github.com/kanned1079/NoteForestX",
+    "background_title": "Tausta ja Tavoitteet",
+    "background_desc": "Tämän blogin tarkoituksena on tallentaa päivittäistä oppimista, teknistä jakamista ja projekti kokemuksia. Toivon harjoittavani tässä projektissa täysin kehitetyn sovelluksen kehittämiseen, järjestelmäsuunnitteluun ja DevOps- toteutukseen liittyviä tekniikoita. Vanhan blogiversion osat toiminnallisuudet olivat suhteellisen yksinkertaisia. Uusi NoteForest X -versio korjaa vanhan version virheet ja laajentaa toiminnallisuutta monilla uusilla ominaisuuksilla.",
+    "tech_stack": "Teknologiasarja",
+    "frontend_title": "Etusivukomponenttiosa",
+    "frontend_list_1": "Nuxt4 —— Tarjoaa SSR/SSG -toiminnallisuuksia",
+    "frontend_list_2": "Vue3 + TypeScript —— Ydin kehitysframework ja ohjelmointikieli",
+    "frontend_list_3": "Vite —— Korkean suorituskyvyn rakennustyökalu",
+    "frontend_list_4": "PrimeVue —— Pääkomponenttikirjasto",
+    "frontend_list_5": "md-editor-v3 —— Markdown-tekstin muokkaamiseen ja esittämiseen",
+    "frontend_list_6": "GSAP, Pinia, Tailwind CSS, Flag Icons —— Animaatio, tilanhallinta, tyylittely ja kuvakkeiden kirjastot",
+    "frontend_desc": "Vue valittiin sen kevyeen arkkitehtuuriin, korkeaan tehokkuuteen ja laajaan ekosysteemiin. Käytän Vuea jo pitkään ja olen hyvin perehtynyt sen kehitysparadigmaan.",
+    "backend_title": "Takaisinkutsukomponenttiosa",
+    "backend_list_1": "Golang —— Korkean suorituskyvyn, ytimekkäin taustajärjestelmän ohjelmointikieli",
+    "backend_list_2": "GIN-pohjainen mukautettu REST API —— Tarjoaa tietoliikenne-rajapinnat artikkeleille, illustraatiokokoelmille ja käyttäjäjärjestelmille",
+    "backend_list_3": "Redis —— Väliaikaisen tallennuksen, istuntojen tallennuksen ja kyselyjen nopeuttamisen käyttöön",
+    "backend_list_4": "MySQL/MariaDB —— Artikkelien ja illustraatioiden pysyvä tallennus",
+    "backend_list_5": "Anubis —— Kevyt verkkopohjainen AI-turvallisuusmuuri-työkalu",
+    "backend_list_6": "Docker + Nginx + pm2 —— Alustatyökalut toteutukseen ja ajonaikaiseen käyttöön",
+    "backend_desc": "Taustajärjestelmän ydinsuunnitteluperiaate on ylläpitää yksinkertaisuutta ja korkeaa tehokkuutta. Erottele liiketoimintalogikka ja tietojenkäsittely mahdollisimman paljon eri tasoihin parantaaksesi ylläpidettävyyttä.",
+    "tool_image_alt": "työkalulista"
+  },
+  "my_design": {
+    "section1_tag": "Ytimekkäin & Intuitiivinen",
+    "section1_title": "Huomiota herättävä, moderni ja minimalistinen suunnittelu.",
+    "section1_desc": "Pidä käyttöliittymä ytimekkäänä ja modernina ilman, että käyttäjäkokemus kärsii.",
+    "step0_title": "Fontin Suunnittelu",
+    "step0_content": "Valitse fonttityypit, fonttikoot ja fonttipaksoudet.",
+    "step1_title": "Etenemissuunnittelu",
+    "step1_content": "Säädä elementtien sijainteja ja aseta asianmukaiset etäisyydet elementtien välille.",
+    "step2_title": "Värinvalinta",
+    "step2_content": "Valitse väripaletti, jolla on riittävä kontrastisuhde.",
+    "step3_title": "Visuaaliset Efektit",
+    "step3_content": "Lisää visuaalisia efektejä, kuten reunoja, varjoja ja pyöristettyjä kulmia.",
+    "section2_tag": "Tarkka Huomio Tarkkuuteen",
+    "section2_title": "Omistaa tarkkaa näkemystä yksityiskohtiin",
+    "section2_desc": "Keskitty toimintojen helppoon käytettävyyteen, käyttöliittymän johdonmukaisuuteen ja jatkuvasti paranna käyttäjäkokemusta.",
+    "section3_tag": "Estettävä ja Tehokas",
+    "section3_title": "Ytimekkäin, ymmärrettävissä oleva ja suorituskyvyltä optimoitu koodi",
+    "section3_desc": "Selvän ja siistin koodin kirjoittaminen on ensisijainen periaate, samalla kun suurin mahdollinen suorituskyvyn optimointi otetaan huomioon."
+  },
+  "my_work": {
+    "header_title": "Taidot",
+    "title_tag": "Teokset",
+    "main_title": "Taidot & Työkalut",
+    "main_desc": "Selaa ohjelmointikieliä, kirjastoja ja työkaluja, joita olen käyttänyt.",
+    "intro": "Olen työskennellyt verkkokehityksessä noin 9 vuotta, kokeillut erilaisia ohjelmointikieliä ja teknologiasarjoja, kattaen sekä taustajärjestelmän että etusivukomponenttien kehittämisen. Vaikka verkkokehityksen alue on laaja, olen erityisen kiinnostunut ja keskittynyt etusivukomponenttien kehittämiseen ja UI/UX-suunnitteluun.",
+    "app_dev_title": "Sovelluskehittäjä",
+    "app_dev_desc1": "Rakastan luomaan selkeitä, minimalistisia, esteettisesti kauniita ja arvokkaita teoksia, jotka ovat tietenkin helppoja käyttää.",
+    "app_dev_desc2": "Nautin erityisesti rikkaiden UI-komponenttien sisältävien verkkosivustojen rakentamisesta, mukaan lukien:",
+    "app_dev_item1": "Web-sovellukset",
+    "app_dev_item2": "Dokumentaatio ja Ohjeet-sivut",
+    "app_dev_item3": "CMS-sisällön asettelut",
+    "app_dev_item4": "Taustajärjestelmän työpöytäasettelut",
+    "app_dev_item5": "Ja Muut",
+    "tool_intro": "Mutta rakastan silti luomaan yksinkertaisia verkkosivuja, kuten saapumis-sivuja. Mitkä ovat työkaluja, joita olen parhaiten perehtynyt käyttämään verkkosivustojen luonnin aikana?",
+    "vue_tech_title": "Vue & Nuxt.js TypeScriptin Kera",
+    "vue_tech_desc1": "Yksisivuiset verkkosivustot ovat minun erikoistumistani, ja Vue.js on kuin taikajumalani. Käytän sitä jo vuosia ja olen luonut yhä kauniimpia teoksia.",
+    "vue_tech_desc2": "Ensinnäkin ohjelmointikielien osalta olen tottunut käyttämään TypeScriptiä, vaikka PHP ja Python voivat myös olla käytössä verkkokehityksessä. TypeScript on ollut kanssani noin 7 vuotta.",
+    "backend_tech_title": "Golang & Nest.js",
+    "backend_tech_desc": "Käytän niitä luodakseni skaalattavia ja korkean suorituskyvyn taustajärjestelmäpalveluita, jotka kattaa kaiken API-suunnittelusta tietojenkäsittelyyn. Aluksi keskittyin taustajärjestelmän kehittämiseen, mutta myöhemmin totesin, että CLI ei pystynyt täyttämään kaikkia tarpeita, joten aloin oppimaan GUI-kehitystä.",
+    "ops_title": "Operaatiokokemus",
+    "ops_desc": "Alun perin IT-alan vahvan kiinnostuksen johdosta tapasin Linuxin nuorena. Useiden vuosien opiskelun jälkeen olen nyt käyttänyt virtualisointia ja Linuxia toteuttaakseen useita palveluita, mukaan lukien mutta ei rajoittuen reunan laskentapalveluihin, tiedostohakemistorajapintoihin, henkilökohtaiseen blogiin, Zabbix-valvontaan, SoftEtherVPN:iin jne.",
+    "detail_summary_title": "Yksityiskohdat & Yhteenveto",
+    "detail_summary_desc": "Käytän tunnisteita esittämään kaikkia tietoja helpon lukemisen vuoksi. Alareunassa oleva vaakasuora viiva ilmaisee käyttötiheyttä, esimerkiksi:",
+    "usage_example1": "Usein Käytetty",
+    "usage_example2": "Joskus Käytetty",
+    "program_lang_title": "Ohjelmointikielet",
+    "lang_ts": "TypeScript",
+    "lang_js": "JavaScript",
+    "lang_go": "Golang",
+    "lang_java": "Java",
+    "lang_shell": "Shell",
+    "tech_tools_title": "Teknologiat & Työkalut",
+    "tool_tailwind": "Tailwind CSS",
+    "tool_naive": "NaiveUI",
+    "tool_prime": "PrimeVue",
+    "tool_material": "MaterialUI",
+    "tool_vue": "Vue",
+    "tool_nuxt": "Nuxt.js",
+    "tool_electron": "Electron",
+    "tool_pinia": "pinia",
+    "tool_react": "React",
+    "tool_gin": "GIN",
+    "tool_gorm": "gORM",
+    "tool_grpc": "gRPC",
+    "tool_redis": "Redis",
+    "tool_mysql": "MySQL/MariaDB",
+    "tool_mongo": "MongoDB",
+    "tool_docker": "Docker",
+    "tool_nginx": "Nginx",
+    "software_tools_title": "Ohjelmistot & Työkalut",
+    "software_idea": "JetBrains IntelliJ IDEA",
+    "software_vscode": "Visual Studio Code",
+    "software_vim": "Vim",
+    "software_git": "Git",
+    "software_mysqlworkbench": "MySQL Workbench",
+    "software_ps": "Adobe PhotoShop",
+    "software_ai": "Adobe Illustrator"
+  },
+  "contact_me": {
+    "title_tag": "Teosten Näyttely",
+    "main_title": "Ota Yhteyttä",
+    "main_desc": "Voit ottaa minuun yhteyttä milloin tahansa sosiaalisen median, sähköpostin tai puhelimitse.",
+    "intro_desc1": "Ystävällinen muistutus: Täällä tarjottu tieto on ainoastaan kaupalliseen käyttöön tarkoitettu. Jos sinulla on kysyttävää, älä epäröi ottaa minuun suoraan yhteyttä sosiaalisen median kautta.",
+    "intro_desc2": "Kiitos ymmärtäväisyydestäsi ja vastuullisesta käytöstäsi tästä tuotteesta.",
+    "contact_info_title": "Yhteystiedot",
+    "table_header1": "Yhteystieto-alkio",
+    "table_header2": "Yksityiskohdat",
+    "contact_item1": "Osoite",
+    "contact_item2": "Aikavyöhyke",
+    "contact_item3": "Sähköposti",
+    "contact_detail2": "UTC+8:00 (Kiinan Vakiokellonaika)",
+    "contact_remark": "Lisääntyvän yhteydenottoon, kuten puhelinnumeroni hankkimiseen, lähetä ensin minulle sähköpostia.",
+    "social_media_title": "Sosiaalinen Media",
+    "social_desc1": "Voit löytää sosiaalisen median tiliäni hakemalla {username}, joka on melkein johdonmukainen kaikilla alustoilla.",
+    "social_desc2": "Jos olet kiireessä, olen luetellut alla linkit sosiaalisiin alustoihin, joita käytän eniten:",
+    "social_table_header1": "Sosiaalinen Alusta",
+    "social_table_header2": "Linkki"
+  },
+  "home": {
+    "intro_title": "Olen {name},",
+    "intro_desc": "{role}, joka rakastaa intuitiivista, selkeää ja modernia UI-suunnittelua.",
+    "favorite_stack": "tällä hetkellä suosikki teknologiasarja / työkalut:",
+    "scroll_down": "Selaa alas lisätietojen saamiseksi",
+    "get_in_touch": "Ota Yhteyttä",
+    "fullstack_developer": "Täysin Kehitetyn Sovelluksen Kehittäjä"
+  },
+  "app_footer": {
+    "about_me": "Minusta",
+    "this_site": "Tämä Sivusto",
+    "source_code": "Lähdekoodin Repository",
+    "uiverse": "Uiverse Komponenttikirjasto",
+    "primevue": "PrimeVue"
+  },
+  "profile": {
+    "yourInfo": "Profiilisi",
+    "resetPassword": "Nollaa Salasana",
+    "username": {
+      "editTip": "Klikkaa lisätäksesi tai muokataksesi käyttäjänimeäsi",
+      "desc": "Tämä on käyttäjänimi, jota käytät kommenttien julkaisuun. Jos et ole asettanut sitä, sähköpostiosoitteesi näytetään.",
+      "dialog": {
+        "title": "Päivitä Käyttäjänimi",
+        "label": "Käyttäjänimi",
+        "placeholder": "Kasugano Sora",
+        "hint": "Käyttäjänimen luomisen jälkeen se korvaa käyttäjä-sähköpostisi näyttöön."
+      },
+      "toast": {
+        "warnEmpty": "Käyttäjänimi ei voi olla tyhjä",
+        "success": "Käyttäjänimi päivitetty onnistuneesti {username}",
+        "errorSummary": "Virhe Ilmeni"
+      }
+    },
+    "userId": {
+      "desc": "Uniikki käyttäjä-ID tällä sivustolla, jota ei voi muuttaa."
+    },
+    "createTime": {
+      "desc": "Aika, jolloin luotit tilisi."
+    },
+    "password": {
+      "editTip": "Tarvittaessa napsauta tästä salasanasi nollamiseksi.",
+      "dialog": {
+        "title": "Päivitä Salasana",
+        "oldPwdLabel": "Vanha Salasana",
+        "oldPwdPlaceholder": "Edellinen Salasana",
+        "newPwdLabel": "Uusi Salasana",
+        "newPwdPlaceholder": "Uusi Salasana",
+        "hint": "Uuden salasanan on oltava vähintään 6 merkkiä pitkä. Käytät uutta salasanaa seuraavalla kirjautumiskerralla."
+      },
+      "toast": {
+        "warnLength": "Uuden salasanan on oltava vähintään 6 merkkiä pitkä",
+        "success": "Salasana päivitetty onnistuneesti",
+        "errorSummary": "Virhe Ilmeni"
+      }
+    },
+    "notLogin": {
+      "title": "Kirjautuminen Vaaditaan",
+      "desc": "Olet kirjautunut ulos. Jos sinulla on tili tällä sivustolla, klikkaa vasemmalla kirjautuaksesi."
+    },
+    "toast": {
+      "errorSummary": "Virhe Ilmeni"
+    }
+  },
+  "article": {
+    "catalog": "Katalogi",
+    "pageHeader": {
+      "title": "Artikkelinhallinta",
+      "subtitle": "Kuten otsikko sanoo, tässä voit hallita artikkeleita. Uudet artikkelit ovat oletuksena näkymättömiä, ja voit asettaa eri tiloja kullekin artikkelille."
+    },
+    "operation": {
+      "addNewArticle": "Lisää Uusi Artikkeli",
+      "resetSearch": "Nollaa Haku"
+    },
+    "table": {
+      "headers": {
+        "title": "Otsikko",
+        "tags": "Tunnisteet",
+        "createTime": "Luontiaika",
+        "status": "Tila",
+        "operation": "Toiminto"
+      },
+      "empty": {
+        "title": "Ei Tuloksia",
+        "desc": "Ei vastaavia tuloksia löytynyt. Kokeile toista avainsanaa."
+      },
+      "tags": {
+        "noTags": "---",
+        "tagPrefix": "#"
+      },
+      "total": "Yhteensä: {count}"
+    },
+    "loading": {
+      "text": "Ladataan..."
+    },
+    "toast": {
+      "loadFailed": "Lataus Epäonnistui",
+      "deleteSuccess": "Artikkeli on Poistettu",
+      "deleteFailed": "Poisto Epäonnistui",
+      "operateSuccess": "Toiminto Onnistui",
+      "operateFailed": "Epäonnistui"
+    },
+    "confirm": {
+      "deleteHeader": "Poista"
+    }
+  },
+  "article_edit": {
+    "pageHeader": {
+      "defaultTitle": "Artikkelin Otsikko",
+      "subtitle": "Klikkaa oikealla yläkulmassa asettaaksesi artikkelin meta-tiedot"
+    },
+    "operation": {
+      "addNewArticle": "Lisää Uusi Artikkeli",
+      "searchCmdK": "Hae CMD+K"
+    },
+    "metaDialog": {
+      "header": "Muokkaa Meta-Tietoja",
+      "labels": {
+        "title": "Otsikko",
+        "tags": "Tunnisteet",
+        "slug": "Slug (Valinnainen)",
+        "headerImage": "Yläkuva (Valinnainen)"
+      }
+    },
+    "tags": {
+      "option": {
+        "newTag": "Uusi",
+        "tagPrefix": "#"
+      },
+      "noTags": "Ei tunnisteita valittu vielä",
+      "toast": {
+        "addSuccessSummary": "Lisää Tunniste",
+        "noSearchResultWarn": "Ei haku tuloksia löytynyt. Voit yrittää lisätä uuden."
+      }
+    },
+    "toast": {
+      "loadFailed": "Lataus Epäonnistui",
+      "loadArticleFailed": "Lataus epäonnistui. Palaa takaisin ja yritä uudelleen.",
+      "saveSuccess": "Artikkeli tallennettu onnistuneesti",
+      "saveFailed": "Lataus Epäonnistui",
+      "warnSummary": "Varoitus",
+      "successSummary": "Onnistui",
+      "errorSummary": "Virhe"
+    }
+  },
+  "login": {
+    "page": {
+      "title": "NoteForest X",
+      "subtitle": "Kirjaudu sisään tai luo tili"
+    },
+    "form": {
+      "labels": {
+        "email": "Sähköpostiosoite",
+        "password": "Salasana"
+      },
+      "forgotPwd": "Unohtuiko Salasana?"
+    },
+    "button": {
+      "signIn": "Kirjaudu Sisään"
+    },
+    "toast": {
+      "loginSuccessSummary": "Kirjautuminen Onnistui",
+      "loginSuccessDetail": "Tervetuloa takaisin {email}",
+      "loginErrorSummary": "Virhe Ilmeni"
+    }
+  },
+  "shortcuts": {
+    "header": "Pikakomennot",
+    "description": "Selaa sivustoa helposti näppäimistöpikakomennoilla.",
+    "quickAccess": {
+      "open": "Avaa Pikaväylä",
+      "close": "Sulje Pikaväylä"
+    },
+    "backHome": "Palaa Etusivulle",
+    "article": "Artikkeli"
+  },
+  "actionCenter": {
+    "title": "Toimintakeskus",
+    "msg": "Viesti",
+    "noMsg": "Valitettavasti sinulle ei ole viestejä. :D"
+  },
+  "collection": {
+    "title": "Sovellus",
+    "description": "Sisältää tietoja joistakin henkilökohtaisista projekteista ja kokoelmista. Klikkaa linkkiä tai korttia päästäksesi suoraan käsiksi.",
+    "my": "Henkilökohtaiset Projektit",
+    "collected": "Kokoelma"
+  },
+  "articleIndex": {
+    "pageTitle": "Artikkelit",
+    "pageSubtitle": "Artikkelilista on järjestetty päivittämisaikana uusimmasta vanhimpaan. Voit tarkastella käyttöohjetta saadaksesi yksityiskohtaisia ohjeita.",
+    "searchPlaceholder": "Syötä hakusanat",
+    "recentSearches": "Viimeisimmät Hakuetukset",
+    "clearSearchHistory": "Tyhjennä Hakuhistoria",
+    "noRecentSearches": "Ei viimeisimpiä hakuja",
+    "searchToSearch": "Paina Enteriä hakeaksesi",
+    "arrowToNavigate": "Käytä nuolinäppäimiä selaamiseen",
+    "emptyArticleList": "Artikkelilista on tyhjä tai ei vastaavia artikkeleita löytynyt",
+    "searchError": "Virhe Ilmeni Haun Ajaksi",
+    "loadFailed": "Lataus Epäonnistui",
+    "openSearchBox": "Paina Meta+K avataksesi hakukentän",
+    "resetSearch": "Paina Meta+R nollataksesi haun",
+    "clickTagToSearch": "Klikkaa artikkelin tunnistetta etsiäksesi artikkeleita, jotka käyttävät tätä tunnistetta"
   }
 }

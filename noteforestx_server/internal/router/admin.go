@@ -1,11 +1,11 @@
 package router
 
 import (
-	"noteforestx_server/internal/dao"
-	"noteforestx_server/internal/services/admin"
-	"noteforestx_server/internal/services/illustration"
-
 	"github.com/gin-gonic/gin"
+	"noteforestx_server/internal/dao"
+	"noteforestx_server/internal/middlewares"
+	"noteforestx_server/internal/models"
+	"noteforestx_server/internal/services/admin"
 )
 
 /*
@@ -33,16 +33,16 @@ import (
 
 func (this *RouterInstance) RegisterAdminRoutes(v1 *gin.RouterGroup) {
 	//adminRouter := v1.Group("/admin", middlewares.RequireRole("admin"))
-	adminRouter := v1.Group("/admin")
+	adminRouter := v1.Group("/admin", middlewares.RequireAuth(), middlewares.RequireRole(string(models.UserRoleAdmin)))
 	var adminService = &admin.AdminService{
 		Db:  dao.ExistingDbDaoInst.DbDao,
 		Rdb: dao.ExistingDbDaoInst.RdbDao,
 	}
 
-	var illustratonService = &illustration.IllustrationService{
-		Db:  dao.ExistingDbDaoInst.DbDao,
-		Rdb: dao.ExistingDbDaoInst.RdbDao,
-	}
+	//var illustratonService = &illustration.IllustrationService{
+	//	Db:  dao.ExistingDbDaoInst.DbDao,
+	//	Rdb: dao.ExistingDbDaoInst.RdbDao,
+	//}
 
 	//adminRouter.GET("/document", adminService.GetDocumentList)
 	//adminRouter.GET("document/:id", adminService.GetDocumentById)
@@ -50,23 +50,23 @@ func (this *RouterInstance) RegisterAdminRoutes(v1 *gin.RouterGroup) {
 	//adminRouter.POST("document", adminService.AddNewDocument)
 	//adminRouter.DELETE("document/:id", adminService.RemoveDocumentById)
 
-	adminRouter.GET("/illustration/:id", illustratonService.GetIllustrationById)
-	//adminRouter.GET("/illustration", adminService.GetIllustrationList)
-	adminRouter.PUT("/illustration/:id", adminService.UpdateIllustrationById)
-	adminRouter.POST("/illustration", adminService.AddNewIllustration)
-	adminRouter.DELETE("/illustration/:id", adminService.RemoveIllustrationById)
-
-	adminRouter.GET("/illustration_tag", adminService.GetIllustrationTagList)
-	adminRouter.GET("/illustration_tag/:id", adminService.GetIllustrationTagById)
-	adminRouter.PUT("/illustration_tag/:id", adminService.UpdateIllustrationTagById)
-	adminRouter.POST("/illustration_tag", adminService.AddNewIllustrationTag)
-	adminRouter.DELETE("/illustration_tag/:id", adminService.RemoveIllustrationTagById)
-
-	// sample c76f9e88-d35a-445e-8832-cf4bca4b633d
-	adminRouter.GET("/illustration_author", adminService.GetIllustrationAuthorList)
-	adminRouter.POST("/illustration_author", adminService.AddNewIllustrationAuthor)
-	adminRouter.PUT("/illustration_author/:id", adminService.UpdateIllustrationAuthorById)
-	adminRouter.DELETE("/illustration_author/:id", adminService.RemoveIllustrationAuthorById)
+	//adminRouter.GET("/illustration/:id", illustratonService.GetIllustrationById)
+	////adminRouter.GET("/illustration", adminService.GetIllustrationList)
+	//adminRouter.PUT("/illustration/:id", adminService.UpdateIllustrationById)
+	//adminRouter.POST("/illustration", adminService.AddNewIllustration)
+	//adminRouter.DELETE("/illustration/:id", adminService.RemoveIllustrationById)
+	//
+	//adminRouter.GET("/illustration_tag", adminService.GetIllustrationTagList)
+	//adminRouter.GET("/illustration_tag/:id", adminService.GetIllustrationTagById)
+	//adminRouter.PUT("/illustration_tag/:id", adminService.UpdateIllustrationTagById)
+	//adminRouter.POST("/illustration_tag", adminService.AddNewIllustrationTag)
+	//adminRouter.DELETE("/illustration_tag/:id", adminService.RemoveIllustrationTagById)
+	//
+	//// sample c76f9e88-d35a-445e-8832-cf4bca4b633d
+	//adminRouter.GET("/illustration_author", adminService.GetIllustrationAuthorList)
+	//adminRouter.POST("/illustration_author", adminService.AddNewIllustrationAuthor)
+	//adminRouter.PUT("/illustration_author/:id", adminService.UpdateIllustrationAuthorById)
+	//adminRouter.DELETE("/illustration_author/:id", adminService.RemoveIllustrationAuthorById)
 
 	adminRouter.GET("/tag", adminService.GetTagsSearchList)
 

@@ -35,7 +35,7 @@ func RequireRole(requiredRoles ...string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		claims, err := u.ExtractAccessTokenClaims(ctx)
 		if err != nil {
-			ctx.JSON(http.StatusUnauthorized, gin.H{"message": "未授权: " + err.Error()})
+			ctx.JSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized: " + err.Error()})
 			ctx.Abort()
 			return
 		}
@@ -50,7 +50,7 @@ func RequireRole(requiredRoles ...string) gin.HandlerFunc {
 			}
 		}
 
-		ctx.JSON(http.StatusForbidden, gin.H{"message": "无权限访问"})
+		ctx.JSON(http.StatusForbidden, gin.H{"message": "No privilege"})
 		ctx.Abort()
 	}
 }

@@ -6,12 +6,15 @@
     "aboutMe": "About Me",
     "myAccount": "My Account",
     "logout": "Logout",
+    "logoutSuccess": "Logout Successful",
     "statistic": "Statistics",
     "knowledgeMgr": "Article Management",
     "illustrationMgr": "Illustration Management",
     "sponsor": "Sponsor",
     "details": "Implementation",
-    "changLang": "Change Language"
+    "changLang": "Change Language",
+    "editMeta": "Edit Meta",
+    "save": "Save"
   },
   "appMenu": {
     "general": "General",
@@ -40,6 +43,7 @@
     "formNotInvalid": "Form does not meet requirements, please check input items. (400)",
     "overIndex": "Exceeds the allowed page number index",
     "illustration": {
+      "illustrationName": "Illustration Collection Meta Info",
       "name": "Illustration Collection Name",
       "link": "Original Link",
       "description": "Description",
@@ -62,12 +66,13 @@
   },
   "admin": {
     "illustration": {
+      "editIllustrationTitle": "Edit Illustration Collection Info. Supports updating name, description, source, NSFW status, tags, and author. Make good use of search for some features.",
       "createIllustrationTitle": "Add New Illustration",
-      "createIllustrationSubtitle": "The new illustration will be directly added to the user-visible illustration list",
+      "createIllustrationSubtitle": "The new illustration will be directly added to the user-visible illustration list. If NSFW is set, it will be invisible to some users.",
       "selectTags": "Select Tags",
       "imageUploadedTitle": "Click to Upload File",
       "noImageUploaded": "Please check the file name, image format and order before uploading. The first image will be used as the cover of the illustration collection.",
-      "uploadImageDescription": "Click the button to add illustration files. Mainstream image formats are supported. Please ensure the file name is correct and do not upload sensitive data, such as bank card numbers, passwords, and new card security codes.",
+      "uploadImageDescription": "Click the button to add illustration files. Mainstream image formats are supported. Please ensure the file name is correct and do not upload sensitive data, such as bank card numbers, passwords, and credit card security codes.",
       "tagSelectorOpenBtn": "Open Selector",
       "tagSearchInputPlaceholder": "Search for Tag name and press Enter to search　e.g: {name} ...",
       "authorSearchInputPlaceholder": "Search for Author name and press Enter to search　e.g: {name} ...",
@@ -79,6 +84,7 @@
       "toggleCreateMode": "Switch to Create Mode",
       "esc": "Close Current Window",
       "tag": {
+        "newTagName": "New Tag Name",
         "copySuccess": "Copied to Clipboard Successfully {text}",
         "copyFailure": "Copy Error {msg}",
         "tagNameNotValid": "Tag name is invalid or duplicated. Please check and try again.",
@@ -87,16 +93,20 @@
         "deleteTagSuccessHint": "Tag deleted successfully",
         "deleteTagConflict": "This Tag is linked to illustration collections and cannot be deleted.",
         "noTagsSatisfied": "No matching tags found?",
-        "noAuthorSatisfied": "No matching authors found?"
+        "noAuthorSatisfied": "No matching authors found?",
+        "authorAdded": "New Tag added successfully",
+        "tagNameConflict": "Conflict encountered. Does this Tag already exist?"
       },
       "author": {
         "editTagNameHint": "*Only update the Author name. All associated works will be modified.",
         "deleteTagSuccessHint": "Deletion Successful",
         "editSuccess": "Editing Successful",
-        "noAuthorSatisfied": "No matching tags found?",
+        "noAuthorSatisfied": "No matching authors found?",
         "authorNameConflict": "Conflict encountered. Does this author already exist?",
         "authorAdded": "Author added successfully",
-        "emptySearchHint": "Enter at least one keyword to proceed to the new author creation step."
+        "emptySearchHint": "Enter at least one keyword to proceed to the new author creation step.",
+        "authorName": "Author Name",
+        "homeLink": "Homepage Link"
       }
     }
   },
@@ -104,12 +114,9 @@
     "open_source": "Open Source",
     "open_source_desc": "This project is open-sourced on GitHub",
     "open_source_link": "https://github.com/kanned1079/NoteForestX",
-
     "background_title": "Background and Objectives",
     "background_desc": "The purpose of this blog is to record daily learning, technical sharing and project experience. I hope to practice the technologies involved in full-stack development, system design and DevOps deployment through this project. In the old version of the blog, some functional designs were relatively simplistic. Therefore, the brand-new NoteForest X version fixes the bugs existing in the old version and expands some new features.",
-
     "tech_stack": "Technology Stack",
-
     "frontend_title": "Frontend Section",
     "frontend_list_1": "Nuxt4 —— Used to provide SSR/SSG capabilities",
     "frontend_list_2": "Vue3 + TypeScript —— Core development framework and programming language",
@@ -118,7 +125,6 @@
     "frontend_list_5": "md-editor-v3 —— Used for Markdown text editing and rendering",
     "frontend_list_6": "GSAP, Pinia, Tailwind CSS, Flag Icons —— Animation, state management, styling and icon libraries",
     "frontend_desc": "The reason for choosing Vue is its lightweight architecture, high efficiency and comprehensive ecosystem. Meanwhile, I have been using Vue for a long time and am very familiar with its development paradigm.",
-
     "backend_title": "Backend Section",
     "backend_list_1": "Golang —— High-performance, concise core backend programming language",
     "backend_list_2": "Custom REST API based on GIN —— Provides data interfaces for articles, illustration collections and user systems",
@@ -127,7 +133,6 @@
     "backend_list_5": "Anubis —— Lightweight web AI firewall utility",
     "backend_list_6": "Docker + Nginx + pm2 —— Underlying tools for deployment and runtime",
     "backend_desc": "The core design philosophy of the backend is to maintain simplicity and high efficiency, and separate business logic from data processing into different layers as much as possible to improve maintainability.",
-
     "tool_image_alt": "toolslist"
   },
   "my_design": {
@@ -236,6 +241,13 @@
     "get_in_touch": "Get in touch",
     "fullstack_developer": "Fullstack Developer"
   },
+  "app_footer": {
+    "about_me": "About Me",
+    "this_site": "This Site",
+    "source_code": "Source Code Repository",
+    "uiverse": "Uiverse Component Library",
+    "primevue": "PrimeVue"
+  },
   "profile": {
     "yourInfo": "Your Profile",
     "resetPassword": "Reset Password",
@@ -285,6 +297,7 @@
     }
   },
   "article": {
+    "catalog": "Catalog",
     "pageHeader": {
       "title": "Article Management",
       "subtitle": "As the title suggests, this is where you manage articles. Newly created articles are invisible by default, and you can set different statuses for each article."
@@ -398,12 +411,28 @@
   "actionCenter": {
     "title": "Action Center",
     "msg": "Message",
-    "noMsg": "Sorry, There's no message for u. :D"
+    "noMsg": "Sorry, There's no message for you. :D"
   },
   "collection": {
     "title": "App",
-    "description": "Includes resources related to some personal projects and collections.",
+    "description": "Includes resources related to some personal projects and collections. Click the link or card to access directly.",
     "my": "Personal Projects",
     "collected": "Collection"
+  },
+  "articleIndex": {
+    "pageTitle": "Articles",
+    "pageSubtitle": "Article list is sorted by update time from newest to oldest. You can check the operation guide for detailed instructions.",
+    "searchPlaceholder": "Please enter search keywords",
+    "recentSearches": "Recent Searches",
+    "clearSearchHistory": "Clear Search History",
+    "noRecentSearches": "No recent search records",
+    "searchToSearch": "Press Enter to search",
+    "arrowToNavigate": "Use arrow keys to navigate",
+    "emptyArticleList": "Article list is empty or no matching articles found",
+    "searchError": "An error occurred during search",
+    "loadFailed": "Load Failed",
+    "openSearchBox": "Press Meta+K to open search box",
+    "resetSearch": "Press Meta+R to reset search",
+    "clickTagToSearch": "Click the article's tag to search for articles using that tag"
   }
 }

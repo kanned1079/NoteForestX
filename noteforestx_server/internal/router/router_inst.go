@@ -34,9 +34,9 @@ func (this *RouterInstance) RegisterApiServices() {
 	this.RegisterPublicRoutes(v1)
 	this.RegisterAdminRoutes(v1)
 	this.RegisterUserRoutes(v1)
-	this.RegisterIllustrationRoutes(v1)
+	//this.RegisterIllustrationRoutes(v1)
 	this.RegisterArticleRoutes(v1)
-	this.RegisterPixivRoutes(v1)
+	//this.RegisterPixivRoutes(v1)
 
 }
 

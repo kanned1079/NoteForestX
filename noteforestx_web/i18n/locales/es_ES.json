@@ -1,19 +1,438 @@
 {
   "layout": {
-    "homePage": "Home Page",
-    "knowledgeLib": "Knowledge Library",
-    "illustrationLib": "Illustration Collection",
-    "aboutMe": "About Me",
-    "myAccount": "My Account",
-    "logout": "Logout",
-    "statistic": "Statistical Data",
-    "knowledgeMgr": "Article Management",
-    "illustrationMgr": "Illustration Management",
-    "sponsor": "Sponsor"
+    "homePage": "Página de Inicio",
+    "knowledgeLib": "Artículo",
+    "illustrationLib": "Colección de Ilustraciones",
+    "aboutMe": "Sobre Mí",
+    "myAccount": "Mi Cuenta",
+    "logout": "Cerrar Sesión",
+    "logoutSuccess": "Sesión Cerrada Correctamente",
+    "statistic": "Estadísticas",
+    "knowledgeMgr": "Gestión de Artículos",
+    "illustrationMgr": "Gestión de Ilustraciones",
+    "sponsor": "Patrocinador",
+    "details": "Implementación",
+    "changLang": "Cambiar Idioma",
+    "editMeta": "Editar Metadatos",
+    "save": "Guardar"
   },
   "appMenu": {
     "general": "General",
-    "profile": "User Portal",
-    "admin": "Admin Portal"
+    "profile": "Portal de Usuario",
+    "admin": "Portal de Administrador",
+    "lang": "Idioma",
+    "userRole": "Usuario",
+    "adminRole": "Administrador",
+    "noLoginRole": "Pulsa para Iniciar Sesión"
+  },
+  "universal": {
+    "pagination": {
+      "itemsPerPage": "{size} Elementos/Página"
+    },
+    "showSize": "Cantidad de Visualización",
+    "errToast": "Se Detectó un Error",
+    "successToast": "Éxito",
+    "warnToast": "Advertencia",
+    "pages": "Números de Página",
+    "errToastMessage": "Mensaje de Error: ",
+    "pageF": "Página Anterior",
+    "pageA": "Página Siguiente",
+    "current": "Actual",
+    "total": "Total",
+    "info": "Información",
+    "formNotInvalid": "El formulario no cumple los requisitos, comprueba los campos de entrada. (400)",
+    "overIndex": "Supera el índice de número de página permitido",
+    "illustration": {
+      "illustrationName": "Metadatos de la Colección de Ilustraciones",
+      "name": "Nombre de la Colección de Ilustraciones",
+      "link": "Enlace Original",
+      "description": "Descripción",
+      "original": "Fuente",
+      "isLimited": "¿Está Restringido? (NSFW)",
+      "isLimitedHint": "Si se selecciona, esta colección de ilustraciones será invisible para algunos usuarios.",
+      "tags": "Etiquetas",
+      "author": "Autor",
+      "eshi": "Ilustrador",
+      "relatedIllustrationCount": "Número de Ilustraciones Relacionadas",
+      "createdAt": "Hora de Creación",
+      "updatedAt": "Hora de Actualización",
+      "edit": "Editar",
+      "delete": "Eliminar",
+      "deleteConfirm": "Confirmar Eliminación",
+      "save": "Guardar",
+      "cancel": "Cancelar",
+      "notFound": "Sin Contenido"
+    }
+  },
+  "admin": {
+    "illustration": {
+      "editIllustrationTitle": "Editar información de la colección de ilustraciones. Admite la actualización de nombre, descripción, fuente, estado NSFW, etiquetas y autor. Aprovecha la función de búsqueda para algunas operaciones.",
+      "createIllustrationTitle": "Añadir Nueva Ilustración",
+      "createIllustrationSubtitle": "La nueva ilustración se añadirá directamente a la lista de ilustraciones visibles para los usuarios. Si se configura como NSFW, será invisible para algunos usuarios.",
+      "selectTags": "Seleccionar Etiquetas",
+      "imageUploadedTitle": "Pulsa para Subir Archivo",
+      "noImageUploaded": "Comprueba el nombre del archivo, el formato de la imagen y el orden antes de subir. La primera imagen se usará como portada de la colección de ilustraciones.",
+      "uploadImageDescription": "Pulsa el botón para añadir archivos de ilustración. Se admiten los formatos de imagen más comunes. Asegúrate de que el nombre del archivo es correcto y no subas datos sensibles, como números de tarjetas bancarias, contraseñas o códigos de seguridad de tarjetas de crédito.",
+      "tagSelectorOpenBtn": "Abrir Selector",
+      "tagSearchInputPlaceholder": "Busca el nombre de la etiqueta y pulsa Enter para buscar  ej: {name} ...",
+      "authorSearchInputPlaceholder": "Busca el nombre del autor y pulsa Enter para buscar  ej: {name} ...",
+      "tagsSearchNotFound": "Sin Resultados de Búsqueda",
+      "tagsSearchNotFoundHint": "No se encontraron resultados para la etiqueta {name}. Prueba con otra palabra clave. O usa Meta+Enter para crear una nueva.",
+      "authorsSearchNotFoundHint": "No se encontraron resultados para el autor {name}. Prueba con otra palabra clave. O usa Meta+Enter para crear uno nuevo.",
+      "tagMgr": "Gestión y Añadido de Etiquetas",
+      "authorMgr": "Gestión y Añadido de Autores",
+      "toggleCreateMode": "Cambiar a Modo de Creación",
+      "esc": "Cerrar Ventana Actual",
+      "tag": {
+        "newTagName": "Nuevo Nombre de Etiqueta",
+        "copySuccess": "Copiado al Portapapeles Correctamente {text}",
+        "copyFailure": "Error al Copiar {msg}",
+        "tagNameNotValid": "El nombre de la etiqueta no es válido o está duplicado. Comprueba y vuelve a intentarlo.",
+        "editTagNameHint": "*Solo actualiza el nombre de la etiqueta. Todos los trabajos asociados se modificarán.",
+        "editTagNameSuccessHint": "Nombre de etiqueta actualizado correctamente",
+        "deleteTagSuccessHint": "Etiqueta eliminada correctamente",
+        "deleteTagConflict": "Esta etiqueta está vinculada a colecciones de ilustraciones y no se puede eliminar.",
+        "noTagsSatisfied": "¿No se encontraron etiquetas coincidentes?",
+        "noAuthorSatisfied": "¿No se encontraron autores coincidentes?",
+        "authorAdded": "Nueva etiqueta añadida correctamente",
+        "tagNameConflict": "Se detectó un conflicto. ¿Ya existe esta etiqueta?"
+      },
+      "author": {
+        "editTagNameHint": "*Solo actualiza el nombre del autor. Todos los trabajos asociados se modificarán.",
+        "deleteTagSuccessHint": "Eliminación Exitosa",
+        "editSuccess": "Edición Exitosa",
+        "noAuthorSatisfied": "¿No se encontraron autores coincidentes?",
+        "authorNameConflict": "Se detectó un conflicto. ¿Ya existe este autor?",
+        "authorAdded": "Autor añadido correctamente",
+        "emptySearchHint": "Introduce al menos una palabra clave para pasar al paso de creación de nuevo autor.",
+        "authorName": "Nombre del Autor",
+        "homeLink": "Enlace de Página Principal"
+      }
+    }
+  },
+  "details": {
+    "open_source": "Código Abierto",
+    "open_source_desc": "Este proyecto está publicado como código abierto en GitHub",
+    "open_source_link": "https://github.com/kanned1079/NoteForestX",
+    "background_title": "Contexto y Objetivos",
+    "background_desc": "El objetivo de este blog es registrar el aprendizaje diario, el intercambio técnico y la experiencia en proyectos. Espero practicar las tecnologías relacionadas con el desarrollo full-stack, el diseño de sistemas y la implementación de DevOps a través de este proyecto. En la versión antigua del blog, algunos diseños funcionales eran relativamente simplistas. Por lo tanto, la nueva versión NoteForest X corrige los errores existentes en la versión antigua y amplía algunas nuevas funcionalidades.",
+    "tech_stack": "Stack de Tecnologías",
+    "frontend_title": "Sección Frontend",
+    "frontend_list_1": "Nuxt4 —— Se usa para proporcionar funcionalidades SSR/SSG",
+    "frontend_list_2": "Vue3 + TypeScript —— Framework de desarrollo core y lenguaje de programación",
+    "frontend_list_3": "Vite —— Actúa como herramienta de construcción de alto rendimiento",
+    "frontend_list_4": "PrimeVue —— Biblioteca de componentes principal",
+    "frontend_list_5": "md-editor-v3 —— Se usa para la edición y renderizado de texto Markdown",
+    "frontend_list_6": "GSAP, Pinia, Tailwind CSS, Flag Icons —— Bibliotecas de animación, gestión de estado, estilo y iconos",
+    "frontend_desc": "La razón para elegir Vue es su arquitectura ligera, alta eficiencia y ecosistema completo. Además, he estado usando Vue durante mucho tiempo y conozco muy bien su paradigma de desarrollo.",
+    "backend_title": "Sección Backend",
+    "backend_list_1": "Golang —— Lenguaje de programación backend core de alto rendimiento y conciso",
+    "backend_list_2": "API REST personalizada basada en GIN —— Proporciona interfaces de datos para artículos, colecciones de ilustraciones y sistemas de usuarios",
+    "backend_list_3": "Redis —— Se usa para caché, almacenamiento de sesiones y aceleración de consultas",
+    "backend_list_4": "MySQL/MariaDB —— Almacenamiento persistente para las rutas correspondientes de artículos e ilustraciones",
+    "backend_list_5": "Anubis —— Utilidad de firewall AI web ligera",
+    "backend_list_6": "Docker + Nginx + pm2 —— Herramientas subyacentes para implementación y tiempo de ejecución",
+    "backend_desc": "La filosofía de diseño core del backend es mantener la simplicidad y alta eficiencia, y separar la lógica comercial del procesamiento de datos en diferentes capas tanto como sea posible para mejorar la mantenibilidad.",
+    "tool_image_alt": "lista de herramientas"
+  },
+  "my_design": {
+    "section1_tag": "Conciso & Intuitivo",
+    "section1_title": "Diseño moderno, minimalista y llamativo.",
+    "section1_desc": "Mantener la interfaz de usuario concisa y moderna sin comprometer la experiencia del usuario.",
+    "step0_title": "Diseño de Fuente",
+    "step0_content": "Selecciona tipos de fuente, tamaños y pesos de fuente.",
+    "step1_title": "Configuración de Espaciado",
+    "step1_content": "Ajusta las posiciones de los elementos y establece espacios adecuados entre ellos.",
+    "step2_title": "Selección de Colores",
+    "step2_content": "Elige una paleta de colores con una relación de contraste suficiente.",
+    "step3_title": "Efectos Visuales",
+    "step3_content": "Añade efectos visuales como bordes, sombras y esquinas redondeadas.",
+    "section2_tag": "Etiqueta de la sección 2",
+    "section2_title": "Título de la sección 2",
+    "section2_desc": "Descripción de la sección 2",
+    "section3_tag": "Etiqueta de la sección 3",
+    "section3_title": "Título de la sección 3",
+    "section3_desc": "Descripción de la sección 3"
+  },
+  "my_work": {
+    "header_title": "Habilidades",
+    "title_tag": "Trabajos",
+    "main_title": "Habilidades & Herramientas",
+    "main_desc": "Explora los lenguajes de programación, bibliotecas y herramientas que he usado.",
+    "intro": "He estado trabajando en desarrollo web durante aproximadamente 9 años, he probado diversos lenguajes de programación y stacks de tecnologías, cubriendo tanto el desarrollo backend como frontend. Aunque el campo del desarrollo web es extenso, estoy especialmente interesado y enfocado en el desarrollo frontend y el diseño UI/UX.",
+    "app_dev_title": "Desarrollador de Aplicaciones",
+    "app_dev_desc1": "Me encanta crear trabajos limpios, minimalistas, estéticos y valiosos, que sin duda son fáciles de usar.",
+    "app_dev_desc2": "Disfruto especialmente construyendo sitios web con componentes UI ricos, incluyendo:",
+    "app_dev_item1": "Aplicaciones Web",
+    "app_dev_item2": "Páginas de Documentación e Instrucciones",
+    "app_dev_item3": "Plantillas de Contenido CMS",
+    "app_dev_item4": "Plantillas de Panel de Backend",
+    "app_dev_item5": "Y Otros",
+    "tool_intro": "Pero aún me encanta crear páginas web simples, como páginas de destino. ¿Cuáles son las herramientas con las que estoy más familiarizado durante la creación de sitios web?",
+    "vue_tech_title": "Vue & Nuxt.js con TypeScript",
+    "vue_tech_desc1": "Los sitios web de una sola página son mi especialidad, y Vue.js es como mi varita mágica. He estado usándolo durante años y he creado trabajos cada vez más hermosos.",
+    "vue_tech_desc2": "En primer lugar, en cuanto a lenguajes de programación, estoy acostumbrado a usar TypeScript, aunque PHP y Python también se pueden usar para el desarrollo web. TypeScript ha estado conmigo durante aproximadamente 7 años.",
+    "backend_tech_title": "Golang & Nest.js",
+    "backend_tech_desc": "Los uso para construir servicios backend escalables y de alto rendimiento, que cubren todo, desde el diseño de API hasta las operaciones de datos. Inicialmente me centré en el desarrollo backend, pero más tarde me di cuenta de que la CLI no podía satisfacer todas las necesidades, así que empecé a aprender desarrollo GUI.",
+    "ops_title": "Experiencia en Operaciones",
+    "ops_desc": "Inicialmente, debido a un fuerte interés en la industria IT, entré en contacto con Linux a una edad temprana. Después de varios años de aprendizaje, ahora he implementado múltiples servicios usando virtualización y Linux, incluyendo pero no limitado a servicios de computación perimetral, programas de directorios de archivos, blogs personales, monitoreo Zabbix, SoftEtherVPN, etc.",
+    "detail_summary_title": "Detalles & Resumen",
+    "detail_summary_desc": "Uso etiquetas para presentar todos los datos para facilitar la lectura. La línea horizontal inferior indica la frecuencia de uso, por ejemplo:",
+    "usage_example1": "Usado Frecuentemente",
+    "usage_example2": "Usado Ocasionalmente",
+    "program_lang_title": "Lenguajes de Programación",
+    "lang_ts": "TypeScript",
+    "lang_js": "JavaScript",
+    "lang_go": "Golang",
+    "lang_java": "Java",
+    "lang_shell": "Shell",
+    "tech_tools_title": "Tecnologías & Herramientas",
+    "tool_tailwind": "Tailwind CSS",
+    "tool_naive": "NaiveUI",
+    "tool_prime": "PrimeVue",
+    "tool_material": "MaterialUI",
+    "tool_vue": "Vue",
+    "tool_nuxt": "Nuxt.js",
+    "tool_electron": "Electron",
+    "tool_pinia": "pinia",
+    "tool_react": "React",
+    "tool_gin": "GIN",
+    "tool_gorm": "gORM",
+    "tool_grpc": "gRPC",
+    "tool_redis": "Redis",
+    "tool_mysql": "MySQL/MariaDB",
+    "tool_mongo": "MongoDB",
+    "tool_docker": "Docker",
+    "tool_nginx": "Nginx",
+    "software_tools_title": "Software & Herramientas",
+    "software_idea": "JetBrains IntelliJ IDEA",
+    "software_vscode": "Visual Studio Code",
+    "software_vim": "Vim",
+    "software_git": "Git",
+    "software_mysqlworkbench": "MySQL Workbench",
+    "software_ps": "Adobe PhotoShop",
+    "software_ai": "Adobe Illustrator"
+  },
+  "contact_me": {
+    "title_tag": "Exhibición de Trabajos",
+    "main_title": "Contacta Conmigo",
+    "main_desc": "Puedes contactarme en cualquier momento a través de redes sociales, correo electrónico o teléfono.",
+    "intro_desc1": "Recordatorio amigable: La información proporcionada aquí es solo para uso comercial. Si tienes alguna pregunta, no dudes en contactarme directamente a través de mis redes sociales.",
+    "intro_desc2": "Gracias por entender y usar este producto de manera responsable.",
+    "contact_info_title": "Información de Contacto",
+    "table_header1": "Elemento de Contacto",
+    "table_header2": "Detalles",
+    "contact_item1": "Dirección",
+    "contact_item2": "Zona Horaria",
+    "contact_item3": "Correo Electrónico",
+    "contact_detail2": "UTC+8:00 (Hora Estándar de China)",
+    "contact_remark": "Para un contacto más detallado, como obtener mi número de teléfono, envíame primero un correo electrónico.",
+    "social_media_title": "Redes Sociales",
+    "social_desc1": "Puedes encontrar mis cuentas de redes sociales buscando {username}, que es casi consistente en todas las plataformas.",
+    "social_desc2": "Si tienes prisa, he listado a continuación los enlaces a las plataformas sociales que uso con más frecuencia:",
+    "social_table_header1": "Plataforma Social",
+    "social_table_header2": "Enlace"
+  },
+  "home": {
+    "intro_title": "Soy {name},",
+    "intro_desc": "un {role} que ama el diseño UI intuitivo, limpio y moderno.",
+    "favorite_stack": "stack de tecnologías/herramientas favorito actualmente:",
+    "scroll_down": "Desplázate hacia abajo para saber más",
+    "get_in_touch": "Ponte en Contacto",
+    "fullstack_developer": "Desarrollador Full-Stack"
+  },
+  "app_footer": {
+    "about_me": "Sobre Mí",
+    "this_site": "Este Sitio",
+    "source_code": "Repositorio de Código Fuente",
+    "uiverse": "Biblioteca de Componentes Uiverse",
+    "primevue": "PrimeVue"
+  },
+  "profile": {
+    "yourInfo": "Tu Perfil",
+    "resetPassword": "Restablecer Contraseña",
+    "username": {
+      "editTip": "Pulsa para añadir o modificar tu nombre de usuario",
+      "desc": "Este es el nombre de usuario que usas al publicar comentarios. Si no lo has configurado, se mostrará tu dirección de correo electrónico.",
+      "dialog": {
+        "title": "Actualizar Nombre de Usuario",
+        "label": "Nombre de Usuario",
+        "placeholder": "Kasugano Sora",
+        "hint": "Después de crear un nombre de usuario, este reemplazará tu correo electrónico de usuario para la visualización."
+      },
+      "toast": {
+        "warnEmpty": "El nombre de usuario no puede estar vacío",
+        "success": "Nombre de usuario actualizado correctamente {username}",
+        "errorSummary": "Se produjo un error"
+      }
+    },
+    "userId": {
+      "desc": "Tu ID de usuario único en este sitio, que no se puede modificar."
+    },
+    "createTime": {
+      "desc": "La hora en que creaste tu cuenta."
+    },
+    "password": {
+      "editTip": "Si es necesario, pulsa aquí para restablecer tu contraseña.",
+      "dialog": {
+        "title": "Actualizar Contraseña",
+        "oldPwdLabel": "Contraseña Original",
+        "oldPwdPlaceholder": "Contraseña Anterior",
+        "newPwdLabel": "Nueva Contraseña",
+        "newPwdPlaceholder": "Nueva Contraseña",
+        "hint": "La nueva contraseña debe tener al menos 6 caracteres. Usarás la nueva contraseña para iniciar sesión la próxima vez."
+      },
+      "toast": {
+        "warnLength": "La nueva contraseña debe tener al menos 6 caracteres",
+        "success": "Contraseña actualizada correctamente",
+        "errorSummary": "Se produjo un error"
+      }
+    },
+    "notLogin": {
+      "title": "Se Requiere Inicio de Sesión",
+      "desc": "Has cerrado sesión. Si tienes una cuenta en este sitio, pulsa a la izquierda para iniciar sesión."
+    },
+    "toast": {
+      "errorSummary": "Se produjo un error"
+    }
+  },
+  "article": {
+    "catalog": "Catálogo",
+    "pageHeader": {
+      "title": "Gestión de Artículos",
+      "subtitle": "Como indica el título, aquí es donde gestionas los artículos. Los artículos recién creados son invisibles por defecto, y puedes establecer diferentes estados para cada artículo."
+    },
+    "operation": {
+      "addNewArticle": "Añadir Nuevo Artículo",
+      "resetSearch": "Restablecer Búsqueda"
+    },
+    "table": {
+      "headers": {
+        "title": "Título",
+        "tags": "Etiquetas",
+        "createTime": "Hora de Creación",
+        "status": "Estado",
+        "operation": "Operación"
+      },
+      "empty": {
+        "title": "Sin Resultados",
+        "desc": "No se encontraron resultados correspondientes. Prueba con otra palabra clave."
+      },
+      "tags": {
+        "noTags": "---",
+        "tagPrefix": "#"
+      },
+      "total": "Total: {count}"
+    },
+    "loading": {
+      "text": "Cargando..."
+    },
+    "toast": {
+      "loadFailed": "Error al Cargar",
+      "deleteSuccess": "Artículo eliminado correctamente",
+      "deleteFailed": "Error al Eliminar",
+      "operateSuccess": "Operación Exitosa",
+      "operateFailed": "Fallido"
+    },
+    "confirm": {
+      "deleteHeader": "Eliminar"
+    }
+  },
+  "article_edit": {
+    "pageHeader": {
+      "defaultTitle": "Título del Artículo",
+      "subtitle": "Pulsa la esquina superior derecha para configurar los metadatos del artículo"
+    },
+    "operation": {
+      "addNewArticle": "Añadir Nuevo Artículo",
+      "searchCmdK": "Buscar CMD+K"
+    },
+    "metaDialog": {
+      "header": "Editar Metadatos",
+      "labels": {
+        "title": "Título",
+        "tags": "Etiquetas",
+        "slug": "Slug (Opcional)",
+        "headerImage": "Imagen de Cabecera (Opcional)"
+      }
+    },
+    "tags": {
+      "option": {
+        "newTag": "Nuevo",
+        "tagPrefix": "#"
+      },
+      "noTags": "Aún no se han seleccionado etiquetas",
+      "toast": {
+        "addSuccessSummary": "Añadir Etiqueta",
+        "noSearchResultWarn": "No se encontraron resultados de búsqueda. Puedes intentar añadir una nueva."
+      }
+    },
+    "toast": {
+      "loadFailed": "Error al Cargar",
+      "loadArticleFailed": "Error al cargar. Vuelve atrás e inténtalo de nuevo.",
+      "saveSuccess": "Artículo guardado correctamente",
+      "saveFailed": "Error al Cargar",
+      "warnSummary": "Advertencia",
+      "successSummary": "Éxito",
+      "errorSummary": "Error"
+    }
+  },
+  "login": {
+    "page": {
+      "title": "NoteForest X",
+      "subtitle": "Inicia sesión o registra tu cuenta"
+    },
+    "form": {
+      "labels": {
+        "email": "Dirección de Correo Electrónico",
+        "password": "Contraseña"
+      },
+      "forgotPwd": "¿Olvidaste tu contraseña?"
+    },
+    "button": {
+      "signIn": "Iniciar Sesión"
+    },
+    "toast": {
+      "loginSuccessSummary": "Inicio de Sesión Exitoso",
+      "loginSuccessDetail": "Bienvenido de nuevo {email}",
+      "loginErrorSummary": "Se produjo un error"
+    }
+  },
+  "shortcuts": {
+    "header": "Atajos de Teclado",
+    "description": "Navega por el sitio con facilidad usando atajos de teclado.",
+    "quickAccess": {
+      "open": "Abrir Acceso Rápido",
+      "close": "Cerrar Acceso Rápido"
+    },
+    "backHome": "Volver a la Página de Inicio",
+    "article": "Artículo"
+  },
+  "actionCenter": {
+    "title": "Centro de Acciones",
+    "msg": "Mensaje",
+    "noMsg": "Lo siento, no hay mensajes para ti. :D"
+  },
+  "collection": {
+    "title": "Aplicación",
+    "description": "Incluye recursos relacionados con algunos proyectos personales y colecciones. Pulsa el enlace o la tarjeta para acceder directamente.",
+    "my": "Proyectos Personales",
+    "collected": "Colección"
+  },
+  "articleIndex": {
+    "pageTitle": "Artículos",
+    "pageSubtitle": "La lista de artículos se ordena por hora de actualización de más nuevo a más antiguo. Puedes consultar la guía de uso para obtener instrucciones detalladas.",
+    "searchPlaceholder": "Introduce palabras clave de búsqueda",
+    "recentSearches": "Búsquedas Recientes",
+    "clearSearchHistory": "Borrar Historial de Búsquedas",
+    "noRecentSearches": "No hay registros de búsquedas recientes",
+    "searchToSearch": "Pulsa Enter para buscar",
+    "arrowToNavigate": "Usa las teclas de flecha para navegar",
+    "emptyArticleList": "La lista de artículos está vacía o no se encontraron artículos coincidentes",
+    "searchError": "Se produjo un error durante la búsqueda",
+    "loadFailed": "Error al Cargar",
+    "openSearchBox": "Pulsa Meta+K para abrir la caja de búsqueda",
+    "resetSearch": "Pulsa Meta+R para restablecer la búsqueda",
+    "clickTagToSearch": "Pulsa la etiqueta del artículo para buscar artículos que usen esa etiqueta"
   }
 }

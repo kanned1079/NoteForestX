@@ -1,19 +1,437 @@
 {
   "layout": {
-    "homePage": "Home Page",
-    "knowledgeLib": "Knowledge Library",
-    "illustrationLib": "Illustration Collection",
-    "aboutMe": "About Me",
-    "myAccount": "My Account",
-    "logout": "Logout",
-    "statistic": "Statistical Data",
-    "knowledgeMgr": "Article Management",
-    "illustrationMgr": "Illustration Management",
-    "sponsor": "Sponsor"
+    "homePage": "Startseite",
+    "knowledgeLib": "Artikel",
+    "illustrationLib": "Illustrationssammlung",
+    "aboutMe": "Über Mich",
+    "myAccount": "Mein Konto",
+    "logout": "Abmelden",
+    "logoutSuccess": "Abmeldung Erfolgreich",
+    "statistic": "Statistiken",
+    "knowledgeMgr": "Artikelverwaltung",
+    "illustrationMgr": "Illustrationsverwaltung",
+    "sponsor": "Sponsor",
+    "details": "Implementierung",
+    "changLang": "Sprache Ändern",
+    "editMeta": "Metadaten Bearbeiten",
+    "save": "Speichern"
   },
   "appMenu": {
-    "general": "General",
-    "profile": "User Portal",
-    "admin": "Admin Portal"
+    "general": "Allgemein",
+    "profile": "Benutzerportal",
+    "admin": "Admin-Portal",
+    "lang": "Sprache",
+    "userRole": "Benutzer",
+    "adminRole": "Administrator",
+    "noLoginRole": "Klicken Zum Anmelden"
+  },
+  "universal": {
+    "pagination": {
+      "itemsPerPage": "{size} Elemente/Seite"
+    },
+    "showSize": "Anzeigeanzahl",
+    "errToast": "Fehler Aufgetreten",
+    "successToast": "Erfolgreich",
+    "warnToast": "Warnung",
+    "pages": "Seitennummern",
+    "errToastMessage": "Fehlermeldung: ",
+    "pageF": "Vorherige Seite",
+    "pageA": "Nächste Seite",
+    "current": "Aktuell",
+    "total": "Gesamt",
+    "info": "Information",
+    "formNotInvalid": "Das Formular erfüllt nicht die Anforderungen, überprüfen Sie die Eingabefelder. (400)",
+    "overIndex": "Überschreitet den zulässigen Seitennummernindex",
+    "illustration": {
+      "illustrationName": "Metadaten Der Illustrationssammlung",
+      "name": "Name Der Illustrationssammlung",
+      "link": "Original-Link",
+      "description": "Beschreibung",
+      "original": "Quelle",
+      "isLimited": "Ist Eingeschränkt (NSFW)",
+      "isLimitedHint": "Bei Auswahl ist diese Illustrationssammlung für einige Benutzer unsichtbar.",
+      "tags": "Tags",
+      "author": "Autor",
+      "eshi": "Illustrator",
+      "relatedIllustrationCount": "Anzahl Verwandter Illustrationen",
+      "createdAt": "Erstellungszeit",
+      "updatedAt": "Aktualisierungszeit",
+      "edit": "Bearbeiten",
+      "delete": "Löschen",
+      "deleteConfirm": "Löschung Bestätigen",
+      "save": "Speichern",
+      "cancel": "Abbrechen",
+      "notFound": "Kein Inhalt"
+    }
+  },
+  "admin": {
+    "illustration": {
+      "editIllustrationTitle": "Illustrationssammlungsinformationen bearbeiten. Unterstützt die Aktualisierung von Namen, Beschreibung, Quelle, NSFW-Status, Tags und Autor. Nutzen Sie die Suchfunktion für bestimmte Vorgänge.",
+      "createIllustrationTitle": "Neue Illustration Hinzufügen",
+      "createIllustrationSubtitle": "Die neue Illustration wird direkt zur für Benutzer sichtbaren Illustrationsliste hinzugefügt. Bei aktiviertem NSFW-Status ist sie für einige Benutzer unsichtbar.",
+      "selectTags": "Tags Auswählen",
+      "imageUploadedTitle": "Klicken Zum Hochladen Der Datei",
+      "noImageUploaded": "Überprüfen Sie den Dateinamen, das Bildformat und die Reihenfolge vor dem Hochladen. Das erste Bild wird als Cover der Illustrationssammlung verwendet.",
+      "uploadImageDescription": "Klicken Sie auf die Schaltfläche, um Illustrationsdateien hinzuzufügen. Gängige Bildformate werden unterstützt. Stellen Sie sicher, dass der Dateiname korrekt ist, und laden Sie keine sensiblen Daten wie Bankkontonummern, Passwörter oder Kreditkartensicherheitscodes hoch.",
+      "tagSelectorOpenBtn": "Selektor Öffnen",
+      "tagSearchInputPlaceholder": "Nach Tag-Namen suchen und Enter drücken zum Suchen  z.B.: {name} ...",
+      "authorSearchInputPlaceholder": "Nach Autorennamen suchen und Enter drücken zum Suchen  z.B.: {name} ...",
+      "tagsSearchNotFound": "Keine Suchergebnisse",
+      "tagsSearchNotFoundHint": "Keine Ergebnisse für den Tag mit Namen {name}. Versuchen Sie ein anderes Stichwort. Oder erstellen Sie einen neuen, indem Sie Meta+Enter drücken.",
+      "authorsSearchNotFoundHint": "Keine Ergebnisse für den Autor mit Namen {name}. Versuchen Sie ein anderes Stichwort. Oder erstellen Sie einen neuen, indem Sie Meta+Enter drücken.",
+      "tagMgr": "Tag-Verwaltung & Hinzufügung",
+      "authorMgr": "Autor-Verwaltung & Hinzufügung",
+      "toggleCreateMode": "Zu Erstellungsmodus Wechseln",
+      "esc": "Aktuelles Fenster Schließen",
+      "tag": {
+        "newTagName": "Neuer Tag-Name",
+        "copySuccess": "Erfolgreich In Zwischenablage Kopiert {text}",
+        "copyFailure": "Kopierfehler {msg}",
+        "tagNameNotValid": "Der Tag-Name ist ungültig oder doppelt. Überprüfen Sie und versuchen Sie es erneut.",
+        "editTagNameHint": "*Nur den Tag-Namen aktualisieren. Alle damit verbundenen Werke werden geändert.",
+        "editTagNameSuccessHint": "Tag-Name erfolgreich aktualisiert",
+        "deleteTagSuccessHint": "Tag erfolgreich gelöscht",
+        "deleteTagConflict": "Dieser Tag ist mit Illustrationssammlungen verknüpft und kann nicht gelöscht werden.",
+        "noTagsSatisfied": "Keine passenden Tags gefunden?",
+        "noAuthorSatisfied": "Keine passenden Autoren gefunden?",
+        "authorAdded": "Neuer Tag erfolgreich hinzugefügt",
+        "tagNameConflict": "Konflikt aufgetreten. Existiert dieser Tag bereits?"
+      },
+      "author": {
+        "editTagNameHint": "*Nur den Autorennamen aktualisieren. Alle damit verbundenen Werke werden geändert.",
+        "deleteTagSuccessHint": "Löschung Erfolgreich",
+        "editSuccess": "Bearbeitung Erfolgreich",
+        "noAuthorSatisfied": "Keine passenden Autoren gefunden?",
+        "authorNameConflict": "Konflikt aufgetreten. Existiert dieser Autor bereits?",
+        "authorAdded": "Autor erfolgreich hinzugefügt",
+        "emptySearchHint": "Geben Sie mindestens ein Stichwort ein, um zum Schritt der Neuerstellung eines Autors fortzufahren.",
+        "authorName": "Autor-Name",
+        "homeLink": "Startseiten-Link"
+      }
+    }
+  },
+  "details": {
+    "open_source": "Open Source",
+    "open_source_desc": "Dieses Projekt ist auf GitHub als Open Source veröffentlicht",
+    "open_source_link": "https://github.com/kanned1079/NoteForestX",
+    "background_title": "Hintergrund Und Ziele",
+    "background_desc": "Ziel dieses Blogs ist es, tägliches Lernen, technischen Austausch und Projektfahrungen festzuhalten. Ich hoffe, durch dieses Projekt die Technologien im Zusammenhang mit Full-Stack-Entwicklung, Systemdesign und DevOps-Implementierung zu üben. In der alten Blog-Version waren einige Funktionsdesigns relativ simpel. Daher korrigiert die neue Version NoteForest X die Fehler der alten Version und erweitert einige neue Funktionen.",
+    "tech_stack": "Technologie-Stack",
+    "frontend_title": "Frontend-Bereich",
+    "frontend_list_1": "Nuxt4 —— Wird verwendet, um SSR/SSG-Funktionalitäten bereitzustellen",
+    "frontend_list_2": "Vue3 + TypeScript —— Kern-Entwicklungsframework und Programmiersprache",
+    "frontend_list_3": "Vite —— Dient als leistungsstarkes Build-Tool",
+    "frontend_list_4": "PrimeVue —— Hauptkomponentenbibliothek",
+    "frontend_list_5": "md-editor-v3 —— Wird für die Bearbeitung und Rendering von Markdown-Text verwendet",
+    "frontend_list_6": "GSAP, Pinia, Tailwind CSS, Flag Icons —— Bibliotheken für Animation, Zustandsverwaltung, Styling und Icons",
+    "frontend_desc": "Der Grund für die Wahl von Vue ist seine leichte Architektur, hohe Effizienz und vollständiges Ökosystem. Außerdem verwende ich Vue seit langem und kenne sein Entwicklungsparadigma sehr gut.",
+    "backend_title": "Backend-Bereich",
+    "backend_list_1": "Golang —— Hochleistungsfähige und prägnante Kern-Backend-Programmiersprache",
+    "backend_list_2": "Auf GIN basierende benutzerdefinierte REST API —— Bietet Dateninterfaces für Artikel, Illustrationssammlungen und Benutzersysteme",
+    "backend_list_3": "Redis —— Wird für Caching, Sitzungsspeicherung und Abfragebeschleunigung verwendet",
+    "backend_list_4": "MySQL/MariaDB —— Persistente Speicherung für die entsprechenden Pfade von Artikeln und Illustrationen",
+    "backend_list_5": "Anubis —— Leichtes Web-AI-Firewall-Tool",
+    "backend_list_6": "Docker + Nginx + pm2 —— Unterliegende Tools für Implementierung und Laufzeit",
+    "backend_desc": "Die Kern-Designphilosophie des Backends besteht darin, Einfachheit und hohe Effizienz beizubehalten und die Geschäftslogik so weit wie möglich von der Datenverarbeitung in verschiedene Schichten zu trennen, um die Wartbarkeit zu verbessern."
+  },
+  "my_design": {
+    "section1_tag": "Prägnant & Intuitiv",
+    "section1_title": "Modernes, Minimalistisches Und Auffälliges Design.",
+    "section1_desc": "Die Benutzeroberfläche prägnant und modern halten, ohne die Benutzererfahrung zu beeinträchtigen.",
+    "step0_title": "Schriftart-Design",
+    "step0_content": "Wählen Sie Schriftarttypen, Schriftgrößen und Schriftgewichte aus.",
+    "step1_title": "Abstands-Konfiguration",
+    "step1_content": "Passen Sie die Positionen der Elemente an und legen Sie angemessene Abstände zwischen ihnen fest.",
+    "step2_title": "Farbauswahl",
+    "step2_content": "Wählen Sie eine Farbpalette mit ausreichendem Kontrastverhältnis.",
+    "step3_title": "Visuelle Effekte",
+    "step3_content": "Fügen Sie visuelle Effekte wie Ränder, Schatten und abgerundete Ecken hinzu.",
+    "section2_tag": "Bereich 2 Tag",
+    "section2_title": "Bereich 2 Titel",
+    "section2_desc": "Bereich 2 Beschreibung",
+    "section3_tag": "Bereich 3 Tag",
+    "section3_title": "Bereich 3 Titel",
+    "section3_desc": "Bereich 3 Beschreibung"
+  },
+  "my_work": {
+    "header_title": "Fähigkeiten",
+    "title_tag": "Arbeiten",
+    "main_title": "Fähigkeiten & Tools",
+    "main_desc": "Entdecken Sie die Programmiersprachen, Bibliotheken und Tools, die ich verwendet habe.",
+    "intro": "Ich arbeite seit etwa 9 Jahren in der Webentwicklung, habe verschiedene Programmiersprachen und Technologie-Stacks ausprobiert und sowohl Backend- als auch Frontend-Entwicklung abgedeckt. Obwohl das Gebiet der Webentwicklung umfangreich ist, bin ich besonders interessiert und konzentriere mich auf Frontend-Entwicklung und UI/UX-Design.",
+    "app_dev_title": "Anwendungsentwickler",
+    "app_dev_desc1": "Ich liebe es, klare, minimalistische, ästhetische und wertvolle Werke zu schaffen, die zweifellos einfach zu bedienen sind.",
+    "app_dev_desc2": "Ich genieße es besonders, Websites mit reichen UI-Komponenten zu erstellen, einschließlich:",
+    "app_dev_item1": "Webanwendungen",
+    "app_dev_item2": "Dokumentations- Und Anleitungsseiten",
+    "app_dev_item3": "CMS-Inhaltslayouts",
+    "app_dev_item4": "Backend-Dashboard-Layouts",
+    "app_dev_item5": "Und Andere",
+    "tool_intro": "Aber ich liebe es immer noch, einfache Websites wie Landingpages zu erstellen. Welche Tools kenne ich am besten beim Erstellen von Websites?",
+    "vue_tech_title": "Vue & Nuxt.js Mit TypeScript",
+    "vue_tech_desc1": "Einzelseitige Websites sind meine Spezialität, und Vue.js ist wie mein Zauberstab. Ich verwende es seit Jahren und habe immer schönere Werke geschaffen.",
+    "vue_tech_desc2": "Zunächst einmal bin ich gewohnt, TypeScript zu verwenden, wenn es um Programmiersprachen geht, obwohl PHP und Python auch für die Webentwicklung verwendet werden können. TypeScript ist seit etwa 7 Jahren bei mir.",
+    "backend_tech_title": "Golang & Nest.js",
+    "backend_tech_desc": "Ich verwende sie, um skalierbare und leistungsstarke Backend-Dienste zu erstellen, die alles von API-Design bis zu Datenoperationen abdecken. Ursprünglich konzentrierte ich mich auf die Backend-Entwicklung, aber später stellte ich fest, dass die CLI nicht alle Anforderungen erfüllen konnte, also begann ich, GUI-Entwicklung zu lernen.",
+    "ops_title": "Operations Titel",
+    "ops_desc": "Operations Beschreibung",
+    "detail_summary_title": "Zusammenfassungsübersicht",
+    "detail_summary_desc": "Zusammenfassungsbeschreibung",
+    "usage_example1": "Verwendungsbeispiel 1",
+    "usage_example2": "Verwendungsbeispiel 2",
+    "program_lang_title": "Programmiersprachen",
+    "lang_ts": "TypeScript",
+    "lang_js": "JavaScript",
+    "lang_go": "Go",
+    "lang_java": "Java",
+    "lang_shell": "Shell",
+    "tech_tools_title": "Technische Tools",
+    "tool_tailwind": "Tailwind CSS",
+    "tool_naive": "Naive UI",
+    "tool_prime": "PrimeVue",
+    "tool_material": "Material UI",
+    "tool_vue": "Vue.js",
+    "tool_nuxt": "Nuxt.js",
+    "tool_electron": "Electron",
+    "tool_pinia": "Pinia",
+    "tool_react": "React",
+    "tool_gin": "Gin",
+    "tool_gorm": "GORM",
+    "tool_grpc": "gRPC",
+    "tool_redis": "Redis",
+    "tool_mysql": "MySQL",
+    "tool_mongo": "MongoDB",
+    "tool_docker": "Docker",
+    "tool_nginx": "Nginx",
+    "software_tools_title": "Software Tools",
+    "software_idea": "IntelliJ IDEA",
+    "software_vscode": "VS Code",
+    "software_vim": "Vim",
+    "software_git": "Git",
+    "software_mysqlworkbench": "MySQL Workbench",
+    "software_ps": "Photoshop",
+    "software_ai": "Künstliche Intelligenz Tools"
+  },
+  "contact_me": {
+    "title_tag": "Arbeitsausstellung",
+    "main_title": "Kontaktiere Mich",
+    "main_desc": "Sie können mich jederzeit über soziale Medien, E-Mail oder Telefon kontaktieren.",
+    "intro_desc1": "Freundliche Erinnerung: Die hier bereitgestellten Informationen sind nur für kommerzielle Nutzung bestimmt. Wenn Sie Fragen haben, zögern Sie nicht, mich direkt über meine sozialen Medien zu kontaktieren.",
+    "intro_desc2": "Vielen Dank für Ihr Verständnis und die verantwortungsvolle Nutzung dieses Produkts.",
+    "contact_info_title": "Kontaktinformationen",
+    "table_header1": "Kontaktelement",
+    "table_header2": "Details",
+    "contact_item1": "Adresse",
+    "contact_item2": "Zeitzone",
+    "contact_item3": "E-Mail",
+    "contact_detail2": "UTC+8:00 (Chinesische Standardzeit)",
+    "contact_remark": "Für weiteren Kontakt, wie zum Beispiel das Erhalten meiner Telefonnummer, senden Sie mir zunächst eine E-Mail.",
+    "social_media_title": "Soziale Medien",
+    "social_desc1": "Sie können meine Social-Media-Konten finden, indem Sie nach {username} suchen, der auf fast allen Plattformen konsistent ist.",
+    "social_desc2": "Wenn Sie es eilig haben, habe ich unten die Links zu den sozialen Plattformen aufgelistet, die ich am häufigsten verwende:",
+    "social_table_header1": "Soziale Plattform",
+    "social_table_header2": "Link"
+  },
+  "home": {
+    "intro_title": "Ich Bin {name},",
+    "intro_desc": "ein {role}, der intuitive, klare und moderne UI-Designs liebt.",
+    "favorite_stack": "derzeit bevorzugter Technologie-Stack / Tools:",
+    "scroll_down": "Scrollen Sie Nach Unten Für Mehr Informationen",
+    "get_in_touch": "Kontakt Aufnehmen",
+    "fullstack_developer": "Full-Stack-Entwickler"
+  },
+  "app_footer": {
+    "about_me": "Über Mich",
+    "this_site": "Diese Website",
+    "source_code": "Quellcode-Repository",
+    "uiverse": "Uiverse-Komponentenbibliothek",
+    "primevue": "PrimeVue"
+  },
+  "profile": {
+    "yourInfo": "Ihr Profil",
+    "resetPassword": "Passwort Zurücksetzen",
+    "username": {
+      "editTip": "Klicken Sie, um Ihren Benutzernamen hinzuzufügen oder zu ändern",
+      "desc": "Dies ist der Benutzername, den Sie beim Veröffentlichen von Kommentaren verwenden. Wenn Sie ihn nicht konfiguriert haben, wird Ihre E-Mail-Adresse angezeigt.",
+      "dialog": {
+        "title": "Benutzernamen Aktualisieren",
+        "label": "Benutzername",
+        "placeholder": "Kasugano Sora",
+        "hint": "Nach der Erstellung eines Benutzernamens ersetzt dieser Ihren Benutzer-E-Mail für die Anzeige."
+      },
+      "toast": {
+        "warnEmpty": "Der Benutzername darf nicht leer sein",
+        "success": "Benutzername erfolgreich aktualisiert {username}",
+        "errorSummary": "Ein Fehler Ist Aufgetreten"
+      }
+    },
+    "userId": {
+      "desc": "Ihre eindeutige Benutzer-ID auf dieser Website, die nicht geändert werden kann."
+    },
+    "createTime": {
+      "desc": "Der Zeitpunkt, zu dem Sie Ihr Konto erstellt haben."
+    },
+    "password": {
+      "editTip": "Wenn erforderlich, klicken Sie hier, um Ihr Passwort zurückzusetzen.",
+      "dialog": {
+        "title": "Passwort Aktualisieren",
+        "oldPwdLabel": "Original-Passwort",
+        "oldPwdPlaceholder": "Altes Passwort",
+        "newPwdLabel": "Neues Passwort",
+        "newPwdPlaceholder": "Neues Passwort",
+        "hint": "Das neue Passwort muss mindestens 6 Zeichen lang sein. Sie verwenden das neue Passwort bei der nächsten Anmeldung."
+      },
+      "toast": {
+        "warnLength": "Das neue Passwort muss mindestens 6 Zeichen lang sein",
+        "success": "Passwort erfolgreich aktualisiert",
+        "errorSummary": "Ein Fehler Ist Aufgetreten"
+      }
+    },
+    "notLogin": {
+      "title": "Anmeldung Erforderlich",
+      "desc": "Sie haben sich abgemeldet. Wenn Sie ein Konto auf dieser Website haben, klicken Sie links, um sich anzumelden."
+    },
+    "toast": {
+      "errorSummary": "Ein Fehler Ist Aufgetreten"
+    }
+  },
+  "article": {
+    "catalog": "Katalog",
+    "pageHeader": {
+      "title": "Artikelverwaltung",
+      "subtitle": "Wie der Titel schon sagt, hier verwalten Sie Ihre Artikel. Neu erstellte Artikel sind standardmäßig unsichtbar, und Sie können für jeden Artikel verschiedene Status festlegen."
+    },
+    "operation": {
+      "addNewArticle": "Neuen Artikel Hinzufügen",
+      "resetSearch": "Suche Zurücksetzen"
+    },
+    "table": {
+      "headers": {
+        "title": "Titel",
+        "tags": "Tags",
+        "createTime": "Erstellungszeit",
+        "status": "Status",
+        "operation": "Operation"
+      },
+      "empty": {
+        "title": "Keine Ergebnisse",
+        "desc": "Keine entsprechenden Ergebnisse gefunden. Versuchen Sie ein anderes Stichwort."
+      },
+      "tags": {
+        "noTags": "---",
+        "tagPrefix": "#"
+      },
+      "total": "Gesamt: {count}"
+    },
+    "loading": {
+      "text": "Lädt..."
+    },
+    "toast": {
+      "loadFailed": "Fehler Beim Laden",
+      "deleteSuccess": "Artikel erfolgreich gelöscht",
+      "deleteFailed": "Fehler Beim Löschen",
+      "operateSuccess": "Operation Erfolgreich",
+      "operateFailed": "Fehlgeschlagen"
+    },
+    "confirm": {
+      "deleteHeader": "Löschen"
+    }
+  },
+  "article_edit": {
+    "pageHeader": {
+      "defaultTitle": "Artikel-Titel",
+      "subtitle": "Klicken Sie In Die Obere Rechte Ecke, Um Die Metadaten Des Artikels Zu Konfigurieren"
+    },
+    "operation": {
+      "addNewArticle": "Neuen Artikel Hinzufügen",
+      "searchCmdK": "Suchen CMD+K"
+    },
+    "metaDialog": {
+      "header": "Metadaten Bearbeiten",
+      "labels": {
+        "title": "Titel",
+        "tags": "Tags",
+        "slug": "Slug (Optional)",
+        "headerImage": "Kopfbild (Optional)"
+      }
+    },
+    "tags": {
+      "option": {
+        "newTag": "Neu",
+        "tagPrefix": "#"
+      },
+      "noTags": "Es wurden noch keine Tags ausgewählt",
+      "toast": {
+        "addSuccessSummary": "Tag Hinzufügen",
+        "noSearchResultWarn": "Keine Suchergebnisse gefunden. Sie können versuchen, einen neuen hinzuzufügen."
+      }
+    },
+    "toast": {
+      "loadFailed": "Fehler Beim Laden",
+      "loadArticleFailed": "Fehler beim Laden. Gehen Sie zurück und versuchen Sie es erneut.",
+      "saveSuccess": "Artikel erfolgreich gespeichert",
+      "saveFailed": "Fehler Beim Laden",
+      "warnSummary": "Warnung",
+      "successSummary": "Erfolgreich",
+      "errorSummary": "Fehler"
+    }
+  },
+  "login": {
+    "page": {
+      "title": "NoteForest X",
+      "subtitle": "Anmelden Oder Konto Registrieren"
+    },
+    "form": {
+      "labels": {
+        "email": "E-Mail-Adresse",
+        "password": "Passwort"
+      },
+      "forgotPwd": "Passwort Vergessen?"
+    },
+    "button": {
+      "signIn": "Anmelden"
+    },
+    "toast": {
+      "loginSuccessSummary": "Anmeldung Erfolgreich",
+      "loginSuccessDetail": "Willkommen zurück {email}",
+      "loginErrorSummary": "Ein Fehler Ist Aufgetreten"
+    }
+  },
+  "shortcuts": {
+    "header": "Tastenkombinationen",
+    "description": "Navigieren Sie Einfach Durch Die Website Mithilfe Von Tastenkombinationen.",
+    "quickAccess": {
+      "open": "Schnellzugriff Öffnen",
+      "close": "Schnellzugriff Schließen"
+    },
+    "backHome": "Zurück Zur Startseite",
+    "article": "Artikel"
+  },
+  "actionCenter": {
+    "title": "Aktionszentrum",
+    "msg": "Nachricht",
+    "noMsg": "Es tut uns leid, es gibt keine Nachrichten für Sie. :D"
+  },
+  "collection": {
+    "title": "Anwendung",
+    "description": "Enthält Ressourcen im Zusammenhang mit einigen persönlichen Projekten und Sammlungen. Klicken Sie auf den Link oder die Karte, um direkt darauf zuzugreifen.",
+    "my": "Persönliche Projekte",
+    "collected": "Sammlung"
+  },
+  "articleIndex": {
+    "pageTitle": "Artikel",
+    "pageSubtitle": "Die Artikelliste wird nach Aktualisierungszeit von Neuestem zu Ältestem sortiert. Sie können die Bedienungsanleitung konsultieren, um detaillierte Anweisungen zu erhalten.",
+    "searchPlaceholder": "Geben Sie Suchbegriffe ein",
+    "recentSearches": "Neueste Suchanfragen",
+    "clearSearchHistory": "Suchverlauf Löschen",
+    "noRecentSearches": "Keine kürzlichen Suchaufzeichnungen",
+    "searchToSearch": "Drücken Sie Enter Zum Suchen",
+    "arrowToNavigate": "Verwenden Sie Die Pfeiltasten Zum Navigieren",
+    "emptyArticleList": "Die Artikelliste ist leer oder es wurden keine passenden Artikel gefunden",
+    "searchError": "Ein Fehler Ist Während Der Suche Aufgetreten",
+    "loadFailed": "Fehler Beim Laden",
+    "openSearchBox": "Drücken Sie Meta+K, Um Das Suchfeld Zu Öffnen",
+    "resetSearch": "Drücken Sie Meta+R, Um Die Suche Zurückzusetzen",
+    "clickTagToSearch": "Klicken Sie Auf Den Tag Des Artikels, Um Nach Artikeln Zu Suchen, Die Diesen Tag Verwenden"
   }
 }

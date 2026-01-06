@@ -1,5 +1,5 @@
 // /server/api/v1/admin/illustration_tag/[id].put.ts
-import { defineEventHandler, getQuery } from 'h3'
+import {defineEventHandler, getCookie, getQuery} from 'h3'
 
 export default defineEventHandler(async (event) => {
     const config = useRuntimeConfig()
@@ -22,10 +22,21 @@ export default defineEventHandler(async (event) => {
     // 获取请求体（PUT 通常要传 body）
     const body = await readBody(event)
 
+    const token = getCookie(event, 'access_token')
+    if (!token) {
+        throw createError({
+            statusCode: 401,
+            statusMessage: 'Missing access token'
+        })
+    }
+
     // 转发请求到后端
     const res = await $fetch(url.toString(), {
         method: 'PUT',
         body,
+        headers: {
+            Authorization: `Bearer ${token}` // ✅ Bearer 形式
+        }
     })
 
     return res

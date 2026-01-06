@@ -1,4 +1,4 @@
-import { defineEventHandler, getQuery } from 'h3'
+import {defineEventHandler, getCookie, getQuery} from 'h3'
 
 export default defineEventHandler(async (event) => {
     const config = useRuntimeConfig()
@@ -14,6 +14,14 @@ export default defineEventHandler(async (event) => {
     }
 
 
+    const token = getCookie(event, 'access_token')
+    if (!token) {
+        throw createError({
+            statusCode: 401,
+            statusMessage: 'Missing access token'
+        })
+    }
+
     // 构建后端请求 URL
     const url = new URL(`${config.public.apiBase}/api/v1/admin/article/${id}`)
     Object.entries(query).forEach(([key, value]) => {
@@ -22,7 +30,10 @@ export default defineEventHandler(async (event) => {
 
     // 使用 fetch 发送请求
     const res = await $fetch(url.toString(), {
-        method: 'GET'
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${token}` // ✅ Bearer 形式
+        }
     })
 
     return res
