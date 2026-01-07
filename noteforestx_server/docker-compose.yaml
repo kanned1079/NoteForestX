@@ -1,0 +1,11 @@
+services:
+  traffic-tester:
+    image: noteforestx-server:latest
+    container_name: noteforestx-server
+    restart: unless-stopped
+    volumes:
+      - ./config:/app/config
+      - ./logs:/app/logs
+      - /etc/localtime:/etc/localtime:ro
+    working_dir: /app
+    entrypoint: ["/app/noteforestx-server server"]

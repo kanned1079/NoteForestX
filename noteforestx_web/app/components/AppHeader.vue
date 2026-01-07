@@ -323,45 +323,45 @@ onBeforeUnmount(() => {
         </template>
       </Menu>
 
-      <Button
-          v-if="themeStore.showLeftIntroBtn"
-          size="medium"
-          severity="secondary"
-          variant="text"
-          aria-haspopup="true"
-          aria-controls="app_menu"
-          class="p-1 mr-2"
-          @click="onClickWorkBtn('0')"
-      >
-        <span class="pi pi-sparkles"></span>
-        <p class="text-base font-base">{{ t('my_work.header_title') }}</p>
-      </Button>
+<!--      <Button-->
+<!--          v-if="themeStore.showLeftIntroBtn"-->
+<!--          size="medium"-->
+<!--          severity="secondary"-->
+<!--          variant="text"-->
+<!--          aria-haspopup="true"-->
+<!--          aria-controls="app_menu"-->
+<!--          class="p-1 mr-2"-->
+<!--          @click="onClickWorkBtn('0')"-->
+<!--      >-->
+<!--        <span class="pi pi-sparkles"></span>-->
+<!--        <p class="text-base font-base">{{ t('my_work.header_title') }}</p>-->
+<!--      </Button>-->
 
-      <Button
-          v-if="themeStore.showLeftIntroBtn"
-          size="medium"
-          severity="secondary"
-          variant="text"
-          aria-haspopup="true"
-          aria-controls="app_menu"
-          class="p-1 mr-2"
-          @click="navigateTo({path: '/article'})"
-      >
-        <span class="pi pi-book" />
-      </Button>
+<!--      <Button-->
+<!--          v-if="themeStore.showLeftIntroBtn"-->
+<!--          size="medium"-->
+<!--          severity="secondary"-->
+<!--          variant="text"-->
+<!--          aria-haspopup="true"-->
+<!--          aria-controls="app_menu"-->
+<!--          class="p-1 mr-2"-->
+<!--          @click="navigateTo({path: '/article'})"-->
+<!--      >-->
+<!--        <span class="pi pi-book" />-->
+<!--      </Button>-->
 
-      <Button
-          v-if="themeStore.showLeftIntroBtn"
-          size="medium"
-          severity="secondary"
-          variant="text"
-          aria-haspopup="true"
-          aria-controls="app_menu"
-          class="p-1 mr-2"
-          @click="navigateTo({path: '/collection'})"
-      >
-        <span class="pi pi-star hover:pi-star-fill"></span>
-      </Button>
+<!--      <Button-->
+<!--          v-if="themeStore.showLeftIntroBtn"-->
+<!--          size="medium"-->
+<!--          severity="secondary"-->
+<!--          variant="text"-->
+<!--          aria-haspopup="true"-->
+<!--          aria-controls="app_menu"-->
+<!--          class="p-1 mr-2"-->
+<!--          @click="navigateTo({path: '/collection'})"-->
+<!--      >-->
+<!--        <span class="pi pi-star hover:pi-star-fill"></span>-->
+<!--      </Button>-->
 
 
     </div>

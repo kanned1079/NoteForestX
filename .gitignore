@@ -12,3 +12,5 @@
 /noteforestx_server/config/config.yaml
 /noteforestx_server/db_migrated_sign
 /noteforestx_server/saved
+
+bin/

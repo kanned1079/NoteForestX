@@ -136,12 +136,12 @@ useScrollFadeIn({
               <p class="text-xl font-bold leading-none">{{ i.title }}</p>
             </div>
             <div class="space-y-2 overflow-hidden mt-4">
-              <a
-                  class="underline font-mono text-xs break-all opacity-80"
+              <p
+                  class="underline font-mono text-xs break-all opacity-80 cursor-pointer"
                   :href="i.url"
               >
                 {{ i.url }}
-              </a>
+              </p>
               <p class="opacity-90 text-sm">{{ i.description }}</p>
             </div>
 
@@ -166,12 +166,12 @@ useScrollFadeIn({
               <p class="text-xl font-bold leading-none">{{ i.title }}</p>
             </div>
             <div class="space-y-2 overflow-hidden mt-4">
-              <a
-                  class="underline font-mono text-xs break-all opacity-80"
+              <p
+                  class="underline font-mono text-xs break-all opacity-80 cursor-pointer"
                   :href="i.url"
               >
                 {{ i.url }}
-              </a>
+              </p>
               <p class="opacity-90 text-sm">{{ i.description }}</p>
             </div>
 

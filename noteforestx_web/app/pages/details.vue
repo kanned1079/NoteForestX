@@ -9,7 +9,8 @@ const showRibbon = ref<boolean>(false)
 useScrollFadeIn({
   selector: '.animate-card-details',
   y: 60,
-  stagger: 0.15
+  stagger: 0.15,
+  useScrollTrigger: false
 })
 
 onMounted(() => {
