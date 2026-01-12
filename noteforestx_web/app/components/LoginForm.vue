@@ -1,6 +1,6 @@
 <template>
   <!--  <div class="bg-surface-50 dark:bg-surface-950 px-6 py-20 md:px-20 lg:px-80">-->
-  <div class="bg-surface-0 dark:bg-surface-900 p-8 md:p-6 rounded-2xl w-full max-w-sm mx-auto flex flex-col gap-8 mt-4 min-w-[320px]">
+  <div class="bg-surface-0 dark:bg-surface-900 p-8 md:p-2 rounded-2xl w-full max-w-sm mx-auto flex flex-col gap-8 mt-4 min-w-[320px]">
     <div class="flex flex-col items-center gap-4">
       <div class="flex items-center gap-4">
       </div>
@@ -66,14 +66,21 @@ const formData = ref<{
 
 const callLoginReq = async () => {
   try {
-    const data = await $fetch<{
+    // const data = await $fetch<{
+    //   user: User,
+    //   token: string
+    // }>(`/api/public/login`, {
+    //   method: "POST",
+    //   body: {
+    //     ...formData.value
+    //   }
+    // })
+
+    const data = await useHttp().post<{
       user: User,
       token: string
-    }>(`/api/public/login`, {
-      method: "POST",
-      body: {
-        ...formData.value
-      }
+    }>(`/v1/public/user/login`, {
+      ...formData.value
     })
     userStore.user = data.user
     token.value = data.token

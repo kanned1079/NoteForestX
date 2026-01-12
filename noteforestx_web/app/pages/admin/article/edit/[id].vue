@@ -17,6 +17,7 @@ import useActionStore from "~/store/actionStore";
 import {CircleArrowOutUpLeft, Command} from "lucide-vue-next";
 import {useScrollFadeIn} from "~/composables/useScrollFadeIn";
 import {useI18n} from "vue-i18n"; // 补充 i18n 导入
+import {useHttp} from '~/composables/useCommonFetch'
 
 // 补充缺失组件导入（模板中使用）
 import Button from "primevue/button";
@@ -61,9 +62,18 @@ const fetchTags = async (tagName?: string) => {
   const keyword = tagName ?? tagSearchValue.value
   tagSearchRes.value = []
   try {
-    const res = await $fetch<{ tags: ArticleTag[]; message: string }>('/api/admin/tag', {
-      method: 'GET',
-      query: { search: keyword }
+    // const res = await $fetch<{ tags: ArticleTag[]; message: string }>('/api/admin/tag', {
+    //   method: 'GET',
+    //   query: { search: keyword }
+    // })
+
+    const res = await useHttp().get<{
+      tags: ArticleTag[]; message: string
+    }>(`/v1/admin/tag`, {
+      includeToken: true,
+      query: {
+        search: keyword
+      }
     })
 
     if (res.tags && res.tags.length > 0) {
@@ -126,13 +136,22 @@ const deleteTag = (tag: { id?: string; name?: string }) => {
 const fetchArticleById = async (id: string) => {
   console.log(`load article by id ${id}`)
   try {
-    const res = await $fetch<{
+    // const res = await $fetch<{
+    //   id: string,
+    //   message: string,
+    //   article: Article | null
+    // }>(`/api/admin/article/${id}`, {
+    //   method: "GET"
+    // })
+
+    const res = await useHttp().get<{
       id: string,
       message: string,
       article: Article | null
-    }>(`/api/admin/article/${id}`, {
-      method: "GET"
+    }>(`/v1/admin/article/${id}`, {
+      includeToken: true
     })
+
     if (res.article) editArticle.value = res.article
   } catch (err: any) {
     toast.add({
@@ -151,21 +170,32 @@ const routerBackIn = (waitMs: number) => {
 const saveNewArticle = async () => {
   console.log('saveNewArticle be called')
   try {
-    const res = await $fetch<{
+    // const res = await $fetch<{
+    //   id: string,
+    //   message: string,
+    // }>(`/api/admin/article`, {
+    //   method: "POST",
+    //   body: {
+    //     ...editArticle.value
+    //   }
+    // })
+
+    await useHttp().post<{
       id: string,
       message: string,
-    }>(`/api/admin/article`, {
-      method: "POST",
-      body: {
-        ...editArticle.value
-      }
+    }>(`/v1/admin/article`, {
+      ...editArticle.value
+    }, {
+      includeToken: true
     })
+
     toast.add({
       severity: "success",
       summary: t("article_edit.toast.successSummary"),
       detail: t("article_edit.toast.saveSuccess"),
       life: 4500,
     })
+    routerBackIn(1000)
   } catch (err: any) {
     toast.add({
       severity: "error",
@@ -174,22 +204,32 @@ const saveNewArticle = async () => {
       life: 4500,
     })
   } finally {
-    routerBackIn(1000)
+    
   }
 }
 
 const saveArticle = async () => {
   console.log(`save article by id ${articleId}`)
   try {
-    const res = await $fetch<{
+    // const res = await $fetch<{
+    //   id: string,
+    //   message: string,
+    // }>(`/api/admin/article/${articleId}`, {
+    //   method: "PUT",
+    //   body: {
+    //     ...editArticle.value
+    //   }
+    // })
+
+    await useHttp().put<{
       id: string,
       message: string,
-    }>(`/api/admin/article/${articleId}`, {
-      method: "PUT",
-      body: {
-        ...editArticle.value
-      }
+    }>(`/v1/admin/article/${articleId}`, {
+      ...editArticle.value
+    }, {
+      includeToken: true
     })
+
     toast.add({
       severity: "success",
       summary: t("article_edit.toast.successSummary"),

@@ -38,8 +38,8 @@ onBeforeUnmount(() => {
         <slot />
       </div>
 
-      <!-- 左下角插槽 -->
-      <div class="absolute left-0 bottom-0 m-8">
+      <!-- 左下角插槽（手机端隐藏） -->
+      <div class="absolute left-0 bottom-0 m-8 hidden sm:block">
         <slot name="lb" />
       </div>
 

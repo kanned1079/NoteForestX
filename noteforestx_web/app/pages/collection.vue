@@ -87,16 +87,40 @@ const collectionWebAppData: WebItem[] = [
     icon_url: `https://ikanned.com:2444/d/upload/NXC/annasarchieve.ico`
   },
   {
+    title: "Windows KMS Keys",
+    description: "微軟官方各個Windows版本的KMS密鑰，好難搜到",
+    url: `https://learn.microsoft.com/en-us/windows-server/get-started/kms-client-activation-keys`,
+    icon_url: `https://ikanned.com:2444/d/upload/NXC/micrtosoft.ico`
+  },
+  {
+    title: "CSS Design Awards",
+    description: "网站评选网站，跟 Awwwards 类似，可以看到每期的优秀网站。观感上会好些。",
+    url: "https://www.cssdesignawards.com/",
+    icon_url: "https://ikanned.com:2444/d/upload/NXC/aaae2bf4f74c8eb1.svg"
+  },
+  {
     title: "絵師100人展",
     description: "本次展覽將匯集100多位活躍於流行文化前沿的藝術家的原創作品。透過他們作品中展現的高超技藝和獨特世界觀。",
     url: `https://www.eshi100.com/`,
     icon_url: `https://ikanned.com:2444/d/upload/NXC/eshi100.svg`
   },
   {
-    title: "Windows KMS Keys",
-    description: "微軟官方各個Windows版本的KMS密鑰，好難搜到",
-    url: `https://learn.microsoft.com/en-us/windows-server/get-started/kms-client-activation-keys`,
-    icon_url: `https://ikanned.com:2444/d/upload/NXC/micrtosoft.ico`
+    title: "Messenger",
+    description: "abeto 作品，卡通送信员在地球小镇上奔跑，联机在线，可换装。",
+    url: `https://messenger.abeto.co/`,
+    icon_url: `https://ikanned.com:2444/d/upload/NXC/favicon32-BC0QIL61.png`
+  },
+  {
+    title: "Summer Afternoon",
+    description: "夏日午后，小男孩在乡村公路上上游玩。",
+    url: "https://summer-afternoon.vlucendo.com/",
+    icon_url: "https://ikanned.com:2444/d/upload/NXC/favicon32-e817b074.png"
+  },
+  {
+    title: "The Monolith Project",
+    description: "奇幻宇宙的动画演绎，像看电影一样。“跨越多星之际，一座沉默的巨石碑悄然苏醒。“巨石碑计划”：每一次触碰，皆可重写现实。”",
+    url: "https://themonolithproject.net/",
+    icon_url: "https://ikanned.com:2444/d/upload/NXC/nose_logo.webp",
   }
 
 ]
@@ -121,7 +145,7 @@ useScrollFadeIn({
       </section>
 
       <div class="animate-card-collection space-y-2">
-        <p class="text-lg font-bold">{{ t('collection.my') }}</p>
+        <p class="text-lg font-bold">{{ t('collection.my') }} [{{ myWebAppData.length }}]</p>
         <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <MyCard
               v-for="i in myWebAppData"
@@ -150,7 +174,7 @@ useScrollFadeIn({
       </div>
 
       <div class="animate-card-collection space-y-2">
-        <p class="text-lg font-bold">{{ t('collection.collected') }}</p>
+        <p class="text-lg font-bold">{{ t('collection.collected') }} [{{ collectionWebAppData.length }}]</p>
         <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
 
           <MyCard

@@ -13,7 +13,8 @@ import type {Article} from "~/types/article";
 import {useScrollFadeIn} from "~/composables/useScrollFadeIn";
 import type {SearchQuery} from "~/types/article_search";
 import ArticleItemDesktop from "~/components/RedesignedComponents/ArticleItemDesktop.vue";
-import {navigateTo} from "#app"; // 补充 navigateTo 导入（Nuxt 环境）
+import {navigateTo} from "#app";
+import {useHttp} from "~/composables/useCommonFetch"; // 补充 navigateTo 导入（Nuxt 环境）
 
 useScrollFadeIn({
   selector: '.animate-card-article-index',
@@ -250,15 +251,24 @@ const fetchArticleList = async () => {
       query.status = searchQuery.value.status
     }
 
-    const data = await $fetch<{
+    const data = await useHttp().get<{
       page: number
       size: number
       total: number
       list: Article[]
-    }>("/api/article", {
-      method: "GET",
+    }>("/v1/article", {
       query
     })
+
+    // const data = await $fetch<{
+    //   page: number
+    //   size: number
+    //   total: number
+    //   list: Article[]
+    // }>("/api/article", {
+    //   method: "GET",
+    //   query
+    // })
 
     articleList.value = data.list
     total.value = data.total
@@ -314,50 +324,55 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="w-full flex flex-row justify-center">
-    <div class="max-w-[900px] container">
-      <PageHeader
-          :title="t('articleIndex.pageTitle')"
-          class="mb-8 animate-card-article-index"
-      >
-        <template #subtitle>
-          <p>{{ t('articleIndex.pageSubtitle') }}</p>
-        </template>
-      </PageHeader>
 
-      <transition name="slide-fade">
-        <div class="mb-10" v-if="!loading && articleList.length > 0">
-          <div class="space-y-4">
-            <ArticleItemDesktop
-                v-for="item in articleList"
-                :key="item.id"
-                :article="item"
-                @clickTitle="toDetails"
-                @clickTag="searchByTag"
+  <ClientOnly>
+    <div class="w-full flex flex-row justify-center">
+      <div class="max-w-[900px] container">
+        <PageHeader
+            :title="t('articleIndex.pageTitle')"
+            class="mb-8 animate-card-article-index"
+        >
+          <template #subtitle>
+            <p>{{ t('articleIndex.pageSubtitle') }}</p>
+          </template>
+        </PageHeader>
+
+        <transition name="slide-fade">
+          <div class="mb-10" v-if="!loading && articleList.length > 0">
+            <div class="space-y-4">
+              <ArticleItemDesktop
+                  v-for="item in articleList"
+                  :key="item.id"
+                  :article="item"
+                  @clickTitle="toDetails"
+                  @clickTag="searchByTag"
+              />
+            </div>
+
+            <MyPaginationBar
+                class="mt-10 animate-card-article-index"
+                v-model:page="page"
+                v-model:size="size"
+                :total="total"
+                :fetchData="fetchArticleList"
             />
           </div>
+          <div v-else>
+            <Message severity="warn">{{ t('articleIndex.emptyArticleList') }}</Message>
+          </div>
+        </transition>
 
-          <MyPaginationBar
-              class="mt-10 animate-card-article-index"
-              v-model:page="page"
-              v-model:size="size"
-              :total="total"
-              :fetchData="fetchArticleList"
-          />
-        </div>
-        <div v-else>
-          <Message severity="warn">{{ t('articleIndex.emptyArticleList') }}</Message>
-        </div>
-      </transition>
-
-      <transition name="slide-fade">
-        <div v-if="errMsg" class="mt-4">
-          <Message severity="error">{{ t('articleIndex.searchError') }} {{ errMsg }}</Message>
-        </div>
-      </transition>
+        <transition name="slide-fade">
+          <div v-if="errMsg" class="mt-4">
+            <Message severity="error">{{ t('articleIndex.searchError') }} {{ errMsg }}</Message>
+          </div>
+        </transition>
+      </div>
+      <!--    主體部分結束-->
     </div>
-    <!--    主體部分結束-->
-  </div>
+  </ClientOnly>
+
+
 
   <Dialog
       v-model:visible="themeStore.searchDialog.show"

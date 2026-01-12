@@ -38,19 +38,29 @@ const callSaveUsername = async () => {
     })
   }
   try {
-    const token = useCookie("access_token", {})
-    const data = await $fetch<{
+    // const token = useCookie("access_token", {})
+    // const data = await $fetch<{
+    //   message: string,
+    //   new_username: string
+    // }>(`/api/user/${userStore.user.id}/username`, { // PATCH URL
+    //   method: "PATCH",
+    //   headers: {
+    //     Authorization: `Bearer ${token.value}`  // ✅ 这里改成 Bearer
+    //   },
+    //   body: {
+    //     username: editUsername.value
+    //   }
+    // })
+
+    const data = await useHttp().patch<{
       message: string,
       new_username: string
-    }>(`/api/user/${userStore.user.id}/username`, { // PATCH URL
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${token.value}`  // ✅ 这里改成 Bearer
-      },
-      body: {
-        username: editUsername.value
-      }
+    }>(`/v1/user/${userStore.user.id}/username`, {
+      username: editUsername.value
+    }, {
+      includeToken: true
     })
+
     userStore.user.username = data.new_username
     showEditUsernameDialog.value = false
     toast.add({
@@ -82,19 +92,30 @@ const callSavePassword = async () => {
     })
   }
   try {
-    const token = useCookie("access_token", {})
-    const data = await $fetch<{
+    // const token = useCookie("access_token", {})
+    // const data = await $fetch<{
+    //   message: string,
+    // }>(`/api/user/${userStore.user.id}/password`, { // PATCH URL
+    //   method: "PATCH",
+    //   headers: {
+    //     Authorization: `Bearer ${token.value}` 
+    //   },
+    //   body: {
+    //     previous_password: editPwd.value.previousPwd,
+    //     new_password: editPwd.value.newPwd,
+    //   }
+    // })
+
+    const data = await useHttp().patch<{
       message: string,
-    }>(`/api/user/${userStore.user.id}/password`, { // PATCH URL
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${token.value}`  // ✅ 这里改成 Bearer
-      },
-      body: {
-        previous_password: editPwd.value.previousPwd,
-        new_password: editPwd.value.newPwd,
-      }
+    }>(`/v1/user/${userStore.user.id}/password`, {
+      previous_password: editPwd.value.previousPwd,
+      new_password: editPwd.value.newPwd,
+    }, {
+      includeToken: true
     })
+
+    console.log(data.message)
     showUpdatePwdDialog.value = false
     toast.add({
       severity: "success",

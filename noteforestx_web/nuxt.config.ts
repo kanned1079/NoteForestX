@@ -194,78 +194,6 @@ const MyPreset = definePreset(Aura, {
     }
 })
 
-// const MyPreset = definePreset(Aura, {
-//     semantic: {
-//         focusRing: {
-//             width: '2px',
-//             style: 'dashed',
-//             color: '{primary.color}',
-//             offset: '1px'
-//         },
-//         primary: {
-//             50: '#e5eff7',
-//             100: '#c6d9eb',
-//             200: '#a7c2df',
-//             300: '#88add3',
-//             400: '#6998c7',
-//             500: '#4f7da6',
-//             600: '#3f657f',
-//             700: '#2f4e5f',
-//             800: '#1f3640',
-//             900: '#0f1b20',
-//             950: '#080f10'
-//         },
-//         colorScheme: {
-//             light: {
-//                 primary: {
-//                     color: '#4f7da6',
-//                     inverseColor: '#ffffff',
-//                     hoverColor: '#3f657f',
-//                     activeColor: '#2f4e5f'
-//                 },
-//                 highlight: {
-//                     background: '#4f7da6',
-//                     focusBackground: '#3f657f',
-//                     color: '#ffffff',
-//                     focusColor: '#ffffff'
-//                 },
-//                 formField: {
-//                     hoverBorderColor: '#4f7da6'
-//                 },
-//                 surface: {
-//                     // 👇这里设置浅色模式背景色
-//                     0: '#f9fafc',
-//                     50: '#6f7685',   // 页面主要背景色
-//                     100: '#f1f3f5',  // 比如卡片背景
-//                 }
-//             },
-//             dark: {
-//                 primary: {
-//                     color: '#4f7da6',
-//                     inverseColor: '#ffffff',
-//                     hoverColor: '#6998c7',
-//                     activeColor: '#88add3'
-//                 },
-//                 highlight: {
-//                     background: 'rgba(79,125,166,0.16)',
-//                     focusBackground: 'rgba(79,125,166,0.24)',
-//                     color: '#ffffff',
-//                     focusColor: '#ffffff'
-//                 },
-//                 formField: {
-//                     hoverBorderColor: '#4f7da6'
-//                 },
-//                 surface: {
-//                     0: '#181818',
-//                     50: '#2f302f',   // 你之前深色模式想要的背景
-//                     100: '#3a3b3a'
-//                 }
-//             }
-//         }
-//     },
-//     inputVariant: "filled"
-// })
-
 export default defineNuxtConfig({
     compatibilityDate: '2025-07-15',
     devtools: {enabled: true},
@@ -313,20 +241,18 @@ export default defineNuxtConfig({
         strategy: 'prefix',
         defaultLocale: "en_us"
     },
-    // resolve: {
-    //     alias: {
-    //         '~': fileURLToPath(new URL('./app', import.meta.url)), // ~ 指向 src
-    //         // '@': fileURLToPath(new URL('./src', import.meta.url)), // @ 也可以一起
-    //     }
-    // },
-    runtimeConfig: {
-        public: {
-            apiBase: process.env.API_BASE_URL || "https://ikanned.com:14000",
+    routeRules: {
+        '/api/**': {
+            proxy: `${process.env.API_BASE_URL || 'http://127.0.0.1:8081'}/api/**`
         }
     },
-    // router: {
-    //     middleware: ['auth']
-    // },
+    runtimeConfig: {
+        apiSecretBase: process.env.API_BASE_URL || 'http://127.0.0.1:8081',
+        public: {
+            // apiBase: process.env.API_BASE_URL || "http://127.0.0.1:8081",
+            apiBase: "/api",
+        }
+    },
     vite: {
         optimizeDeps: {
             exclude: ['primevue']
@@ -336,26 +262,17 @@ export default defineNuxtConfig({
         // 可选：开启调试输出
         logLevel: 'info',
     },
-    // hooks: {
-    //     'render:errorMiddleware'(app) {
-    //         // 捕获所有 SSR 错误
-    //         app.use((err, req, res, next) => {
-    //             console.error('SSR Error:', err)
-    //             next(err)
-    //         })
-    //     }
-    // }
-    // nitro: {
-    //     devProxy: {
-    //         "/api/": {
-    //             target: "http://localhost:8081/api/",
-    //             changeOrigin: true,
-    //         }
-    //     }
-    // },
-    // devServer: {
-    //     proxy: {
-    //         '/api': 'http://localhost:8081'
-    //     }
-    // }
+    app: {
+        head: {
+            title: 'Note Forest',
+            link: [
+                {
+                    rel: 'icon',
+                    type: 'image/png',
+                    href: '/note_forest_icon.png'
+                }
+            ]
+        },
+    }
+
 })

@@ -51,11 +51,19 @@ useScrollFadeIn({
 
 const fetchArticleById = async (id: string) => {
   try {
-    const res = await $fetch<{
-      id: string;
-      message: string;
-      article: Article | null;
-    }>(`/api/article/${id}`);
+    // const res = await $fetch<{
+    //   id: string;
+    //   message: string;
+    //   article: Article | null;
+    // }>(`/api/article/${id}`);
+
+    const res = await useHttp().get<{
+        id: string;
+        message: string;
+        article: Article | null;
+    }>(`/v1/article/${id}`)
+
+    console.log(res)
 
     if (res.article) {
       currentArticle.value = res.article;
@@ -117,10 +125,10 @@ fetchArticleById(articleId);
 onMounted(() => {
   themeStore.setShowCatalog(true)
   themeStore.actionCenterMsgs = [
-    `按下 / 以开启文章的目录面板`,
-    `单击目录区域的文章标题可以回到顶部`,
-    `点击文章中的Tag以获取TagId`
-  ]
+    `Press / to open the article's table of contents panel`,
+    `Click the article title in the table of contents area to return to the top`,
+    `Click a Tag in the article to get the TagId`
+  ];
 
   window.addEventListener('keydown', onKeydown);
 });

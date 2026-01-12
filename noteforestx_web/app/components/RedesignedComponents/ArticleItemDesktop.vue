@@ -2,6 +2,7 @@
 import type { Article } from "~/types/article";
 import dayjs from "dayjs";
 import { defineProps, defineEmits, ref, onMounted, onUnmounted } from "vue";
+import { Pin } from 'lucide-vue-next';
 
 const props = defineProps<{
   article: Article
@@ -50,8 +51,13 @@ const handleTagClick = (tag: { id: string, name: string }) => {
 
         <!-- 标题 -->
       <span
-          class="font-medium ml-2 relative transition-transform duration-200 group-hover:translate-x-2"
+          class="font-medium ml-2 relative transition-transform duration-200 group-hover:translate-x-2 flex flex-row items-center"
       >
+
+        <span v-if="props.article.top" class="font-mono mr-1">
+          <Tag severity="warn" class="font-mono text-xs font-semibold" value="Pinned" style="padding: 0 8px"></Tag>
+        </span>
+
         {{ article.title }}
         <!-- 底部横线 -->
         <span
@@ -78,7 +84,13 @@ const handleTagClick = (tag: { id: string, name: string }) => {
   <div v-else class="flex flex-col">
     <!-- 移动端布局 -->
     <div class="flex flex-col justify-start space-y-1">
-      <span @click="toDetails" class="font-bold hover:underline cursor-pointer">{{ article.title }}</span>
+      <span @click="toDetails" class="font-bold hover:underline cursor-pointer">{{ article.title }}
+       <span v-if="props.article.top" class="font-mono mr-1">
+          <Tag severity="warn" class="font-mono text-xs font-semibold" value="Pinned" style="padding: 0 8px"></Tag>
+        </span>
+
+      </span>
+
       <div class="flex flex-wrap gap-2">
         <span
             class="text-xs opacity-70 hover:underline cursor-pointer"

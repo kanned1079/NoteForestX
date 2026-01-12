@@ -29,17 +29,17 @@ func (this *RouterInstance) RegisterApiServices() {
 	this.Router.Use(middlewares.AllowRequestTypeCors())
 
 	apiPrefix := this.Router.Group("/api")
-	//v1 := apiPrefix.Group("v1")
+	v1 := apiPrefix.Group("v1")
 
-	this.RegisterPublicRoutes(apiPrefix)
-	this.RegisterAdminRoutes(apiPrefix)
-	this.RegisterUserRoutes(apiPrefix)
-	this.RegisterArticleRoutes(apiPrefix)
+	//this.RegisterPublicRoutes(apiPrefix)
+	//this.RegisterAdminRoutes(apiPrefix)
+	//this.RegisterUserRoutes(apiPrefix)
+	//this.RegisterArticleRoutes(apiPrefix)
 
-	//this.RegisterPublicRoutes(v1)
-	//this.RegisterAdminRoutes(v1)
-	//this.RegisterUserRoutes(v1)
-	//this.RegisterArticleRoutes(v1)
+	this.RegisterPublicRoutes(v1)
+	this.RegisterAdminRoutes(v1)
+	this.RegisterUserRoutes(v1)
+	this.RegisterArticleRoutes(v1)
 
 	//this.RegisterIllustrationRoutes(v1)
 	//this.RegisterPixivRoutes(v1)

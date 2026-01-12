@@ -20,6 +20,7 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Tag from "primevue/tag";
 import MyPaginationBar from "~/components/MyPaginationBar.vue"; // 补充缺失的组件导入
+import {useHttp} from '~/composables/useCommonFetch'
 
 const {t} = useI18n()
 const toast = useToast()
@@ -37,6 +38,15 @@ useScrollFadeIn({
 
 /* ===== 数据 ===== */
 // const articleList = ref<Article[]>([])
+
+// const onEnterPress = () => {
+//   // 1. 解析输入
+//   parseSearchInput(searchInput.value)
+//   // 2. 搜索时必须回到第一页
+//   page.value = 1
+//   // 3. 执行请求
+//   fetchArticleList()
+// }
 
 const inputRef = ref<InstanceType<typeof InputText> | null>(null)
 
@@ -58,44 +68,84 @@ const searchInput = ref<string>('')
 
 const parseSearchInput = (input: string) => {
   const trimmed = input.trim()
+
+  // 1. 初始化一个干净的查询对象
+  const newQuery: SearchQuery = {
+    search: undefined,
+    tag: undefined,
+    tag_id: undefined
+  }
+
   if (!trimmed) {
-    searchQuery.value = {}
+    searchQuery.value = newQuery
     return
   }
 
-  if (trimmed.startsWith('/i ')) {
-    // /i <title>
-    searchQuery.value = {
-      search: trimmed.slice(3).trim(),
-      tag: undefined,
-      tag_id: undefined
-    }
-  } else if (trimmed.startsWith('/t ')) {
-    // /t <tag>
-    searchQuery.value = {
-      search: undefined,
-      tag: trimmed.slice(3).trim(),
-      tag_id: undefined
-    }
+  // 2. 执行正则匹配
+  // (t|tag) 匹配 t 或 tag；\s+ 匹配至少一个空格；(.+) 匹配后面的内容
+  const tagMatch = trimmed.match(/^\/(t|tag)\s+(.+)/i)
+  const titleMatch = trimmed.match(/^\/(i|title)\s+(.+)/i)
+
+  // 3. 安全判断与赋值
+  if (tagMatch && tagMatch[2]) {
+    // 只有当 tagMatch 不为 null 且存在第二个捕获组时进入
+    newQuery.tag = tagMatch[2].trim()
+  } else if (titleMatch && titleMatch[2]) {
+    // 同理处理标题搜索
+    newQuery.search = titleMatch[2].trim()
   } else {
-    // 默认按标题搜索
-    searchQuery.value = {
-      search: trimmed,
-      tag: undefined,
-      tag_id: undefined
-    }
+    // 4. 如果没有匹配到任何命令（如直接输入 "vue" 或输入了 "/t" 但没写内容）
+    // 自动过滤掉可能存在的开头斜杠，防止带斜杠发送给后端
+    newQuery.search = trimmed.replace(/^\//, '')
   }
+
+  searchQuery.value = newQuery
 }
+
+// const parseSearchInput = (input: string) => {
+//   const trimmed = input.trim()
+//   if (!trimmed) {
+//     searchQuery.value = {}
+//     return
+//   }
+//
+//   if (trimmed.startsWith('/i ')) {
+//     // /i <title>
+//     searchQuery.value = {
+//       search: trimmed.slice(3).trim(),
+//       tag: undefined,
+//       tag_id: undefined
+//     }
+//   } else if (trimmed.startsWith('/t ')) {
+//     // /t <tag>
+//     searchQuery.value = {
+//       search: undefined,
+//       tag: trimmed.slice(3).trim(),
+//       tag_id: undefined
+//     }
+//   } else {
+//     // 默认按标题搜索
+//     searchQuery.value = {
+//       search: trimmed,
+//       tag: undefined,
+//       tag_id: undefined
+//     }
+//   }
+// }
 
 const currentIcon = computed(() => {
   const val = searchInput.value.trim()
-  if (val.startsWith('/i')) return 'pi pi-file-word'
-  if (val.startsWith('/t')) return 'pi pi-hashtag'
+  if (val.startsWith('/i') || val.startsWith('/title')) return 'pi pi-file-word'
+  if (val.startsWith('/t') || val.startsWith('/tag')) return 'pi pi-hashtag'
   return 'pi pi-file-word'
 })
 
 const onEnterPress = () => {
+  // 1. 解析输入
   parseSearchInput(searchInput.value)
+  // 2. 搜索时必须回到第一页
+  page.value = 1
+  // 3. 执行请求
   fetchArticleList()
 }
 
@@ -103,19 +153,20 @@ const onEnterPress = () => {
 const fetchArticleList = async () => {
   loading.value = true
   try {
-    const data = await $fetch<{
-      page: number
-      size: number
-      total: number
-      list: Article[]
-    }>("/api/admin/article", {
-      method: "GET",
+
+    const data = await useHttp().get<{
+        page: number
+        size: number
+        total: number
+        list: Article[]
+    }>(`/v1/admin/article`, {
       query: {
         page: page.value,
         size: size.value,
         ...searchQuery.value,
-      },
+      }
     })
+
     articleList.value = data.list
     total.value = data.total
   } catch (err: any) {
@@ -159,7 +210,8 @@ const deleteArticleClick = (article: Article) => {
 const deleteArticle = async () => {
   if (delArticle.value.id) {
     try {
-      await $fetch(`/api/admin/article/${delArticle.value.id}`, {method: "DELETE"})
+      await useHttp().delete(`/v1/admin/article/${delArticle.value.id}`)
+
       toast.add({
         severity: "success",
         summary: t("article.toast.operateSuccess"),
@@ -184,11 +236,10 @@ const updateArticleStatus = async (
     value: boolean | string
 ) => {
   try {
-    await $fetch(`/api/admin/article/${id}`, {
-      method: 'PATCH',
-      body: {
-        [field]: value, // ⭐ 关键
-      },
+    await useHttp().patch(`/v1/admin/article/${id}`, {
+      [field]: value,
+    }, {
+      includeToken: true
     })
 
     toast.add({
@@ -294,7 +345,7 @@ onBeforeUnmount(() => {
 
     <transition name="slide-fade">
       <div v-if="!loading">
-        <MyCard style="padding: 10px 14px" class="">
+        <MyCard style="padding: 14px 14px" class="">
           <DataTable
               :value="articleList"
               tableStyle="min-width: 80rem"

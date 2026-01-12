@@ -5,7 +5,7 @@ module.exports = {
             script: '.output/server/index.mjs',
             interpreter: 'node',
             env: {
-                API_BASE_URL: "https://ikanned.com:14000",
+                API_BASE_URL: "http://localhost:14001",
                 PORT: 14000
             }
         }

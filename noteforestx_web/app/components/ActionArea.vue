@@ -5,8 +5,10 @@ import {defineExpose, useTemplateRef} from "vue";
 import ColorModeToggle from "~/components/ColorModeToggle.vue";
 import useThemeStore from "~/store/themeStore";
 import {useI18n} from "vue-i18n";
+import useUserStore from "~/store/userStore";
 
 const {t} = useI18n()
+const userStore = useUserStore()
 const themeStore = useThemeStore()
 const langChangeCompRef = useTemplateRef('langBtnRef')
 
@@ -45,16 +47,22 @@ defineExpose({
 
         </div>
 
-        <p class="text-xl font-semibold mb-4 mt-8 animate-card">{{ t('actionCenter.msg') }}</p>
-        <p
-            v-if="themeStore.actionCenterMsgs.length===0"
-            class="text-sm font-light opacity-80 animate-card">{{ t('actionCenter.noMsg') }}</p>
-        <p
-            v-for="i in themeStore.actionCenterMsgs"
-            :key="i"
-            class="text-sm font-light opacity-80 animate-card mb-2">
-          {{ i }}
-        </p>
+        <div>
+          <p class="text-xl font-semibold mb-4 mt-8 animate-card">{{ t('actionCenter.msg') }}</p>
+          <p
+              v-if="themeStore.actionCenterMsgs.length===0"
+              class="text-sm font-light opacity-80 animate-card">{{ t('actionCenter.noMsg') }}</p>
+          <p
+              v-for="i in themeStore.actionCenterMsgs"
+              :key="i"
+              class="text-sm font-light opacity-80 animate-card mb-2">
+            {{ i }}
+          </p>
+        </div>
+
+<!--        <div>-->
+<!--          <p class="text-xl font-semibold mb-4 mt-8 animate-card">{{ userStore.user.username?userStore.user.username:userStore.user.email }}</p>-->
+<!--        </div>-->
 
       </div>
     </div>

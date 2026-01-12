@@ -95,7 +95,7 @@ func (s *ArticleService) GetArticleList(ctx *gin.Context) {
 	// ========== 分页查询 ==========
 	var articles []models.Article
 	if err := db.
-		Order("created_at DESC").
+		Order("top DESC, created_at DESC").
 		Offset((req.Page - 1) * req.Size).
 		Limit(req.Size).
 		Select("id, slug, title, top, created_at, updated_at").
