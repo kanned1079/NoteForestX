@@ -3,7 +3,7 @@ module.exports = {
     apps: [
         {
             name: 'note-forest-x_server',
-            script: './bin/noteforestx-server-darwin-arm64',
+            script: './bin/noteforestx-server-linux-amd64',
             args: 'server',
             exec_mode: 'fork',
             instances: 1,

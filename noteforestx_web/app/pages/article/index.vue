@@ -1,4 +1,7 @@
 <script setup lang="ts">
+definePageMeta({
+  // layout: "de"
+})
 import {useI18n} from "vue-i18n";
 import {ref, watch, onMounted, onBeforeUnmount, onBeforeMount} from "vue"
 import useThemeStore from "~/store/themeStore";
@@ -140,6 +143,7 @@ const handleKeyDown = (e: KeyboardEvent) => {
 }
 
 const handleCmdKeyDown = (e: KeyboardEvent) => {
+  if (!import.meta.client) return
   const isMac = navigator.platform.toUpperCase().includes('MAC')
   if (
       (isMac && e.metaKey && e.key.toLowerCase() === 'k') ||
@@ -259,17 +263,6 @@ const fetchArticleList = async () => {
     }>("/v1/article", {
       query
     })
-
-    // const data = await $fetch<{
-    //   page: number
-    //   size: number
-    //   total: number
-    //   list: Article[]
-    // }>("/api/article", {
-    //   method: "GET",
-    //   query
-    // })
-
     articleList.value = data.list
     total.value = data.total
   } catch (err: any) {

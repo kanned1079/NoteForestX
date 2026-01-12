@@ -55,23 +55,6 @@ const expandUpper = () => {
 
 </template>
 
-<!--<template>-->
-<!--  <div class="relative">-->
-
-<!--    <WelcomeBanner :expand="expandUpper" />-->
-
-<!--    <div-->
-<!--        class="transition-all duration-500 ease-in-out"-->
-<!--        :style="{ transform: showBanner ? 'translateY(2.5vh)' : 'translateY(0)' }"-->
-<!--    >-->
-<!--      <AppHeader />-->
-<!--      <Toast />-->
-<!--      <ConfirmDialog />-->
-<!--      <slot />-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</template>-->
-
 <style scoped>
 /* 无需额外样式，过渡动画已在 CollapseTransition 内控制 */
 </style>

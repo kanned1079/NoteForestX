@@ -5,7 +5,7 @@ module.exports = {
             script: '.output/server/index.mjs',
             interpreter: 'node',
             env: {
-                API_BASE_URL: "http://localhost:14001",
+                API_BASE_URL: "http://127.0.0.1:8081",
                 PORT: 14000
             }
         }
