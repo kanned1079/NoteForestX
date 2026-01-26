@@ -243,11 +243,11 @@ export default defineNuxtConfig({
     },
     routeRules: {
         '/api/**': {
-            proxy: `${process.env.API_BASE_URL || 'http://127.0.0.1:8081'}/api/**`
+            proxy: `${process.env.API_BASE_URL || 'http://192.168.0.244:8081'}/api/**`
         }
     },
     runtimeConfig: {
-        apiSecretBase: process.env.API_BASE_URL || 'http://127.0.0.1:8081',
+        apiSecretBase: process.env.API_BASE_URL || 'http://192.168.0.244:8081',
         public: {
             // apiBase: process.env.API_BASE_URL || "http://127.0.0.1:8081",
             apiBase: "/api",

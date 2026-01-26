@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import {useI18n} from "vue-i18n";
-import { defineProps, defineEmits, computed, ref } from "vue"
+import { useI18n } from "vue-i18n";
+import { defineProps, defineEmits, computed, onMounted } from "vue"
 
-const {t} = useI18n()
-const sizeLabel = ref<number>()
+const { t } = useI18n()
+const STORAGE_KEY = 'user-pagination-size'
 
 const props = defineProps<{
   page: number
   size: number
   total: number
   fetchData: () => Promise<void>
-  place?: "left" | "right" // ✅ 可选，默认为右侧
+  place?: "left" | "right"
 }>()
 
 const emit = defineEmits<{
@@ -18,27 +18,50 @@ const emit = defineEmits<{
   (e: "update:size", value: number): void
 }>()
 
-// 页码改变（PrimeVue 的 event.page 从 0 开始）
+/**
+ * 挂载处理：
+ * 检查本地存储的值。如果与当前 props 不一致，说明用户之前在其他页面选过不同的 size，
+ * 则更新父组件的状态并重新抓取数据。
+ */
+onMounted(async () => {
+  if (import.meta.client) {
+    const savedSize = localStorage.getItem(STORAGE_KEY)
+    if (savedSize) {
+      const sizeNum = parseInt(savedSize)
+      if (sizeNum !== props.size) {
+        emit("update:size", sizeNum)
+        emit("update:page", 1)
+        await props.fetchData()
+      }
+    }
+  }
+})
+
+// 页码改变
 const onChangePage = async (event: { page: number }) => {
-  const newPage = event.page + 1 // ✅ 转换为 1 起始
+  const newPage = event.page + 1
   emit("update:page", newPage)
   await props.fetchData()
 }
 
-
-// 每页数量改变 -> 同时重置页码为1
+// 每页数量改变
 const onChangeSize = async (value: number) => {
   const newSize = value > 0 ? value : 15
+
+  if (import.meta.client) {
+    localStorage.setItem(STORAGE_KEY, newSize.toString())
+  }
+
   emit("update:size", newSize)
-  emit("update:page", 1) // ✅ 重置页码
+  emit("update:page", 1) // 切换 size 后重置回第一页
   await props.fetchData()
 }
 
-// ✅ 动态对齐样式
 const justifyClass = computed(() => {
   return props.place === "left" ? "justify-start" : "justify-end"
 })
 </script>
+
 
 <template>
   <div class="flex flex-row items-center gap-3" :class="justifyClass">
@@ -63,10 +86,6 @@ const justifyClass = computed(() => {
 
       <template #dropdownicon>
         <i class="pi pi-chevron-down" />
-      </template>
-
-      <template #header>
-        <div v-if="false" class="font-light text-xs pl-3 pr-3 pt-2">每页显示数量</div>
       </template>
     </Select>
 

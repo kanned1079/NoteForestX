@@ -28,14 +28,16 @@ const id = 'article-preview';
 const visible = ref<boolean>(false);
 const position = ref<"bottom" | "left">("left");
 
-const currentArticle = ref<Article>({
-  id: '',
-  top: false,
-  status: 'published',
-  title: '',
-  tags: [],
-  content: ''
-});
+const currentArticle = ref<Article>();
+
+// const currentArticle = ref<Article>({
+//   id: '',
+//   top: false,
+//   status: 'published',
+//   title: '',
+//   tags: [],
+//   content: ''
+// });
 
 const { isDarkMode } = useDarkMode();
 
@@ -120,7 +122,7 @@ const toPageTop = () => {
   })
 }
 
-fetchArticleById(articleId);
+setTimeout(() => fetchArticleById(articleId), 500)
 
 onMounted(() => {
   themeStore.setShowCatalog(true)
@@ -148,11 +150,11 @@ onUnmounted(() => {
   <div
       class="pt-[40px] px-4 md:px-6 lg:px-8"
   >
-    <div class="card flex justify-center">
+    <div class="card flex justify-center" v-if="currentArticle">
       <Drawer v-model:visible="visible" :header="t('article.catalog')" :position="position" class="!w-full md:!w-80 lg:!w-[30rem]">
         <div>
           <p class="text-xl font-bold mt-6 mb-4 hover:underline cursor-pointer" @click="toPageTop">{{ currentArticle.title }}</p>
-          <MdCatalog :editorId="id" scrollElement="html" />
+          <MdCatalog :scrollElementOffsetTop="80" :editorId="id" scrollElement="html" />
           <p class="mt-4 text-xs font-mono opacity-50">{{ articleId }}</p>
         </div>
       </Drawer>
@@ -163,22 +165,32 @@ onUnmounted(() => {
 
       <!-- 正文 -->
       <main class="flex-1 min-w-0">
+
         <div class="mx-auto max-w-[720px] lg:max-w-[900px] animate-card-article-id">
 
-          <ArticleHeader
-              :title="currentArticle.title"
-              :tags="currentArticle.tags"
-              :createdAt="dayjs(currentArticle.created_at).format('YYYY-MM-DD')"
-          />
+          <div v-if="currentArticle">
+            <ArticleHeader
+                :title="currentArticle.title"
+                :tags="currentArticle.tags"
+                :createdAt="dayjs(currentArticle.created_at).format('YYYY-MM-DD')"
+            />
 
-          <MdPreview
-              :id="id"
-              :modelValue="currentArticle.content"
-              :theme="isDarkMode ? 'dark' : undefined"
-              preview-theme="github"
-          />
+            <MdPreview
+                :id="id"
+                :modelValue="currentArticle.content"
+                :theme="isDarkMode ? 'dark' : undefined"
+                preview-theme="github"
+            />
+          </div>
+          <div v-else class="space-y-4">
+            <div class="text-xl font-semibold opacity-80">Loading article ...</div>
+            <div class="font-mono opacity-50">{{ articleId }}</div>
+          </div>
+
 
         </div>
+
+
       </main>
     </div>
   </div>

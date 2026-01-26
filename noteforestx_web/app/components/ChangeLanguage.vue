@@ -3,8 +3,9 @@ import { ref, useTemplateRef, defineExpose } from "vue";
 import { useI18n } from "vue-i18n";
 import useUserStore from "~/store/userStore";
 import { type LanguageCode, languageList } from "~/types/language";
+import themeStore from "~/store/themeStore";
 
-const { setLocale } = useI18n();
+const { setLocale, locale, locales } = useI18n();
 const userStore = useUserStore();
 
 const menu = ref();
@@ -34,6 +35,16 @@ const openMenu = () => {
 defineExpose({
   openMenu
 })
+
+onBeforeUnmount(() => {
+  if (locale.value) {
+    userStore.languageInUsing = locale.value || "en_us"
+  }
+})
+
+onMounted(() => {
+})
+
 </script>
 
 <template>

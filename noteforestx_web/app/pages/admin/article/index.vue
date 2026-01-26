@@ -21,6 +21,7 @@ import Column from "primevue/column";
 import Tag from "primevue/tag";
 import MyPaginationBar from "~/components/MyPaginationBar.vue"; // 补充缺失的组件导入
 import {useHttp} from '~/composables/useCommonFetch'
+import {usePagination} from "~/composable/usePagination";
 
 const {t} = useI18n()
 const toast = useToast()
@@ -52,9 +53,10 @@ const inputRef = ref<InstanceType<typeof InputText> | null>(null)
 
 const articleList = ref<Article[]>([])
 // const appMenu = ref()
-const total = ref<number>(190)
-const page = ref<number>(1)
-const size = ref<number>(10)
+const total = ref<number>(0)
+// const page = ref<number>(1)
+// const size = ref<number>(10)
+const { page, size } = usePagination(15)
 const loading = ref<boolean>(false)
 
 const getNextArticleStatus = (
@@ -274,8 +276,6 @@ const getStatusSeverity = (status: ArticleStatus): {color: string, icon: string}
   }
 }
 
-fetchArticleList()
-
 const handleKeyDown = (e: KeyboardEvent) => {
   const target = e.target as HTMLElement
   // 如果焦点已经在 input 内，忽略
@@ -290,6 +290,7 @@ const handleKeyDown = (e: KeyboardEvent) => {
 }
 
 onMounted(() => {
+  // fetchArticleList()
   window.addEventListener('keydown', handleKeyDown)
 })
 

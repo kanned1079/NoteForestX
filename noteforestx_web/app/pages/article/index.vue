@@ -1,7 +1,7 @@
 <script setup lang="ts">
-definePageMeta({
-  // layout: "de"
-})
+// definePageMeta({
+//   // layout: "de"
+// })
 import {useI18n} from "vue-i18n";
 import {ref, watch, onMounted, onBeforeUnmount, onBeforeMount} from "vue"
 import useThemeStore from "~/store/themeStore";
@@ -17,7 +17,8 @@ import {useScrollFadeIn} from "~/composables/useScrollFadeIn";
 import type {SearchQuery} from "~/types/article_search";
 import ArticleItemDesktop from "~/components/RedesignedComponents/ArticleItemDesktop.vue";
 import {navigateTo} from "#app";
-import {useHttp} from "~/composables/useCommonFetch"; // 补充 navigateTo 导入（Nuxt 环境）
+import {useHttp} from "~/composables/useCommonFetch";
+import {usePagination} from "~/composable/usePagination"; // 补充 navigateTo 导入（Nuxt 环境）
 
 useScrollFadeIn({
   selector: '.animate-card-article-index',
@@ -185,8 +186,10 @@ const onSearchDialogClose = () => {
 
 // -------------------------------------------------------------------
 
-const page = ref<number>(1)
-const size = ref<number>(30)
+const { page, size } = usePagination(15)
+
+// const page = ref<number>(1)
+// const size = ref<number>(30)
 const total = ref<number>(1)
 
 const articleList = ref<Article[]>([])
@@ -282,7 +285,7 @@ const toDetails = (article: Article) => navigateTo({path: `/article/${article.id
 
 // -------------------------------------------------------------------
 
-fetchArticleList()
+// fetchArticleList()
 
 watch(() => actionStore.triggerSearchArticle, (newVal: boolean) => {
   if (newVal) {
@@ -291,11 +294,11 @@ watch(() => actionStore.triggerSearchArticle, (newVal: boolean) => {
   }
 })
 
-onBeforeMount(() => {
-
-})
 
 onMounted(() => {
+
+  fetchArticleList()
+
   themeStore.showHeaderSearchBtn = true
   themeStore.actionCenterMsgs = [
     t('articleIndex.openSearchBox'),

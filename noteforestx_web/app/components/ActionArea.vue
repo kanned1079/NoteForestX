@@ -60,9 +60,6 @@ defineExpose({
           </p>
         </div>
 
-<!--        <div>-->
-<!--          <p class="text-xl font-semibold mb-4 mt-8 animate-card">{{ userStore.user.username?userStore.user.username:userStore.user.email }}</p>-->
-<!--        </div>-->
 
       </div>
     </div>
