@@ -30,19 +30,23 @@ const route = useRoute()
     />
 
     <!-- 页面主体 -->
-    <div
-        class="
+
+    <client-only>
+      <div
+          class="
         mx-auto
         w-full
         max-w-[1600px]
         px-4 sm:px-6 md:px-8 lg:px-12
         overflow-visible
       "
-    >
-      <Toast />
-      <ConfirmDialog />
-      <slot />
-    </div>
+      >
+        <Toast />
+        <ConfirmDialog />
+        <slot />
+      </div>
+    </client-only>
+
 
     <!-- <AppFooter /> -->
   </div>

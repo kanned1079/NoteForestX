@@ -1,7 +1,7 @@
 <script setup lang="ts">
-// definePageMeta({
-//   // layout: "de"
-// })
+definePageMeta({
+  layout: "preview"
+})
 import {useI18n} from "vue-i18n";
 import {ref, watch, onMounted, onBeforeUnmount, onBeforeMount} from "vue"
 import useThemeStore from "~/store/themeStore";
@@ -283,9 +283,6 @@ const fetchArticleList = async () => {
 
 const toDetails = (article: Article) => navigateTo({path: `/article/${article.id}/${article.slug || 'empty-slug'}`})
 
-// -------------------------------------------------------------------
-
-// fetchArticleList()
 
 watch(() => actionStore.triggerSearchArticle, (newVal: boolean) => {
   if (newVal) {
