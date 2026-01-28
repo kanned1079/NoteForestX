@@ -290,7 +290,7 @@ const handleKeyDown = (e: KeyboardEvent) => {
 }
 
 onMounted(() => {
-  // fetchArticleList()
+  fetchArticleList()
   window.addEventListener('keydown', handleKeyDown)
 })
 
