@@ -32,7 +32,7 @@ const useUserStore = defineStore('userStore', () => {
         return true
     }
 
-    const languageInUsing = ref<string>('')
+    const languageInUsing = ref<string>('en_us')
 
     return {
         user,
