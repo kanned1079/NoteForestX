@@ -176,12 +176,14 @@ const refreshSearch = () => {
 
 const onSearchDialogOpen = () => {
   refreshSearch()
-  if (searchHistory.value.length > 0) window.addEventListener('keydown', handleKeyDown)
+  if (searchHistory.value.length > 0 && import.meta.client) window.addEventListener('keydown', handleKeyDown)
 }
 
 const onSearchDialogClose = () => {
   refreshSearch()
-  window.removeEventListener('keydown', handleKeyDown)
+  if (import.meta.client) {
+    window.removeEventListener('keydown', handleKeyDown)
+  }
 }
 
 // -------------------------------------------------------------------
@@ -306,12 +308,16 @@ onMounted(() => {
   if (savedHistory) {
     searchHistory.value = JSON.parse(savedHistory)
   }
-  window.addEventListener("keydown", handleCmdKeyDown)
+  if (import.meta.client) {
+    window.addEventListener("keydown", handleCmdKeyDown)
+  }
 })
 
 onBeforeUnmount(() => {
   themeStore.showHeaderSearchBtn = false
-  window.removeEventListener("keydown", handleCmdKeyDown)
+  if (import.meta.client) {
+    window.removeEventListener("keydown", handleCmdKeyDown)
+  }
   themeStore.actionCenterMsgs = []
 })
 </script>
