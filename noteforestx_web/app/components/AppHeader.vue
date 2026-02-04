@@ -2,9 +2,10 @@
 import {ref, computed} from "vue";
 import {updateSurfacePalette} from '@primeuix/themes';
 import {useI18n} from "vue-i18n";
-import {Icon} from '@vicons/utils'
+// import {Icon} from '@vicons/utils'
 import {useRouter, useRoute} from 'vue-router';
-import {TicketSharp} from "@vicons/ionicons5"
+// import {TicketSharp} from "@vicons/ionicons5"
+import { BookText } from 'lucide-vue-next';
 import useUserStore from "../store/userStore";
 import useThemeStore from "../store/themeStore";
 import useActionStore from "~/store/actionStore";
@@ -219,7 +220,7 @@ function onKeydown(e: KeyboardEvent) {
 // }
 
 const onClickWorkBtn = (code: '0' | '1' | '2') => {
-  if (process.client) { // Nuxt 3 提供 process.client 判断
+  if (import.meta.client) { // Nuxt 3 提供 process.client 判断
     const designEl = document.querySelector('#work-design')
     const el = document.querySelector('#work-section')
     if (designEl) designEl.scrollIntoView({ behavior: 'smooth' })
@@ -261,9 +262,10 @@ onBeforeUnmount(() => {
       >
         <template #default>
           <div class="text-xl font-semibold flex flex-row items-center space-x-2">
-            <Icon class="text-[#7234e9] dark:text-[#8257f2]">
-              <TicketSharp/>
-            </Icon>
+<!--            <Icon class="text-[#7234e9] dark:text-[#8257f2]">-->
+<!--              <TicketSharp/>-->
+<!--            </Icon>-->
+            <BookText class="text-[#7234e9] dark:text-[#8257f2]" :size="18" :strokeWidth="2.75"></BookText>
             <p class="text-[#7234e9] dark:text-[#8257f2]">NoteForest <span class="font-mono">X</span></p>
           </div>
         </template>

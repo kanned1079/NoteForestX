@@ -6,8 +6,9 @@ import {useI18n} from "vue-i18n";
 import {ref, watch, onMounted, onBeforeUnmount, onBeforeMount} from "vue"
 import useThemeStore from "~/store/themeStore";
 import useActionStore from "~/store/actionStore";
-import {Icon} from "@vicons/utils";
-import {ArrowDownOutline, ArrowUpOutline, ReturnDownBackOutline} from "@vicons/ionicons5";
+import { ArrowUp, ArrowDown, CornerDownLeft } from 'lucide-vue-next';
+// import {Icon} from "@vicons/utils";
+// import {ArrowDownOutline, ArrowUpOutline, ReturnDownBackOutline} from "@vicons/ionicons5";
 import InputIcon from "primevue/inputicon";
 import IconField from "primevue/iconfield";
 import {useToast} from "primevue/usetoast";
@@ -446,24 +447,27 @@ onBeforeUnmount(() => {
       <div class="text-xs flex flex-row items-center gap-2 opacity-80">
         <Tag severity="secondary">
           <template #icon>
-            <Icon>
-              <ReturnDownBackOutline/>
-            </Icon>
+<!--            <Icon>-->
+<!--              <ReturnDownBackOutline/>-->
+<!--            </Icon>-->
+            <CornerDownLeft :size="14" :strokeWidth="2.25" />
           </template>
         </Tag>
         <span>{{ t('articleIndex.searchToSearch') }}</span>
         <Tag class="ml-2" severity="secondary">
           <template #icon>
-            <Icon>
-              <ArrowUpOutline/>
-            </Icon>
+<!--            <Icon>-->
+<!--              <ArrowUpOutline/>-->
+<!--            </Icon>-->
+            <ArrowUp :size="14" :strokeWidth="2.25" />
           </template>
         </Tag>
         <Tag severity="secondary">
           <template #icon>
-            <Icon>
-              <ArrowDownOutline/>
-            </Icon>
+<!--            <Icon>-->
+<!--              <ArrowDownOutline/>-->
+<!--            </Icon>-->
+            <ArrowDown :size="14" :strokeWidth="2.25" />
           </template>
         </Tag>
         <span>{{ t('articleIndex.arrowToNavigate') }}</span>
