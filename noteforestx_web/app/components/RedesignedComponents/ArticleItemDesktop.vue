@@ -2,7 +2,6 @@
 import type { Article } from "~/types/article";
 import dayjs from "dayjs";
 import { defineProps, defineEmits, ref, onMounted, onUnmounted } from "vue";
-import { Pin } from 'lucide-vue-next';
 
 const props = defineProps<{
   article: Article
@@ -13,18 +12,23 @@ const emits = defineEmits<{
   (e: 'clickTitle', article: Article): void
 }>()
 
-const isDesktop = ref(window.innerWidth >= 1024)
+const isDesktop = ref(false)
 
 const updateWidth = () => {
-  isDesktop.value = window.innerWidth >= 1024
+  if (import.meta.client) {
+    isDesktop.value = window.innerWidth >= 1024
+  }
 }
 
 onMounted(() => {
+  updateWidth()
   window.addEventListener('resize', updateWidth)
 })
 
 onUnmounted(() => {
-  window.removeEventListener('resize', updateWidth)
+  if (import.meta.client) {
+    window.removeEventListener('resize', updateWidth)
+  }
 })
 
 const toDetails = () => {
