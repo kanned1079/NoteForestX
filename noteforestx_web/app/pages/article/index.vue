@@ -1,7 +1,7 @@
 <script setup lang="ts">
-definePageMeta({
-  layout: "preview"
-})
+// definePageMeta({
+//   layout: "preview"
+// })
 import {useI18n} from "vue-i18n";
 import {ref, watch, onMounted, onBeforeUnmount, onBeforeMount} from "vue"
 import useThemeStore from "~/store/themeStore";
