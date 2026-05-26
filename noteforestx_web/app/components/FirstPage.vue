@@ -31,8 +31,8 @@ useScrollFadeIn({
 const METEOR_COUNT = 5
 const MIN_LENGTH = 120
 const MAX_LENGTH = 480
-const MIN_DURATION = 1.5
-const MAX_DURATION = 3.5
+const MIN_DURATION = 1.0
+const MAX_DURATION = 2.2
 
 let W = 0
 let H = 0
@@ -81,12 +81,13 @@ onMounted(async () => {
     meteor.style.height = `${len}px`
     container.appendChild(meteor)
 
-    const startX = Math.random() * W
-    const startY = Math.random() * (H * 0.5)
+    // ☄️ 從右上角起點（包含螢幕外右側）向左下角斜向運動
+    const startX = W * 0.3 + Math.random() * (W * 0.8)
+    const startY = -50 - Math.random() * 100
 
-    const angleDeg = 40 + Math.random() * 10
+    const angleDeg = 35 + Math.random() * 15
     const rad = (180 - angleDeg) * (Math.PI / 180)
-    const travel = W * (0.5 + Math.random() * 0.5)
+    const travel = W * (0.6 + Math.random() * 0.6)
 
     const endX = startX + Math.cos(rad) * travel
     const endY = startY + Math.sin(rad) * travel
@@ -105,17 +106,25 @@ onMounted(async () => {
       opacity: 0
     })
 
+    // ☄️ 非線性運動：以 Power2.out 緩和曲線滑行（先快後慢，極致優雅）
     gsap.to(meteor, {
       x: endX,
       y: endY,
-      opacity: 0.8,
       duration,
       ease: 'power2.out',
+      onComplete: () => meteor.remove()
+    })
+
+    // ☄️ 飛躍過程中在移動時自然淡出（生命結束或滑行中漸變消失）
+    gsap.to(meteor, {
+      opacity: 1,
+      duration: duration * 0.15,
+      ease: 'power1.out',
       onComplete: () => {
         gsap.to(meteor, {
           opacity: 0,
-          duration: 0.5,
-          onComplete: () => meteor.remove()
+          duration: duration * 0.85,
+          ease: 'power2.in'
         })
       }
     })
@@ -123,7 +132,7 @@ onMounted(async () => {
 
   const startMeteor = () => {
     if (meteorInterval !== null) return
-    meteorInterval = window.setInterval(createMeteor, 800)
+    meteorInterval = window.setInterval(createMeteor, 1200)
   }
 
   const stopMeteor = () => {
@@ -304,10 +313,9 @@ onMounted(async () => {
 .meteor {
   position: absolute;
   width: 3px;
-  height: 120px;
   background: var(--meteor-color);
-  filter: drop-shadow(0 0 8px var(--meteor-glow-color))
-  drop-shadow(0 0 20px var(--meteor-glow-color));
+  filter: drop-shadow(0 0 6px var(--meteor-glow-color))
+          drop-shadow(0 0 15px var(--meteor-glow-color));
   pointer-events: none;
   transform-origin: 0 0;
   border-radius: 2px;
@@ -316,15 +324,15 @@ onMounted(async () => {
 
 /* 浅色模式 */
 :root {
-  --meteor-color: linear-gradient(0deg, rgba(59,130,246,0.6), rgba(59,130,246,0));
-  --meteor-glow-color: rgba(59,130,246,0.6);
+  --meteor-color: linear-gradient(0deg, #7d2ae8 0%, #3b82f6 50%, rgba(59,130,246,0) 100%);
+  --meteor-glow-color: rgba(125, 42, 232, 0.6);
 }
 
 /* 深色模式 */
 @media (prefers-color-scheme: dark) {
   :root {
-    --meteor-color: linear-gradient(0deg, #FFD700, rgba(255,215,0,0));
-    --meteor-glow-color: rgba(255,215,0,0.8);
+    --meteor-color: linear-gradient(0deg, #FFD700 0%, #f97316 50%, rgba(249,115,22,0) 100%);
+    --meteor-glow-color: rgba(255, 215, 0, 0.7);
   }
 }
 

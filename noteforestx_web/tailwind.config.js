@@ -1,7 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
-    './src/**/*.{html,js,ts,vue}',  // 确保你的文件路径被正确扫描
+    './app/**/*.{html,js,ts,vue}',
+    './components/**/*.{html,js,ts,vue}',
   ],
   theme: {
     extend: {

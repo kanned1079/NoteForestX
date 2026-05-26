@@ -336,7 +336,8 @@
     },
     "confirm": {
       "deleteHeader": "Poista"
-    }
+    },
+    "comments_unavailable": "Jostain syystä kommenttiosio on tilapäisesti poissa käytöstä."
   },
   "article_edit": {
     "pageHeader": {
@@ -433,6 +434,9 @@
     "loadFailed": "Lataus Epäonnistui",
     "openSearchBox": "Paina Meta+K avataksesi hakukentän",
     "resetSearch": "Paina Meta+R nollataksesi haun",
-    "clickTagToSearch": "Klikkaa artikkelin tunnistetta etsiäksesi artikkeleita, jotka käyttävät tätä tunnistetta"
+    "clickTagToSearch": "Klikkaa artikkelin tunnistetta etsiäksesi artikkeleita, jotka käyttävät tätä tunnistetta",
+    "filterSearch": "Hakutulokset hakusanalle: \"{query}\"",
+    "filterTag": "Suodatettu tagilla: #{query}",
+    "emptyArticleListDesc": "Kriteereitä vastaavia artikkeleita ei löytynyt. Yritä nollata suodattimet tai käyttää eri hakusanoja."
   }
 }

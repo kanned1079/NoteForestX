@@ -336,7 +336,8 @@
     },
     "confirm": {
       "deleteHeader": "Delete"
-    }
+    },
+    "comments_unavailable": "For some reason, the comments section is temporarily unavailable."
   },
   "article_edit": {
     "pageHeader": {
@@ -433,6 +434,9 @@
     "loadFailed": "Load Failed",
     "openSearchBox": "Press Meta+K to open search box",
     "resetSearch": "Press Meta+R to reset search",
-    "clickTagToSearch": "Click the article's tag to search for articles using that tag"
+    "clickTagToSearch": "Click the article's tag to search for articles using that tag",
+    "filterSearch": "Search results for: \"{query}\"",
+    "filterTag": "Filtered by tag: #{query}",
+    "emptyArticleListDesc": "No articles found matching the criteria. Try resetting the filters or using different keywords."
   }
 }

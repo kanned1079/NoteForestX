@@ -336,7 +336,8 @@
     },
     "confirm": {
       "deleteHeader": "Verwijderen"
-    }
+    },
+    "comments_unavailable": "Om een of andere reden is de commentaarsectie tijdelijk niet beschikbaar."
   },
   "article_edit": {
     "pageHeader": {
@@ -433,6 +434,9 @@
     "loadFailed": "Laden Mislukt",
     "openSearchBox": "Druk op Meta+K om het zoekvak te openen",
     "resetSearch": "Druk op Meta+R om de zoekopdracht te resetten",
-    "clickTagToSearch": "Klik op de tag van het artikel om te zoeken naar artikelen die deze tag gebruiken"
+    "clickTagToSearch": "Klik op de tag van het artikel om te zoeken naar artikelen die deze tag gebruiken",
+    "filterSearch": "Zoekresultaten voor: \"{query}\"",
+    "filterTag": "Gefilterd op tag: #{query}",
+    "emptyArticleListDesc": "Geen artikelen gevonden die aan de criteria voldoen. Probeer de filters te resetten of andere zoekwoorden te gebruiken."
   }
 }

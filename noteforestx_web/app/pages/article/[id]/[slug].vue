@@ -214,7 +214,7 @@ onUnmounted(() => {
 
 
             <Message severity="warn" size="small" class="mt-10">
-              因为一些原因，评论区暂时不可见。 / 因為一些原因，評論區暫時不可見。 / 何らかの理由により、コメント欄は一時的に利用できません。 / 어떤 이유에서인지, 댓글 섹션을 일시적으로 이용할 수 없습니다. / For some reason, the comments section is temporarily unavailable. / Pour une raison quelconque, la section commentaires est temporairement indisponible. / Jostain syystä kommenttiosio on tilapäisesti poissa käytöstä. / Бо баъзе сабабҳо, бахши шарҳҳо муваққатан дастрас нест.
+              {{ t('article.comments_unavailable') }}
             </Message>
 
           </div>

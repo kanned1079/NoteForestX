@@ -243,8 +243,20 @@ export default defineNuxtConfig({
     },
     routeRules: {
         '/api/**': {
-            proxy: `${process.env.API_BASE_URL || 'http://192.168.0.244:8081'}/api/**`
-        }
+            // proxy: `${process.env.API_BASE_URL || 'http://192.168.0.244:8081'}/api/**`
+            proxy: `${process.env.API_BASE_URL || 'https://ikanned.com:14000'}/api/**`
+        },
+        // 🚀 首頁優化：首頁及所有語系首頁進行靜態預渲染，開啟速度提升至毫秒級
+        '/': { prerender: true },
+        '/*/': { prerender: true },
+
+        // 🚀 靜態頁面優化：對各語系下的技術細節、贊助、職責頁面進行預渲染，節省伺服器 CPU 算力
+        '/*/details': { prerender: true },
+        '/*/sponsor': { prerender: true },
+        '/*/its-my-duty': { prerender: true },
+
+        // 🚀 後台管理系統優化：不需要 SEO，關閉伺服器端渲染，以純客戶端 SPA 運行，安全且高效
+        '/*/admin/**': { ssr: false }
     },
     runtimeConfig: {
         apiSecretBase: process.env.API_BASE_URL || 'http://192.168.0.244:8081',

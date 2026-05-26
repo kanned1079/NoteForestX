@@ -335,7 +335,8 @@
     },
     "confirm": {
       "deleteHeader": "刪除"
-    }
+    },
+    "comments_unavailable": "因為一些原因，評論區暫時不可見。"
   },
   "article_edit": {
     "pageHeader": {
@@ -432,6 +433,9 @@
     "loadFailed": "載入失敗",
     "openSearchBox": "按 Meta+K 開啟搜尋框",
     "resetSearch": "按 Meta+R 重設搜尋",
-    "clickTagToSearch": "點擊文章標籤可搜尋使用該標籤的文章"
+    "clickTagToSearch": "點擊文章標籤可搜尋使用該標籤的文章",
+    "filterSearch": "目前搜尋：\"{query}\"",
+    "filterTag": "標籤篩選：#{query}",
+    "emptyArticleListDesc": "沒有找到符合當前篩選條件的文章。嘗試重置過濾條件，或換一個關鍵詞搜尋。"
   }
 }

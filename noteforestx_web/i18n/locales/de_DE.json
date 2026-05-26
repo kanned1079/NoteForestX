@@ -335,7 +335,8 @@
     },
     "confirm": {
       "deleteHeader": "Löschen"
-    }
+    },
+    "comments_unavailable": "Aus bestimmten Gründen ist der Kommentarbereich vorübergehend nicht verfügbar."
   },
   "article_edit": {
     "pageHeader": {
@@ -432,6 +433,9 @@
     "loadFailed": "Fehler Beim Laden",
     "openSearchBox": "Drücken Sie Meta+K, Um Das Suchfeld Zu Öffnen",
     "resetSearch": "Drücken Sie Meta+R, Um Die Suche Zurückzusetzen",
-    "clickTagToSearch": "Klicken Sie Auf Den Tag Des Artikels, Um Nach Artikeln Zu Suchen, Die Diesen Tag Verwenden"
+    "clickTagToSearch": "Klicken Sie Auf Den Tag Des Artikels, Um Nach Artikeln Zu Suchen, Die Diesen Tag Verwenden",
+    "filterSearch": "Suchergebnisse für: \"{query}\"",
+    "filterTag": "Gefiltert nach Tag: #{query}",
+    "emptyArticleListDesc": "Keine Artikel gefunden, die den Kriterien entsprechen. Setzen Sie die Filter zurück oder verwenden Sie andere Suchbegriffe."
   }
 }

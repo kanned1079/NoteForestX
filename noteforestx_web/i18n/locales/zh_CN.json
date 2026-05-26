@@ -335,7 +335,8 @@
     },
     "confirm": {
       "deleteHeader": "删除"
-    }
+    },
+    "comments_unavailable": "因为一些原因，评论区暂时不可见。"
   },
   "article_edit": {
     "pageHeader": {
@@ -432,6 +433,9 @@
     "loadFailed": "加载失败",
     "openSearchBox": "按下 Meta+K 以打开搜索框",
     "resetSearch": "按下 Meta+R 以重置搜索",
-    "clickTagToSearch": "点击文章的Tag可以查询使用了该Tag的文章"
+    "clickTagToSearch": "点击文章的Tag可以查询使用了该Tag的文章",
+    "filterSearch": "当前搜索：\"{query}\"",
+    "filterTag": "标签筛选：#{query}",
+    "emptyArticleListDesc": "没有找到符合当前筛选条件的文章。尝试重置过滤条件，或换一个关键词搜索。"
   }
 }

@@ -336,7 +336,8 @@
     },
     "confirm": {
       "deleteHeader": "削除"
-    }
+    },
+    "comments_unavailable": "何らかの理由により、コメント欄は一時的に利用できません。"
   },
   "article_edit": {
     "pageHeader": {
@@ -433,6 +434,9 @@
     "loadFailed": "読み込みに失敗しました",
     "openSearchBox": "Meta+Kキーを押して検索ボックスを開く",
     "resetSearch": "Meta+Rキーを押して検索をリセット",
-    "clickTagToSearch": "記事のタグをクリックして、そのタグが使用されている記事を検索"
+    "clickTagToSearch": "記事のタグをクリックして、そのタグが使用されている記事を検索",
+    "filterSearch": "検索キーワード：\"{query}\"",
+    "filterTag": "タグ絞り込み：#{query}",
+    "emptyArticleListDesc": "条件に一致する記事が見つかりませんでした。フィルターをリセットするか、別のキーワードを試してください。"
   }
 }

@@ -39,6 +39,7 @@ const {t} = useI18n();
 // todo
 // const blocked = ref<boolean>(false)
 
+const activeTagName = ref<string>("")
 const searchTitle = ref<string>("")
 const isValid = ref<boolean>(true)
 const searchHistory = ref<{
@@ -177,7 +178,7 @@ const refreshSearch = () => {
 
 const onSearchDialogOpen = () => {
   refreshSearch()
-  if (searchHistory.value.length > 0 && import.meta.client) window.addEventListener('keydown', handleKeyDown)
+  if (import.meta.client) window.addEventListener('keydown', handleKeyDown)
 }
 
 const onSearchDialogClose = () => {
@@ -208,6 +209,7 @@ const doSearch = async (keyword: string) => {
     tag_id: '',
     status: searchQuery.value.status // 保留状态过滤（如果你之后加）
   }
+  activeTagName.value = ""
 
   page.value = 1
   await fetchArticleList()
@@ -221,6 +223,7 @@ const searchByTag = async (tag: { id: string; name: string }) => {
     search: '',
     status: searchQuery.value.status
   }
+  activeTagName.value = tag.name
 
   page.value = 1
   await fetchArticleList()
@@ -228,6 +231,7 @@ const searchByTag = async (tag: { id: string; name: string }) => {
 
 const clearSearch = async () => {
   searchQuery.value = {}
+  activeTagName.value = ""
   page.value = 1
   await fetchArticleList()
 }
@@ -294,8 +298,28 @@ watch(() => actionStore.triggerSearchArticle, (newVal: boolean) => {
   }
 })
 
+// ✅ 監聽 page 與 size 變化並持久化到本地儲存，注意安全判斷客戶端避免 SSR 報錯
+watch(page, (newPage) => {
+  if (import.meta.client) {
+    localStorage.setItem('article-list-page', newPage.toString())
+  }
+})
+
+watch(size, (newSize) => {
+  if (import.meta.client) {
+    localStorage.setItem('article-list-size', newSize.toString())
+  }
+})
+
 
 onMounted(() => {
+  // ✅ 僅在客戶端掛載後讀取上次保存的頁碼和每頁數量
+  if (import.meta.client) {
+    const savedPage = localStorage.getItem('article-list-page')
+    const savedSize = localStorage.getItem('article-list-size')
+    if (savedPage) page.value = parseInt(savedPage)
+    if (savedSize) size.value = parseInt(savedSize)
+  }
 
   fetchArticleList()
 
@@ -337,9 +361,41 @@ onBeforeUnmount(() => {
           </template>
         </PageHeader>
 
-        <transition name="slide-fade">
-          <div class="mb-10" v-if="!loading && articleList.length > 0">
-            <div class="space-y-4">
+        <!-- Active Filter Banner -->
+        <div v-if="searchQuery.search || searchQuery.tag_id" class="mb-6 flex flex-row items-center gap-3 py-2 px-4 bg-slate-100 dark:bg-slate-800/40 border border-slate-200/50 dark:border-slate-700/50 rounded-xl animate-card-article-index">
+          <span class="text-sm opacity-90 flex items-center gap-2">
+            <i class="pi pi-filter text-[#7234e9] dark:text-[#8257f2]"></i>
+            <span v-if="searchQuery.search" class="flex items-center gap-1">
+              {{ t('articleIndex.filterSearch', { query: searchQuery.search }) }}
+            </span>
+            <span v-else-if="searchQuery.tag_id" class="flex items-center gap-1">
+              {{ t('articleIndex.filterTag', { query: activeTagName }) }}
+            </span>
+          </span>
+          <Button
+              icon="pi pi-times"
+              severity="secondary"
+              size="small"
+              variant="text"
+              rounded
+              class="h-7 w-7 ml-auto hover:bg-slate-200 dark:hover:bg-slate-700/60"
+              @click="clearSearch"
+          />
+        </div>
+
+        <div v-if="loading" class="space-y-2 mb-10 animate-card-article-index">
+          <div v-for="n in 5" :key="n" class="flex flex-row justify-between items-center py-1.5 px-0 border-b border-dashed border-slate-200 dark:border-slate-800/60">
+            <div class="flex items-center gap-4 w-2/3">
+              <Skeleton width="96px" height="1.25rem" class="opacity-60" />
+              <Skeleton width="50%" height="1.25rem" />
+            </div>
+            <Skeleton width="100px" height="1.25rem" class="opacity-60" />
+          </div>
+        </div>
+
+        <transition name="slide-fade" mode="out-in" v-else>
+          <div class="mb-10" v-if="articleList.length > 0">
+            <div class="space-y-2">
               <ArticleItemDesktop
                   v-for="item in articleList"
                   :key="item.id"
@@ -357,8 +413,22 @@ onBeforeUnmount(() => {
                 :fetchData="fetchArticleList"
             />
           </div>
-          <div v-else>
-            <Message severity="warn">{{ t('articleIndex.emptyArticleList') }}</Message>
+          <!-- Empty State -->
+          <div v-else class="flex flex-col items-center justify-center py-16 px-4 bg-white dark:bg-[#141414] border border-slate-200/50 dark:border-slate-700/50 rounded-2xl shadow-sm text-center mb-10 animate-card-article-index">
+            <div class="h-16 w-16 bg-[#7234e9]/10 dark:bg-[#8257f2]/10 text-[#7234e9] dark:text-[#8257f2] rounded-2xl flex items-center justify-center mb-4">
+              <i class="pi pi-inbox text-3xl" />
+            </div>
+            <h3 class="text-xl font-bold mb-2">{{ t('articleIndex.emptyArticleList') }}</h3>
+            <p class="text-sm opacity-70 max-w-sm mb-6">{{ t('articleIndex.emptyArticleListDesc') }}</p>
+            <Button
+                v-if="searchQuery.search || searchQuery.tag_id"
+                :label="t('article.operation.resetSearch')"
+                severity="primary"
+                outlined
+                size="small"
+                class="px-4 h-9"
+                @click="clearSearch"
+            />
           </div>
         </transition>
 

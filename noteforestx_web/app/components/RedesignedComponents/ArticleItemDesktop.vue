@@ -23,11 +23,11 @@ const handleTagClick = (tag: { id: string, name: string }) => {
 
 <template>
   <div class="w-full">
-    <!-- 桌面布局：lg (1024px) 以上显示，以下隐藏 -->
-    <div class="hidden lg:flex flex-row justify-between items-center rounded-md transition">
+    <!-- 桌面布局：lg (1024px) 以上顯示，以下隱藏 -->
+    <div class="hidden lg:flex flex-row justify-between items-center rounded-lg py-1.5 px-0 transition-all duration-200 hover:bg-slate-100/60 dark:hover:bg-slate-800/30 hover:translate-x-1 cursor-pointer" @click="toDetails">
       <div class="flex items-center space-x-4 relative">
-        <span class="text-sm opacity-60">{{ dayjs(article.created_at).format('YYYY-MM-DD') }}</span>
-        <span class="relative flex items-center group cursor-pointer select-none" @click="toDetails">
+        <span class="text-sm opacity-60 w-24 flex-shrink-0 select-none">{{ dayjs(article.created_at).format('YYYY-MM-DD') }}</span>
+        <span class="relative flex items-center group select-none">
           <span class="absolute left-0 w-2 h-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-[#7234e9] dark:bg-[#8257f2]"></span>
           <span class="font-medium ml-2 relative transition-transform duration-200 group-hover:translate-x-2 flex flex-row items-center">
             <Tag v-if="article.top" severity="warn" class="mr-1 text-xs" value="Pinned" style="padding: 0 8px" />

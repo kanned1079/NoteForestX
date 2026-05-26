@@ -330,7 +330,8 @@
     },
     "confirm": {
       "deleteHeader": "Supprimer"
-    }
+    },
+    "comments_unavailable": "Pour une raison quelconque, la section commentaires est temporairement indisponible."
   },
   "article_edit": {
     "pageHeader": {
@@ -427,6 +428,9 @@
     "loadFailed": "Erreur de Chargement",
     "openSearchBox": "Appuyez sur Meta+K pour ouvrir la boîte de recherche",
     "resetSearch": "Appuyez sur Meta+R pour réinitialiser la recherche",
-    "clickTagToSearch": "Cliquez sur l'étiquette de l'article pour rechercher des articles utilisant cette étiquette"
+    "clickTagToSearch": "Cliquez sur l'étiquette de l'article pour rechercher des articles utilisant cette étiquette",
+    "filterSearch": "Résultats de recherche pour : \"{query}\"",
+    "filterTag": "Filtré par tag : #{query}",
+    "emptyArticleListDesc": "Aucun article correspondant aux critères n'a été trouvé. Essayez de réinitialiser les filtres ou d'utiliser d'autres mots-clés."
   }
 }
