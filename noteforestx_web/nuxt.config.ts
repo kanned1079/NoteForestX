@@ -243,8 +243,8 @@ export default defineNuxtConfig({
     },
     routeRules: {
         '/api/**': {
-            // proxy: `${process.env.API_BASE_URL || 'http://192.168.0.244:8081'}/api/**`
-            proxy: `${process.env.API_BASE_URL || 'https://ikanned.com:14000'}/api/**`
+            proxy: `${process.env.API_BASE_URL || 'http://192.168.0.244:8081'}/api/**`
+            // proxy: `${process.env.API_BASE_URL || 'https://ikanned.com:14000'}/api/**`
         },
         // 🚀 首頁優化：首頁及所有語系首頁進行靜態預渲染，開啟速度提升至毫秒級
         '/': { prerender: true },
